@@ -1,6 +1,6 @@
 ---
 // src/components/Header.astro
-import LogoSvg from '../assets/Logo/Logo.svg?raw';
+import LogoImg from '../assets/Logo/Logo.svg';
 
 const pathname = Astro.url.pathname;
 const isStandhouders = pathname.startsWith("/standhouders");
@@ -14,7 +14,7 @@ const isAccount = pathname.startsWith("/account");
   <div class="header-container">
     <!-- Overlapping Logo Image (links to Home) -->
     <a href="/" class="logo-image-container" aria-label="Whisky Fest Gent Home">
-      <Fragment set:html={LogoSvg} />
+      <img src={LogoImg.src} alt="Gents Whisky Festival Logo" class="navbar-logo-img" width="120" height="150" />
     </a>
 
     <!-- Navigation links (Home removed: clicking logo goes home) -->
@@ -125,7 +125,9 @@ const isAccount = pathname.startsWith("/account");
     width: 120px;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .logo-image-container svg {
+  .logo-image-container svg,
+  .logo-image-container img,
+  .navbar-logo-img {
     position: absolute;
     top: -48px;
     left: 0;
@@ -135,7 +137,9 @@ const isAccount = pathname.startsWith("/account");
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     transform-origin: center;
   }
-  .logo-image-container:hover svg {
+  .logo-image-container:hover svg,
+  .logo-image-container:hover img,
+  .logo-image-container:hover .navbar-logo-img {
     transform: scale(1.05) rotate(-2deg);
     filter: drop-shadow(0 6px 20px rgba(197, 139, 57, 0.3));
   }
