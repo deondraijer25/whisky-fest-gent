@@ -1026,14 +1026,14 @@ strong {
       to right, 
       #091326 0%, 
       #091326 30%, 
-      rgba(6, 26, 16, 0.85) 45%, 
-      rgba(6, 26, 16, 0.3) 65%, 
+      rgba(9, 19, 38, 0.85) 45%, 
+      rgba(9, 19, 38, 0.3) 65%, 
       transparent 85%
     ),
     linear-gradient(
       to bottom, 
       #091326 0%, 
-      rgba(6, 26, 16, 0.6) 12%, 
+      rgba(9, 19, 38, 0.6) 12%, 
       transparent 28%, 
       transparent 78%, 
       #091326 100%
@@ -1047,6 +1047,6 @@ strong {
   background: radial-gradient(
     circle at 70% 50%,
     rgba(22, 86, 54, 0.15) 0%,
-    rgba(6, 26, 16, 0.45) 100%
+    rgba(9, 19, 38, 0.45) 100%
   ) !important;
 }
