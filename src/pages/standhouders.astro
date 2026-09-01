@@ -1,5 +1,6 @@
 ---
 // src/pages/standhouders.astro
+// Interactieve Plattegrond & Standhouders voor Gents Whisky Festival (De Oude Vismijn Gent)
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -10,7 +11,7 @@ const exhibitors = await getStandhouders('gent');
 
 <Layout 
   title="Interactieve Plattegrond & Standhouders" 
-  description="Navigeer door de De Oude Vismijn Gent met onze interactieve plattegrond. Zoek direct waar uw favoriete whiskymerken en standhouders zich bevinden op het International Whisky Festival."
+  description="Navigeer door De Oude Vismijn Gent met onze interactieve festivalplattegrond. Vind direct waar al uw favoriete whiskymerken en standhouders zich bevinden op het Gents Whisky Festival."
 >
   <!-- Navigation Header -->
   <Header />
@@ -21,7 +22,7 @@ const exhibitors = await getStandhouders('gent');
       <span class="page-tag">Festival Gids 2026</span>
       <h1 class="page-title">Plattegrond & Stands</h1>
       <div class="vintage-line"></div>
-      <p class="page-subtitle">Verken de Grote Kerk, zoek uw favoriete merken en zie direct welke standhouder zich waar bevindt.</p>
+      <p class="page-subtitle">Verken de historische zalen van De Oude Vismijn, zoek uw favoriete merken en zie direct welke standhouder zich waar bevindt.</p>
     </div>
 
     <!-- Horizontal Search & Filters Bar -->
@@ -40,11 +41,11 @@ const exhibitors = await getStandhouders('gent');
         
         <div class="filter-buttons-row">
           <button type="button" class="filter-tab active" data-filter="all">Alle</button>
+          <button type="button" class="filter-tab" data-filter="belgian">Belgisch</button>
           <button type="button" class="filter-tab" data-filter="scotch">Schots</button>
-          <button type="button" class="filter-tab" data-filter="dutch">Nederlands</button>
           <button type="button" class="filter-tab" data-filter="independent">Onafhankelijk</button>
           <button type="button" class="filter-tab" data-filter="world">Wereld</button>
-          <button type="button" class="filter-tab" data-filter="catering">Food & Catering</button>
+          <button type="button" class="filter-tab" data-filter="catering">Food &amp; Catering</button>
         </div>
 
       </div>
@@ -53,7 +54,7 @@ const exhibitors = await getStandhouders('gent');
     <!-- Interactive Map & Detail Layout -->
     <div class="map-detail-layout animate-fade-in" style="animation-delay: 0.15s;">
       
-      <!-- LEFT COLUMN: The Interactive Floor Plan Map -->
+      <!-- LEFT COLUMN: The Digital Vector Floor Plan Map of De Oude Vismijn -->
       <div class="map-visual-container vintage-frame">
         <div class="vintage-frame-inner map-scroll-area">
           <div class="map-toolbar">
@@ -66,363 +67,383 @@ const exhibitors = await getStandhouders('gent');
           </div>
           
           <div class="svg-zoom-wrapper" id="svg-zoom-target">
-            <!-- Dynamic Vector SVG Map of Grote Kerk -->
-            <svg viewBox="0 0 980 500" class="church-svg-map" id="church-map">
+            <!-- 100% PURE DIGITAL VECTOR SVG MAP OF DE OUDE VISMIJN GENT (LANDSCAPE EXACT LIKE DEN HAAG) -->
+            <svg viewBox="0 0 980 500" class="vismijn-svg-map" id="vismijn-map">
               <defs>
                 <pattern id="pillar-pattern" width="10" height="10" patternUnits="userSpaceOnUse">
                   <circle cx="5" cy="5" r="3" fill="var(--border-color)" />
                 </pattern>
+                
+                <pattern id="water-pattern" width="20" height="10" patternUnits="userSpaceOnUse">
+                  <path d="M 0 5 Q 5 2 10 5 T 20 5" fill="none" stroke="rgba(30, 58, 138, 0.12)" stroke-width="1.2" />
+                </pattern>
+
+                <pattern id="cobble-pattern" width="12" height="12" patternUnits="userSpaceOnUse">
+                  <path d="M 0 6 L 6 0 L 12 6 L 6 12 Z" fill="none" stroke="rgba(15, 23, 42, 0.04)" stroke-width="0.8" />
+                </pattern>
               </defs>
-              
-              <!-- Subtle blueprint lines / grid background -->
+
+              <!-- Blueprint grid / transparent canvas -->
               <rect width="980" height="500" fill="transparent" />
-              
-              <!-- Church Outer Walls Silhouette (gothic outline) -->
-              <path d="M 140 150 
-                       L 140 80 Q 140 70 150 70 L 640 70 L 640 20 Q 640 10 650 10 L 760 10 Q 770 10 770 20 L 770 70 L 820 70 
-                       L 860 90 L 900 130 L 920 180 L 930 250 L 920 320 L 900 370 L 860 410 L 820 430 L 770 430 L 770 480 Q 770 490 760 490 L 650 490 Q 640 490 640 480 L 640 430 L 250 430 L 250 480 Q 250 490 240 490 L 150 490 Q 140 490 140 480 L 140 430 L 140 350
-                       L 90 350 L 50 310 L 30 250 L 50 190 L 90 150 Z" 
-                    fill="var(--bg-sand)" stroke="var(--border-color-dark)" stroke-width="2" stroke-linejoin="round" class="church-outline" />
 
-              <!-- Interior Architecture Zones -->
-              <!-- Hoogkoor (High Choir) Area -->
-              <rect x="670" y="150" width="180" height="200" fill="#EBE4D5" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
-              <text x="760" y="255" class="map-zone-label">Hoogkoor</text>
-              
-              <!-- Kooromgang (Ambulatory) Arch Guide -->
-              <path d="M 670 80 A 170 170 0 0 1 890 250 A 170 170 0 0 1 670 420" fill="none" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="6 6" />
+              <!-- ============================================== -->
+              <!-- EXTERIOR WATERWAYS: DE LEIE & DE LIEVE -->
+              <!-- ============================================== -->
+              <!-- River De Leie (Top-Left Water Area) -->
+              <path d="M 50 140 Q 110 50 240 50 L 240 78 Q 130 78 78 160 Z" fill="url(#water-pattern)" />
+              <path d="M 60 130 Q 120 40 250 40" fill="none" stroke="var(--primary-color)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.45" />
+              <text x="145" y="36" class="map-water-label">Rivier De Leie ↗</text>
 
-              <!-- Structural Pillars (Gothic columns) -->
+              <!-- Canal De Lieve (Top Water Area) -->
+              <rect x="250" y="32" width="600" height="42" fill="url(#water-pattern)" />
+              <line x1="250" y1="32" x2="850" y2="32" stroke="var(--primary-color)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.45" />
+              <text x="550" y="26" class="map-water-label text-center" text-anchor="middle">Kanaal De Lieve ➔</text>
+
+              <!-- ============================================== -->
+              <!-- VENUE OUTER WALLS (Historical Contour of Vismijn) -->
+              <!-- ============================================== -->
+              <path d="M 70 435 
+                       L 70 345 L 110 345 L 110 195 
+                       L 110 160 Q 120 78 240 78 
+                       L 850 78 L 850 215 
+                       L 905 215 L 905 425 L 830 425 
+                       L 830 465 L 745 465 L 745 425 
+                       L 425 425 L 425 465 L 155 465 
+                       L 155 435 Z" 
+                    fill="var(--bg-sand)" stroke="var(--text-charcoal)" stroke-width="2.5" stroke-linejoin="round" class="venue-outline" />
+
+              <!-- ============================================== -->
+              <!-- HISTORIC INTERIOR ROOM ZONES -->
+              <!-- ============================================== -->
+
+              <!-- 1. De Leie (Curved Gallery, Top-Left) -->
+              <path d="M 110 170 Q 120 80 240 80 L 240 195 L 110 195 Z" fill="#F6F1E7" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
+              <text x="210" y="165" class="map-zone-label" text-anchor="middle">De Leie</text>
+
+              <!-- 2. Brasserie (Middle-Left) -->
+              <rect x="110" y="195" width="145" height="145" fill="#EFE8DC" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
+              <text x="145" y="322" class="map-zone-label">Brasserie</text>
+
+              <!-- 3. Passage & Festival Bar Area -->
+              <rect x="255" y="195" width="85" height="85" fill="#E9E2D4" stroke="var(--border-color)" stroke-width="1.2" />
+
+              <!-- 4. De Lieve (Top Horizontal Canal Gallery) -->
+              <rect x="240" y="80" width="610" height="115" fill="#EFE8DC" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
+              <text x="545" y="102" class="map-zone-label">De Lieve</text>
+              
+              <!-- Bay dividers in De Lieve -->
+              <line x1="365" y1="80" x2="365" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
+              <line x1="440" y1="80" x2="440" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
+              <line x1="525" y1="80" x2="525" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
+              <line x1="695" y1="80" x2="695" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
+
+              <!-- 5. De Markt (Grand Central Hall, L-Shape avoiding Binnenkoer) -->
+              <rect x="340" y="195" width="490" height="145" fill="#FAF7F0" stroke="var(--border-color-dark)" stroke-width="1.8" />
+              <rect x="425" y="340" width="405" height="85" fill="#FAF7F0" stroke="var(--border-color-dark)" stroke-width="1.8" />
+              <text x="610" y="275" class="map-zone-label big-zone-label" text-anchor="middle">De Markt</text>
+
+              <!-- 6. Balkon (South-East Terrace overlooking Rekelingestraat) -->
+              <rect x="830" y="215" width="75" height="210" fill="#E8E0D0" stroke="var(--text-charcoal)" stroke-width="2" />
+              <text x="868" y="320" class="map-zone-label vertical-text">Balkon</text>
+
+              <!-- 7. Poortgebouw (West Entrance Gatehouse) -->
+              <rect x="70" y="345" width="85" height="90" fill="#EAE2D2" stroke="var(--text-charcoal)" stroke-width="2" />
+              <text x="112" y="422" class="map-zone-label small-label" text-anchor="middle">Poortgebouw</text>
+
+              <!-- 8. Binnenkoer (Spacious Central Courtyard) -->
+              <rect x="155" y="340" width="270" height="125" fill="#F8F5EE" stroke="var(--border-color)" stroke-width="1.5" />
+              <rect x="155" y="340" width="270" height="125" fill="url(#cobble-pattern)" pointer-events="none" />
+              <text x="290" y="452" class="map-zone-label" text-anchor="middle">Binnenkoer</text>
+
+              <!-- ============================================== -->
+              <!-- HISTORIC STONE PILLARS (Colonnade in Aisles) -->
+              <!-- ============================================== -->
               <g class="pillars">
-                <!-- Row Top -->
-                <circle cx="200" cy="140" r="10" class="pillar" />
-                <circle cx="280" cy="140" r="10" class="pillar" />
-                <circle cx="360" cy="140" r="10" class="pillar" />
-                <circle cx="440" cy="140" r="10" class="pillar" />
-                <circle cx="520" cy="140" r="10" class="pillar" />
-                <circle cx="600" cy="140" r="10" class="pillar" />
-                
-                <!-- Row Bottom -->
-                <circle cx="200" cy="360" r="10" class="pillar" />
-                <circle cx="280" cy="360" r="10" class="pillar" />
-                <circle cx="360" cy="360" r="10" class="pillar" />
-                <circle cx="440" cy="360" r="10" class="pillar" />
-                <circle cx="520" cy="360" r="10" class="pillar" />
-                <circle cx="600" cy="360" r="10" class="pillar" />
+                <!-- Colonnade Top Row (y=204 in open walking aisle) -->
+                <circle cx="450" cy="204" r="6" class="pillar" />
+                <circle cx="575" cy="204" r="6" class="pillar" />
+                <circle cx="635" cy="204" r="6" class="pillar" />
+                <circle cx="700" cy="204" r="6" class="pillar" />
+                <circle cx="770" cy="204" r="6" class="pillar" />
 
-                <!-- Choir pillars -->
-                <circle cx="670" cy="150" r="8" class="pillar" />
-                <circle cx="720" cy="115" r="8" class="pillar" />
-                <circle cx="780" cy="100" r="8" class="pillar" />
-                <circle cx="840" cy="115" r="8" class="pillar" />
-                <circle cx="890" cy="150" r="8" class="pillar" />
-                
-                <circle cx="670" cy="350" r="8" class="pillar" />
-                <circle cx="720" cy="385" r="8" class="pillar" />
-                <circle cx="780" cy="400" r="8" class="pillar" />
-                <circle cx="840" cy="385" r="8" class="pillar" />
-                <circle cx="890" cy="350" r="8" class="pillar" />
-              </g>
+                <!-- Colonnade Middle Row (y=335 in open walking aisle) -->
+                <circle cx="450" cy="335" r="6" class="pillar" />
+                <circle cx="510" cy="335" r="6" class="pillar" />
+                <circle cx="570" cy="335" r="6" class="pillar" />
+                <circle cx="630" cy="335" r="6" class="pillar" />
+                <circle cx="700" cy="335" r="6" class="pillar" />
+                <circle cx="770" cy="335" r="6" class="pillar" />
 
-              <!-- EXTERNAL ANNOTATIONS & ZONES -->
-              <!-- Top-Right: Buitenruimte / Food Trucks / Vaten-Maker -->
-              <g class="map-annotation-zone">
-                <path d="M 770 40 Q 810 25 840 20 M 840 20 L 825 18 M 840 20 L 836 32" stroke="#1E3A8A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-                <text x="850" y="22" font-family="var(--font-sans)" font-size="11" font-weight="800" fill="#1E3A8A">Workshop ruimte "Vaten-Maker"</text>
-                <text x="850" y="36" font-family="var(--font-sans)" font-size="11" font-weight="800" fill="#1E3A8A">Food trucks</text>
-                <text x="850" y="50" font-family="var(--font-sans)" font-size="12" font-weight="900" fill="#b57402">Buitenterrein ↗</text>
-              </g>
-
-              <!-- Top-Left: Garderobe en uitgang (Clean text label) -->
-              <g class="map-annotation-zone">
-                <text x="15" y="30" font-family="var(--font-sans)" font-size="13" font-weight="800" fill="var(--text-charcoal)">Garderobe en uitgang</text>
-              </g>
-
-              <!-- Bottom-Left: Nutshuis (Clean text label block) -->
-              <g class="map-annotation-zone">
-                <text x="15" y="425" font-family="var(--font-sans)" font-size="13" font-weight="900" fill="var(--text-charcoal)">Nutshuis</text>
-                <text x="15" y="440" font-family="var(--font-sans)" font-size="11" font-weight="800" fill="var(--text-charcoal)">ALLE masterclasses</text>
-                <text x="15" y="453" font-family="var(--font-sans)" font-size="9.5" font-weight="600" fill="var(--text-muted)">m.u.v. de Toren-tastings</text>
+                <!-- Colonnade Bottom Row (y=415 in open walking aisle) -->
+                <circle cx="510" cy="415" r="6" class="pillar" />
+                <circle cx="570" cy="415" r="6" class="pillar" />
+                <circle cx="630" cy="415" r="6" class="pillar" />
+                <circle cx="700" cy="415" r="6" class="pillar" />
+                <circle cx="770" cy="415" r="6" class="pillar" />
               </g>
 
               <!-- ============================================== -->
-              <!-- STANDS GRAPHICAL BLOCKS (SVG Interactive elements) -->
+              <!-- STREET LABELS & ANNOTATIONS (Clean Margins) -->
               <!-- ============================================== -->
-              
-              <!-- LEFT AREA (Main Entrance & Stand U) -->
-              <g class="svg-stand" data-stand="U">
-                <rect x="50" y="210" width="60" height="80" rx="4" class="stand-box" />
-                <text x="80" y="255" class="stand-num">U</text>
+              <text x="10" y="335" class="map-street-label">Sint-Veerleplein ➔</text>
+              <text x="925" y="320" class="map-street-label vertical-text">Rekelingestraat ➔</text>
+
+              <!-- ============================================== -->
+              <!-- ENTRANCE FLOW: SINT-VEERLEPLEIN -> INKOM -->
+              <!-- ============================================== -->
+              <g class="map-entrance-flow">
+                <!-- Directional dashed line from margin -->
+                <path d="M 15 375 L 70 375" stroke="#FF6500" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3" fill="none" />
+                <polygon points="70,375 60,370 60,380" fill="#FF6500" />
+                
+                <!-- INKOM & VESTIAIRE Badge placed cleanly inside Gatehouse -->
+                <rect x="75" y="360" width="76" height="30" rx="3" fill="#FF6500" />
+                <text x="113" y="373" font-family="var(--font-sans)" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">INKOM &amp;</text>
+                <text x="113" y="384" font-family="var(--font-sans)" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">VESTIAIRE</text>
+
+                <!-- Connection arrow into Binnenkoer -->
+                <path d="M 151 375 L 175 375" stroke="#FF6500" stroke-width="2" stroke-dasharray="4 3" fill="none" />
+                <polygon points="175,375 167,371 167,379" fill="#FF6500" />
               </g>
 
-              <!-- Entrance Text Labels (Above and Below Corridor) -->
-              <text x="80" y="195" font-family="var(--font-sans)" font-size="11" font-weight="900" fill="var(--text-charcoal)" text-anchor="middle">Uitgifte glazen +</text>
-              <text x="80" y="308" font-family="var(--font-sans)" font-size="11" font-weight="900" fill="var(--text-charcoal)" text-anchor="middle">Festival botteling</text>
+              <!-- ============================================== -->
+              <!-- BUITENTERREIN: FOODTRUCKS (Binnenkoer) -->
+              <!-- ============================================== -->
+              <!-- Clean Header Banner for Foodtrucks -->
+              <rect x="180" y="352" width="220" height="20" rx="3" fill="rgba(255, 101, 0, 0.1)" stroke="#FF6500" stroke-width="1.2" />
+              <text x="290" y="366" font-family="var(--font-sans)" font-size="9" font-weight="900" fill="#FF6500" text-anchor="middle" letter-spacing="0.08em">FOODTRUCKS BUITENTERREIN</text>
 
-              <!-- Entrance Corridor Arrow pointing into the Schip -->
-              <g class="entrance-arrow">
-                <path d="M 120 250 L 138 250 M 132 245 L 138 250 L 132 255" stroke="var(--text-charcoal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-              </g>
-
-              <!-- Entrance Corridor Arrow pointing into the Schip -->
-              <g class="entrance-arrow">
-                <path d="M 125 250 L 140 250 M 135 245 L 140 250 L 135 255" stroke="var(--text-charcoal)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-              </g>
-
-              <!-- Stands 1 & 2 (Left wall above entrance passage) -->
-              <g class="svg-stand" data-stand="2">
-                <rect x="155" y="155" width="22" height="28" rx="2" class="stand-box" />
-                <text x="166" y="173" class="stand-num text-small">2</text>
-              </g>
-              <g class="svg-stand" data-stand="1">
-                <rect x="155" y="188" width="22" height="28" rx="2" class="stand-box" />
-                <text x="166" y="206" class="stand-num text-small">1</text>
+              <!-- Foodtruck 1: Meat the grill -->
+              <g class="svg-stand" data-stand="F1" title="Meat the grill">
+                <rect x="185" y="380" width="100" height="45" rx="3" class="stand-box catering" />
+                <text x="235" y="399" class="stand-num text-bold">F1: MEAT</text>
+                <text x="235" y="414" class="stand-sub text-nano">Artisan BBQ Burgers</text>
               </g>
 
-              <!-- Stand 13 (Left wall below entrance passage) -->
-              <g class="svg-stand" data-stand="13">
-                <rect x="155" y="260" width="22" height="28" rx="2" class="stand-box" />
-                <text x="166" y="278" class="stand-num text-small">13</text>
+              <!-- Foodtruck 2: Mixed Worlds -->
+              <g class="svg-stand" data-stand="F2" title="Mixed Worlds">
+                <rect x="295" y="380" width="100" height="45" rx="3" class="stand-box catering" />
+                <text x="345" y="399" class="stand-num text-bold">F2: WORLDS</text>
+                <text x="345" y="414" class="stand-sub text-nano">Streetfood &amp; Tacos</text>
               </g>
 
-              <g class="svg-stand" data-stand="C">
-                <rect x="145" y="305" width="45" height="45" rx="4" class="stand-box catering" />
-                <text x="167" y="332" class="stand-num text-small">C</text>
+              <!-- ============================================== -->
+              <!-- FESTIVAL BAR (Food and drinks) -->
+              <!-- ============================================== -->
+              <g class="svg-stand" data-stand="BAR" title="Festival Bar (Food and drinks)">
+                <rect x="265" y="210" width="65" height="46" rx="3" class="stand-box bar-box" />
+                <text x="297" y="230" class="stand-num text-bold text-small">BAR</text>
+                <text x="297" y="244" class="stand-sub text-nano">Drinks &amp; Food</text>
               </g>
 
-              <!-- Main Nave: Top Row (Stands 3, 4, 5, 6) -->
-              <g class="svg-stand" data-stand="3">
-                <rect x="155" y="85" width="85" height="45" rx="3" class="stand-box" />
-                <text x="197" y="112" class="stand-num">3</text>
-              </g>
-              <g class="svg-stand" data-stand="4">
-                <rect x="250" y="85" width="130" height="35" rx="3" class="stand-box" />
-                <text x="315" y="107" class="stand-num">4</text>
-              </g>
-
-              <g class="svg-stand" data-stand="5">
-                <rect x="410" y="85" width="50" height="35" rx="3" class="stand-box" />
-                <text x="435" y="107" class="stand-num">5</text>
-              </g>
-
-              <!-- Stand 6 is split into three table modules -->
-              <g class="svg-stand" data-stand="6">
-                <rect x="525" y="85" width="22" height="35" rx="2" class="stand-box" />
-                <text x="536" y="107" class="stand-num text-small">6</text>
-              </g>
-              <g class="svg-stand" data-stand="6">
-                <rect x="552" y="85" width="22" height="35" rx="2" class="stand-box" />
-                <text x="563" y="107" class="stand-num text-small">6</text>
-              </g>
-              <g class="svg-stand" data-stand="6">
-                <rect x="579" y="85" width="22" height="35" rx="2" class="stand-box" />
-                <text x="590" y="107" class="stand-num text-small">6</text>
-              </g>
-
-              <!-- Main Nave: Middle-Left (Stands 12, 14, 14A, 19, 18, 17) -->
-              <g class="svg-stand" data-stand="12">
-                <rect x="250" y="170" width="130" height="60" rx="3" class="stand-box" />
-                <text x="315" y="205" class="stand-num">12</text>
-              </g>
-
-              <g class="svg-stand" data-stand="14">
-                <rect x="250" y="285" width="65" height="35" rx="3" class="stand-box" />
-                <text x="282" y="307" class="stand-num">14</text>
-              </g>
-              <g class="svg-stand" data-stand="15">
-                <rect x="315" y="285" width="65" height="35" rx="3" class="stand-box" />
-                <text x="347" y="307" class="stand-num">15</text>
-              </g>
-
-              <g class="svg-stand" data-stand="22">
-                <rect x="250" y="325" width="40" height="30" rx="3" class="stand-box" />
-                <text x="270" y="345" class="stand-num text-small">22</text>
-              </g>
-              <g class="svg-stand" data-stand="21">
-                <rect x="290" y="325" width="40" height="30" rx="3" class="stand-box" />
-                <text x="310" y="345" class="stand-num text-small">21</text>
-              </g>
-              <g class="svg-stand" data-stand="20">
-                <rect x="330" y="325" width="50" height="30" rx="3" class="stand-box" />
-                <text x="355" y="345" class="stand-num text-small">20</text>
-              </g>
-
-              <!-- Main Nave: Middle-Center (Stands 11, 8, 9, 10, O, 16, 15) -->
-              <g class="svg-stand" data-stand="11">
-                <rect x="440" y="170" width="80" height="70" rx="3" class="stand-box" />
-                <text x="480" y="210" class="stand-num">11</text>
-              </g>
-              <g class="svg-stand" data-stand="8">
-                <rect x="525" y="170" width="35" height="33" rx="3" class="stand-box" />
-                <text x="542" y="191" class="stand-num text-small">8</text>
-              </g>
-              <g class="svg-stand" data-stand="9">
-                <rect x="565" y="170" width="35" height="33" rx="3" class="stand-box" />
-                <text x="582" y="191" class="stand-num text-small">9</text>
-              </g>
-              <g class="svg-stand" data-stand="10">
-                <rect x="525" y="208" width="75" height="32" rx="3" class="stand-box" />
-                <text x="562" y="229" class="stand-num text-small">10</text>
-              </g>
-
-              <!-- Organisatie block: O (top-left), 16 (bottom-left), 17 (top-right), 18 (bottom-right) -->
-              <g class="svg-stand" data-stand="O">
-                <rect x="395" y="285" width="45" height="34" rx="3" class="stand-box organisation" />
-                <text x="417" y="307" class="stand-num text-small">O</text>
-              </g>
-              <g class="svg-stand" data-stand="16">
-                <rect x="395" y="322" width="45" height="34" rx="3" class="stand-box" />
-                <text x="417" y="343" class="stand-num text-small">16</text>
-              </g>
-              <g class="svg-stand" data-stand="17">
-                <rect x="443" y="285" width="45" height="34" rx="3" class="stand-box" />
-                <text x="465" y="307" class="stand-num text-small">17</text>
-              </g>
-              <g class="svg-stand" data-stand="18">
-                <rect x="443" y="322" width="45" height="34" rx="3" class="stand-box" />
-                <text x="465" y="343" class="stand-num text-small">18</text>
-              </g>
-              
-              <!-- Two central tasting island blocks: Stand 15 (Moët Hennessy) and Stand 19 (Helvetia Spirits) -->
-              <g class="svg-stand" data-stand="15">
-                <rect x="500" y="285" width="60" height="71" rx="3" class="stand-box" />
-                <text x="530" y="325" class="stand-num">15</text>
-              </g>
-              <g class="svg-stand" data-stand="19">
-                <rect x="570" y="285" width="60" height="71" rx="3" class="stand-box" />
-                <text x="600" y="325" class="stand-num">19</text>
-              </g>
-
-              <!-- Main Nave: Bottom Row (Stands 23, 24, S, 25, 26, 27, 28) -->
-              <g class="svg-stand" data-stand="23">
-                <rect x="250" y="375" width="75" height="35" rx="3" class="stand-box" />
-                <text x="287" y="397" class="stand-num text-small">23</text>
-              </g>
-              <g class="svg-stand" data-stand="24">
-                <rect x="330" y="375" width="50" height="35" rx="3" class="stand-box" />
-                <text x="355" y="397" class="stand-num text-small">24</text>
-              </g>
-
-              <g class="svg-stand" data-stand="S">
-                <rect x="260" y="420" width="110" height="60" rx="4" class="stand-box shop" />
-                <text x="315" y="455" class="stand-num">S</text>
-              </g>
-
-              <g class="svg-stand" data-stand="25">
-                <rect x="400" y="375" width="45" height="35" rx="3" class="stand-box" />
-                <text x="422" y="397" class="stand-num text-small">25</text>
-              </g>
-              <g class="svg-stand" data-stand="26">
-                <rect x="450" y="375" width="45" height="35" rx="3" class="stand-box" />
-                <text x="472" y="397" class="stand-num text-small">26</text>
-              </g>
-              <g class="svg-stand" data-stand="27">
-                <rect x="500" y="375" width="45" height="35" rx="3" class="stand-box" />
-                <text x="522" y="397" class="stand-num text-small">27</text>
-              </g>
-              <g class="svg-stand" data-stand="28">
-                <rect x="550" y="375" width="45" height="35" rx="3" class="stand-box" />
-                <text x="572" y="397" class="stand-num text-small">28</text>
-              </g>
-
-              <!-- EAST AREA: Chapels & Ambulatory (Choir area) -->
-              <!-- Kapel Noord (Stand 42) -->
-              <g class="svg-stand" data-stand="42">
-                <rect x="645" y="20" width="90" height="60" rx="4" class="stand-box chapel" />
-                <text x="690" y="55" class="stand-num">42</text>
-              </g>
-              <!-- Kapel Zuid (Stand 29) -->
-              <g class="svg-stand" data-stand="29">
-                <rect x="645" y="420" width="90" height="60" rx="4" class="stand-box chapel" />
-                <text x="690" y="455" class="stand-num">29</text>
-              </g>
-
-              <!-- Hoogkoor center (Stand 44) -->
-              <g class="svg-stand" data-stand="44">
-                <rect x="700" y="190" width="120" height="120" rx="6" class="stand-box choir" />
-                <text x="760" y="255" class="stand-num">44</text>
-              </g>
-
-              <!-- Inner ambulatory stands (43, 45, 46, 47, 48) -->
-              <g class="svg-stand" data-stand="43">
-                <rect x="795" y="150" width="30" height="30" rx="3" class="stand-box" />
-                <text x="810" y="170" class="stand-num text-small">43</text>
-              </g>
-              <g class="svg-stand" data-stand="45">
-                <rect x="830" y="170" width="30" height="30" rx="3" class="stand-box" />
-                <text x="845" y="190" class="stand-num text-small">45</text>
-              </g>
-              <g class="svg-stand" data-stand="46">
-                <rect x="845" y="210" width="30" height="80" rx="3" class="stand-box" />
-                <text x="860" y="255" class="stand-num text-small">46</text>
-              </g>
-              <g class="svg-stand" data-stand="47">
-                <rect x="830" y="300" width="30" height="30" rx="3" class="stand-box" />
-                <text x="845" y="320" class="stand-num text-small">47</text>
-              </g>
-              <g class="svg-stand" data-stand="48">
-                <rect x="795" y="320" width="30" height="30" rx="3" class="stand-box" />
-                <text x="810" y="340" class="stand-num text-small">48</text>
-              </g>
-
-              <!-- Outer Curved Wall Ambulatory: Top-Right (41, 40, 39, 38) -->
-              <g class="svg-stand" data-stand="41">
-                <rect x="680" y="85" width="35" height="28" rx="2" class="stand-box" />
-                <text x="697" y="103" class="stand-num text-small">41</text>
-              </g>
-              <g class="svg-stand" data-stand="40">
-                <rect x="720" y="85" width="35" height="28" rx="2" class="stand-box" />
-                <text x="737" y="103" class="stand-num text-small">40</text>
-              </g>
-              <g class="svg-stand" data-stand="39">
-                <rect x="760" y="85" width="35" height="28" rx="2" class="stand-box catering" />
-                <text x="777" y="103" class="stand-num text-small">39</text>
-              </g>
-              <g class="svg-stand" data-stand="38">
-                <rect x="800" y="85" width="35" height="28" rx="2" class="stand-box" />
-                <text x="817" y="103" class="stand-num text-small">38</text>
-              </g>
-
-              <!-- Outer Curved Wall: Right curving down (37, 36, 35, 34, 33, 32, 31, 30) -->
-              <!-- 100% Straight, unrotated SVG stand boxes placed along the curve contour -->
+              <!-- ============================================== -->
+              <!-- BRASSERIE STANDS & FOOD TASTING TABLES -->
+              <!-- ============================================== -->
+              <!-- Stand 37 -->
               <g class="svg-stand" data-stand="37">
-                <rect x="838" y="105" width="35" height="28" rx="2" class="stand-box" />
-                <text x="855" y="123" class="stand-num text-small">37</text>
+                <rect x="120" y="208" width="40" height="28" rx="3" class="stand-box" />
+                <text x="140" y="226" class="stand-num text-small">37</text>
               </g>
-
+              <!-- Stand 36 -->
               <g class="svg-stand" data-stand="36">
-                <rect x="865" y="145" width="35" height="28" rx="2" class="stand-box" />
-                <text x="882" y="163" class="stand-num text-small">36</text>
+                <rect x="120" y="244" width="40" height="28" rx="3" class="stand-box" />
+                <text x="140" y="262" class="stand-num text-small">36</text>
               </g>
-
+              <!-- Stand 35: Beyond Jewels -->
               <g class="svg-stand" data-stand="35">
-                <rect x="880" y="190" width="28" height="38" rx="2" class="stand-box" />
-                <text x="894" y="214" class="stand-num text-small">35</text>
+                <rect x="120" y="280" width="40" height="28" rx="3" class="stand-box" />
+                <text x="140" y="298" class="stand-num text-small">35</text>
               </g>
 
-              <g class="svg-stand" data-stand="34">
-                <rect x="880" y="265" width="28" height="38" rx="2" class="stand-box" />
-                <text x="894" y="289" class="stand-num text-small">34</text>
+              <!-- Food Tasting Tables (Circular Stations with Clean Label) -->
+              <g class="food-tasting-group">
+                <circle cx="185" cy="222" r="10" class="tasting-circle" />
+                <circle cx="185" cy="258" r="10" class="tasting-circle" />
+                <circle cx="185" cy="294" r="10" class="tasting-circle" />
+                
+                <rect x="202" y="250" width="40" height="17" rx="2" fill="rgba(255, 101, 0, 0.12)" stroke="#FF6500" stroke-width="1" />
+                <text x="222" y="262" class="food-banner-text">FOOD</text>
               </g>
 
-              <g class="svg-stand" data-stand="33">
-                <rect x="865" y="325" width="35" height="28" rx="2" class="stand-box" />
-                <text x="882" y="343" class="stand-num text-small">33</text>
+              <!-- ============================================== -->
+              <!-- DE LEIE STANDS (Curved Gallery, Top-Left) -->
+              <!-- ============================================== -->
+              <!-- Stand 1: Premium Spirits SRL -->
+              <g class="svg-stand" data-stand="1">
+                <rect x="130" y="112" width="42" height="30" rx="3" class="stand-box" />
+                <text x="151" y="131" class="stand-num">1</text>
+              </g>
+              <!-- Stand 2: Bacardi Martini Belgium BV -->
+              <g class="svg-stand" data-stand="2">
+                <rect x="180" y="98" width="42" height="30" rx="3" class="stand-box" />
+                <text x="201" y="117" class="stand-num">2</text>
+              </g>
+              <!-- Stand 25: Cinoco -->
+              <g class="svg-stand" data-stand="25">
+                <rect x="130" y="150" width="42" height="30" rx="3" class="stand-box" />
+                <text x="151" y="169" class="stand-num text-small">25</text>
+              </g>
+              <!-- Stand 3: TWM Spirits BV -->
+              <g class="svg-stand" data-stand="3">
+                <rect x="235" y="98" width="42" height="30" rx="3" class="stand-box" />
+                <text x="256" y="117" class="stand-num">3</text>
+              </g>
+              <!-- Stand 5: The Whisky House -->
+              <g class="svg-stand" data-stand="5">
+                <rect x="180" y="145" width="42" height="30" rx="3" class="stand-box" />
+                <text x="201" y="164" class="stand-num">5</text>
+              </g>
+              <!-- Stand 6: Diageo -->
+              <g class="svg-stand" data-stand="6">
+                <rect x="235" y="145" width="42" height="30" rx="3" class="stand-box" />
+                <text x="256" y="164" class="stand-num">6</text>
               </g>
 
-              <g class="svg-stand" data-stand="32">
-                <rect x="838" y="365" width="35" height="28" rx="2" class="stand-box" />
-                <text x="855" y="383" class="stand-num text-small">32</text>
+              <!-- ============================================== -->
+              <!-- DE LIEVE STANDS (Top Canal Gallery) -->
+              <!-- ============================================== -->
+              <!-- Stand 9: La Martiniquaise Benelux -->
+              <g class="svg-stand" data-stand="9">
+                <rect x="305" y="125" width="45" height="35" rx="3" class="stand-box" />
+                <text x="327" y="147" class="stand-num">9</text>
               </g>
 
-              <g class="svg-stand" data-stand="31">
-                <rect x="800" y="385" width="40" height="28" rx="2" class="stand-box" />
-                <text x="820" y="403" class="stand-num text-small">31</text>
+              <!-- Stand 10: Brugse Whisky BVBA Transvaal -->
+              <g class="svg-stand" data-stand="10">
+                <rect x="375" y="105" width="48" height="32" rx="3" class="stand-box" />
+                <text x="399" y="125" class="stand-num text-small">10</text>
               </g>
+              <!-- Stand 11: Alcobrands -->
+              <g class="svg-stand" data-stand="11">
+                <rect x="375" y="145" width="48" height="32" rx="3" class="stand-box" />
+                <text x="399" y="165" class="stand-num text-small">11</text>
+              </g>
+
+              <!-- Stand 15: Chocolatier Vandenbouhede uit Gent -->
+              <g class="svg-stand" data-stand="15">
+                <rect x="445" y="105" width="48" height="32" rx="3" class="stand-box catering" />
+                <text x="469" y="125" class="stand-num text-small">15</text>
+              </g>
+              <!-- Stand 12: Cley Whisky -->
+              <g class="svg-stand" data-stand="12">
+                <rect x="445" y="145" width="48" height="32" rx="3" class="stand-box" />
+                <text x="469" y="165" class="stand-num text-small">12</text>
+              </g>
+
+              <!-- Stand 14: Glengarry Whisky Club (Buffet Counter) -->
+              <g class="svg-stand" data-stand="14">
+                <rect x="540" y="120" width="55" height="42" rx="3" class="stand-box buffet-stand" />
+                <text x="567" y="145" class="stand-num text-small">14</text>
+              </g>
+              <!-- Stand 13: Glengarry Bar – Verkoop whisky -->
+              <g class="svg-stand" data-stand="13">
+                <rect x="615" y="120" width="60" height="42" rx="3" class="stand-box" />
+                <text x="645" y="145" class="stand-num text-small">13</text>
+              </g>
+
+              <!-- ============================================== -->
+              <!-- DE MARKT: WEST SECTION (Organisatie, 21, 23, 24, 20) -->
+              <!-- ============================================== -->
+              <!-- Stand O: Organisatie -->
+              <g class="svg-stand" data-stand="O" title="Organisatie">
+                <rect x="350" y="210" width="80" height="38" rx="3" class="stand-box organisation" />
+                <text x="390" y="228" class="stand-num text-bold text-small">O: ORG</text>
+                <text x="390" y="241" class="stand-sub text-nano">Botteling &amp; Info</text>
+              </g>
+
+              <!-- Stand 21: DaDa Chapel Distillery Gent -->
+              <g class="svg-stand" data-stand="21">
+                <rect x="350" y="255" width="38" height="30" rx="3" class="stand-box" />
+                <text x="369" y="274" class="stand-num text-small">21</text>
+              </g>
+
+              <!-- Stand 24: BV Munros -->
+              <g class="svg-stand" data-stand="24">
+                <rect x="392" y="255" width="38" height="30" rx="3" class="stand-box" />
+                <text x="411" y="274" class="stand-num text-small">24</text>
+              </g>
+
+              <!-- Stand 23: Filliers Distillery -->
+              <g class="svg-stand" data-stand="23">
+                <rect x="350" y="292" width="38" height="30" rx="3" class="stand-box" />
+                <text x="369" y="311" class="stand-num text-small">23</text>
+              </g>
+
+              <!-- Stand 20: Young Charly -->
+              <g class="svg-stand" data-stand="20">
+                <rect x="392" y="292" width="38" height="30" rx="3" class="stand-box" />
+                <text x="411" y="311" class="stand-num text-small">20</text>
+              </g>
+
+              <!-- ============================================== -->
+              <!-- DE MARKT: STAND 4 (SMWS / Spirituoos GCV - TRIPLE BOOTH) -->
+              <!-- ============================================== -->
+              <!-- Surrounding border for triple booth Stand 4 -->
+              <rect x="448" y="222" width="118" height="46" rx="4" class="triple-stand-frame" />
+              <text x="507" y="217" class="triple-stand-label text-center" text-anchor="middle">SMWS TRIPLE BOOTH</text>
+
+              <!-- Table 4 Left -->
+              <g class="svg-stand" data-stand="4" title="Stand 4: SMWS / Spirituoos GCV">
+                <rect x="453" y="226" width="34" height="38" rx="2" class="stand-box" />
+                <text x="470" y="250" class="stand-num">4</text>
+              </g>
+              <!-- Table 4 Middle -->
+              <g class="svg-stand" data-stand="4" title="Stand 4: SMWS / Spirituoos GCV">
+                <rect x="491" y="226" width="34" height="38" rx="2" class="stand-box" />
+                <text x="508" y="250" class="stand-num">4</text>
+              </g>
+              <!-- Table 4 Right -->
+              <g class="svg-stand" data-stand="4" title="Stand 4: SMWS / Spirituoos GCV">
+                <rect x="529" y="226" width="34" height="38" rx="2" class="stand-box" />
+                <text x="546" y="250" class="stand-num">4</text>
+              </g>
+
+              <!-- ============================================== -->
+              <!-- DE MARKT: CENTRAL ISLANDS & SOUTH SECTION -->
+              <!-- ============================================== -->
+              <!-- Center Island 1: Stands 28 & 29 -->
+              <!-- Stand 28: Brown-Forman -->
+              <g class="svg-stand" data-stand="28">
+                <rect x="460" y="285" width="48" height="34" rx="3" class="stand-box" />
+                <text x="484" y="306" class="stand-num text-small">28</text>
+              </g>
+              <!-- Stand 29: Disaronno International B.V. -->
+              <g class="svg-stand" data-stand="29">
+                <rect x="518" y="285" width="48" height="34" rx="3" class="stand-box" />
+                <text x="542" y="306" class="stand-num text-small">29</text>
+              </g>
+
+              <!-- Center Island 2: Stands 30 & 31 -->
+              <!-- Stand 30: Distilleerderij de Bronckhorst -->
               <g class="svg-stand" data-stand="30">
-                <rect x="755" y="385" width="40" height="28" rx="2" class="stand-box" />
-                <text x="775" y="403" class="stand-num text-small">30</text>
+                <rect x="590" y="226" width="48" height="35" rx="3" class="stand-box" />
+                <text x="614" y="248" class="stand-num text-small">30</text>
               </g>
+              <!-- Stand 31: De Cort Distillery -->
+              <g class="svg-stand" data-stand="31">
+                <rect x="648" y="226" width="48" height="35" rx="3" class="stand-box" />
+                <text x="672" y="248" class="stand-num text-small">31</text>
+              </g>
+
+              <!-- Stand 18: Waterloo Beers & Spirits -->
+              <g class="svg-stand" data-stand="18">
+                <rect x="590" y="285" width="55" height="34" rx="3" class="stand-box" />
+                <text x="617" y="306" class="stand-num text-small">18</text>
+              </g>
+
+              <!-- East section near Balkon: Stands 26 & 27 -->
+              <!-- Stand 26: Old whisky Collection! -->
+              <g class="svg-stand" data-stand="26">
+                <rect x="715" y="226" width="55" height="35" rx="3" class="stand-box" />
+                <text x="742" y="248" class="stand-num">26</text>
+              </g>
+
+              <!-- Stand 27: Bruichladdich -->
+              <g class="svg-stand" data-stand="27">
+                <rect x="715" y="285" width="55" height="34" rx="3" class="stand-box" />
+                <text x="742" y="306" class="stand-num">27</text>
+              </g>
+
             </svg>
           </div>
         </div>
@@ -437,13 +458,13 @@ const exhibitors = await getStandhouders('gent');
             <h3 class="card-inner-title text-center">Stand Detail</h3>
             <div class="vintage-line"></div>
             <p class="sidebar-card-text text-center italic-text">
-              Klik op een standnummer op de plattegrond of kies een standhouder uit de lijst om de details, merken en standlocatie te bekijken.
+              Klik op een standnummer op de plattegrond of kies een standhouder uit de lijst om de details, merken en zaallocatie te bekijken.
             </p>
           </div>
           
           <div class="card-padded" id="active-info-state" style="display: none;">
             <div class="detail-stand-badge-row">
-              <span class="detail-stand-number" id="detail-number">11</span>
+              <span class="detail-stand-number" id="detail-number">Stand 1</span>
               <span class="status-badge" id="detail-category-badge">Schots</span>
             </div>
             
@@ -451,11 +472,15 @@ const exhibitors = await getStandhouders('gent');
               <h3 class="card-inner-title" id="detail-name">Standhouder Naam</h3>
               <div class="vintage-line" style="margin: 0.5rem 0 1rem 0;"></div>
               
+              <div class="detail-hall-row" id="detail-hall-box" style="display: none;">
+                <span class="hall-badge">📍 <span id="detail-hall">De Markt</span></span>
+              </div>
+
               <p class="sidebar-card-text" id="detail-description">
                 Beschrijving van de standhouder.
               </p>
               
-              <div class="detail-brands-box">
+              <div class="detail-brands-box" id="detail-brands-box">
                 <span class="brands-label">Aanwezige Merken:</span>
                 <div class="brands-list-tags" id="detail-brands">
                   <!-- Dynamic brands go here -->
@@ -472,28 +497,37 @@ const exhibitors = await getStandhouders('gent');
     <section class="directory-list-section">
       <div class="directory-section-header">
         <h2 class="directory-title">Deelnemerslijst (A-Z)</h2>
-        <span class="results-counter" id="results-count">48 standhouders gevonden</span>
+        <span class="results-counter" id="results-count">{exhibitors.length} standhouders gevonden</span>
       </div>
       
       <div class="directory-grid" id="directory-grid">
         {exhibitors.map((exh) => (
-          <div class="directory-item-card" data-id={exh.id} data-cat={exh.category} data-name={exh.name.toLowerCase()} data-brands={exh.brands.join(' ').toLowerCase()}>
+          <div class="directory-item-card" data-id={exh.id} data-cat={exh.category} data-name={exh.name.toLowerCase()} data-brands={(exh.brands || []).join(' ').toLowerCase()} data-hall={(exh.hall || '').toLowerCase()}>
             <div class="card-top-header">
-              <span class="card-stand-number">{exh.isNotOnMap ? 'Niet op plattegrond' : `Stand ${exh.id}`}</span>
-              <span class={`category-tag tag-${exh.category}`}>
+              <span class="card-stand-number">
+                {exh.isNotOnMap ? 'Niet op plattegrond' : 
+                 exh.id === 'BAR' ? 'Centrale Bar' : 
+                 exh.id === 'O' ? 'Infodesk & Organisatie' : 
+                 exh.id.startsWith('F') ? ('Foodtruck ' + exh.id) : 
+                 ('Stand ' + exh.id)}
+              </span>
+              <span class={'category-tag tag-' + exh.category}>
                 {exh.category === 'scotch' ? 'Schots' : 
-                 exh.category === 'dutch' ? 'Nederlands' : 
-                 exh.category === 'independent' ? 'Onafhankelijke Bottelaar' : 
+                 exh.category === 'belgian' ? 'Belgisch' : 
+                 exh.category === 'independent' ? 'Onafhankelijk' : 
                  exh.category === 'world' ? 'Wereld' : 
                  exh.category === 'catering' ? 'Catering' : 'Organisatie'}
               </span>
             </div>
             <div class="card-body-content">
               <h4>{exh.name}</h4>
+              {exh.hall && <div class="card-hall-tag">📍 {exh.hall}</div>}
               <p>{exh.description}</p>
-              <div class="card-brands-row">
-                <strong>Merken:</strong> {exh.brands.join(', ')}
-              </div>
+              {exh.brands && exh.brands.length > 0 && (
+                <div class="card-brands-row">
+                  <strong>Merken:</strong> {exh.brands.join(', ')}
+                </div>
+              )}
             </div>
             <div class="card-action-footer">
               {!exh.isNotOnMap && (
@@ -533,7 +567,7 @@ const exhibitors = await getStandhouders('gent');
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    max-width: 700px;
+    max-width: 750px;
     margin: 0 auto;
   }
 
@@ -543,7 +577,7 @@ const exhibitors = await getStandhouders('gent');
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--whisky-gold-dark);
+    color: var(--accent-color, #FF6500);
   }
 
   .page-title {
@@ -551,7 +585,7 @@ const exhibitors = await getStandhouders('gent');
     font-size: 3.75rem;
     color: var(--text-charcoal);
     margin: 0;
-    line-height: 1;
+    line-height: 1.05;
   }
 
   .page-subtitle {
@@ -562,7 +596,7 @@ const exhibitors = await getStandhouders('gent');
     line-height: 1.5;
   }
 
-  /* --- Map and Detail Columns --- */
+  /* --- Map and Detail Columns (Identical Proportion to Den Haag) --- */
   .map-detail-layout {
     display: grid;
     grid-template-columns: 1.7fr 1fr;
@@ -599,11 +633,67 @@ const exhibitors = await getStandhouders('gent');
     justify-content: flex-end;
   }
 
+  .filter-tab {
+    background-color: var(--bg-sand);
+    border: 1.5px solid var(--text-charcoal);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    color: var(--text-charcoal);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-tab:hover {
+    background-color: rgba(30, 58, 138, 0.1);
+    border-color: var(--primary-color);
+  }
+
+  .filter-tab.active {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    border-color: var(--primary-color);
+    box-shadow: 2px 2px 0px var(--text-charcoal);
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.65rem 1rem 0.65rem 2.5rem;
+    border: 1.5px solid var(--text-charcoal);
+    background-color: var(--bg-sand);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    border-radius: 3px;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .form-control:focus {
+    background-color: var(--bg-paper-card);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.2);
+  }
+
+  .search-icon-inside {
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
   .search-icon-svg {
     display: block;
   }
 
-  /* --- Map Container & SVG Scroll Area --- */
+  /* --- Map Container & SVG Area (100% fitting, no cut-off) --- */
   .map-visual-container {
     background-color: var(--bg-paper-card);
     border-radius: 4px;
@@ -615,7 +705,6 @@ const exhibitors = await getStandhouders('gent');
     padding: 1.5rem !important;
     position: relative;
     overflow: auto;
-    max-height: 600px;
   }
 
   .map-toolbar {
@@ -654,8 +743,9 @@ const exhibitors = await getStandhouders('gent');
   }
 
   .zoom-btn:hover {
-    background-color: var(--whisky-gold);
-    color: var(--bg-parchment);
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    border-color: var(--primary-color);
   }
 
   .svg-zoom-wrapper {
@@ -664,15 +754,15 @@ const exhibitors = await getStandhouders('gent');
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* --- SVG Map Styling --- */
-  .church-svg-map {
+  /* --- Pure Digital Vector SVG Map Styling (Matching Den Haag Technique Exactly) --- */
+  .vismijn-svg-map {
     width: 100%;
     height: auto;
     display: block;
     user-select: none;
   }
 
-  .church-outline {
+  .venue-outline {
     fill: var(--bg-sand);
     stroke: var(--text-charcoal);
     stroke-width: 2.5;
@@ -690,12 +780,47 @@ const exhibitors = await getStandhouders('gent');
     font-style: italic;
     font-size: 1.1rem;
     fill: var(--text-muted);
-    opacity: 0.25;
+    opacity: 0.35;
     text-anchor: middle;
+    pointer-events: none;
+    font-weight: 700;
+  }
+
+  .big-zone-label {
+    font-size: 1.4rem;
+    opacity: 0.25;
+  }
+
+  .small-label {
+    font-size: 0.8rem;
+    opacity: 0.4;
+  }
+
+  .map-street-label {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 800;
+    fill: var(--text-muted);
+    letter-spacing: 0.05em;
     pointer-events: none;
   }
 
-  /* --- SVG Stand Boxes --- */
+  .map-water-label {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 800;
+    fill: var(--primary-color);
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    opacity: 0.75;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  /* --- SVG Stand Boxes (Rectangular Table & Booth Primitives Like Den Haag) --- */
   .stand-box {
     fill: var(--bg-paper-card);
     stroke: var(--text-charcoal);
@@ -712,10 +837,28 @@ const exhibitors = await getStandhouders('gent');
     text-anchor: middle;
     pointer-events: none;
     user-select: none;
+    transition: fill 0.2s ease;
   }
 
-  .stand-num.text-small {
+  .stand-sub {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .text-small {
     font-size: 0.75rem;
+  }
+
+  .text-bold {
+    font-weight: 900;
+  }
+
+  .text-nano {
+    font-size: 0.65rem;
+    fill: var(--text-muted);
   }
 
   /* Hover states for SVG stands */
@@ -724,79 +867,140 @@ const exhibitors = await getStandhouders('gent');
   }
 
   .svg-stand:hover .stand-box {
-    fill: var(--whisky-gold-light);
-    stroke: var(--whisky-gold-dark);
-    filter: drop-shadow(0 2px 5px rgba(197, 139, 57, 0.2));
+    fill: #FFF3EB;
+    stroke: #FF6500;
+    filter: drop-shadow(0 2px 5px rgba(255, 101, 0, 0.35));
+    stroke-width: 2.2;
   }
 
-  /* Functional Areas Styling */
-  .stand-box.shop {
-    fill: rgba(44, 94, 67, 0.05);
-    stroke: var(--success-green);
-  }
-  .svg-stand[data-stand="S"]:hover .stand-box {
-    fill: var(--success-green-light);
-    stroke: var(--success-green);
-  }
-  .svg-stand[data-stand="S"] .stand-num {
-    fill: var(--success-green);
+  .svg-stand:hover .stand-num {
+    fill: #FF6500;
   }
 
-  .stand-box.organisation {
-    fill: rgba(143, 91, 25, 0.05);
-    stroke: var(--whisky-gold-dark);
-  }
-  .svg-stand[data-stand="O"] .stand-num {
-    fill: var(--whisky-gold-dark);
-  }
-
-  .stand-box.catering {
-    fill: #FFF3CD;
-    stroke: #856404;
-  }
-  .svg-stand[data-stand="C"]:hover .stand-box {
-    fill: #FFEBAA;
-  }
-  .svg-stand[data-stand="C"] .stand-num {
-    fill: #856404;
-  }
-
-  /* Interactive active selection state in SVG */
+  /* Selected stand active state */
   .svg-stand.selected-stand .stand-box {
-    fill: var(--whisky-gold-dark);
-    stroke: var(--text-charcoal);
-    stroke-width: 2.5px;
-    animation: pulseGlow 1.5s infinite;
+    fill: var(--primary-color);
+    stroke: #FF6500;
+    stroke-width: 2.5;
+    filter: drop-shadow(0 3px 8px rgba(30, 58, 138, 0.45));
   }
 
   .svg-stand.selected-stand .stand-num {
-    fill: var(--bg-parchment) !important;
+    fill: #FFFFFF;
     font-weight: 900;
   }
 
-  /* Dimmed state during search/filter */
+  .svg-stand.selected-stand .stand-sub {
+    fill: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Stand 4 Triple Frame */
+  .triple-stand-frame {
+    fill: rgba(30, 58, 138, 0.04);
+    stroke: var(--primary-color);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 3;
+    pointer-events: none;
+  }
+
+  .triple-stand-label {
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 900;
+    fill: var(--primary-color);
+    letter-spacing: 0.12em;
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  /* Functional Areas Styling */
+  .stand-box.catering {
+    fill: rgba(255, 101, 0, 0.08);
+    stroke: #FF6500;
+  }
+
+  .svg-stand[data-stand="F1"]:hover .stand-box,
+  .svg-stand[data-stand="F2"]:hover .stand-box {
+    fill: #FF6500;
+    stroke: #FF8A00;
+  }
+
+  .svg-stand[data-stand="F1"]:hover text,
+  .svg-stand[data-stand="F2"]:hover text {
+    fill: #FFFFFF;
+  }
+
+  .stand-box.bar-box {
+    fill: rgba(30, 58, 138, 0.08);
+    stroke: var(--primary-color);
+  }
+
+  .svg-stand[data-stand="BAR"]:hover .stand-box {
+    fill: var(--primary-color);
+  }
+
+  .svg-stand[data-stand="BAR"]:hover text {
+    fill: #FFFFFF;
+  }
+
+  .stand-box.organisation {
+    fill: rgba(30, 58, 138, 0.08);
+    stroke: var(--primary-color);
+  }
+
+  .svg-stand[data-stand="O"]:hover .stand-box {
+    fill: var(--primary-color);
+  }
+
+  .svg-stand[data-stand="O"]:hover text {
+    fill: #FFFFFF;
+  }
+
+  .stand-box.buffet-stand {
+    fill: rgba(79, 70, 229, 0.06);
+    stroke: #4F46E5;
+  }
+
+  /* Brasserie Food Tasting Circles */
+  .tasting-circle {
+    fill: rgba(255, 101, 0, 0.08);
+    stroke: #FF6500;
+    stroke-width: 1.5;
+    stroke-dasharray: 3 2;
+  }
+
+  .food-banner-text {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 900;
+    fill: #FF6500;
+    letter-spacing: 0.1em;
+    pointer-events: none;
+  }
+
+  /* Dimmed & Highlighted States for Search */
   .svg-stand.dimmed-stand {
     opacity: 0.15;
+    transition: opacity 0.25s ease;
   }
 
   .svg-stand.highlighted-search-stand .stand-box {
-    fill: var(--whisky-gold-light);
-    stroke: var(--whisky-gold-dark);
-    stroke-width: 2px;
+    stroke: #FF6500;
+    stroke-width: 2.8;
+    animation: gentPulse 1.6s infinite;
   }
 
-  @keyframes pulseGlow {
-    0% { filter: drop-shadow(0 0 0px var(--whisky-gold)); }
-    50% { filter: drop-shadow(0 0 8px var(--whisky-gold)); }
-    100% { filter: drop-shadow(0 0 0px var(--whisky-gold)); }
+  @keyframes gentPulse {
+    0% { filter: drop-shadow(0 0 0 rgba(255, 101, 0, 0.7)); }
+    70% { filter: drop-shadow(0 0 10px rgba(255, 101, 0, 0)); }
+    100% { filter: drop-shadow(0 0 0 rgba(255, 101, 0, 0)); }
   }
 
-  /* --- Sidebar Panel --- */
+  /* --- Sidebar Panels --- */
   .sidebar-exhibitors-panel {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    height: 100%;
+    gap: 1.75rem;
   }
 
   .sidebar-card {
@@ -804,12 +1008,10 @@ const exhibitors = await getStandhouders('gent');
     border: 2px solid var(--text-charcoal);
     border-radius: 4px;
     box-shadow: 6px 6px 0px var(--text-charcoal);
-    display: flex;
-    flex-direction: column;
   }
 
   .card-padded {
-    padding: 2rem;
+    padding: 1.75rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -817,88 +1019,123 @@ const exhibitors = await getStandhouders('gent');
 
   .card-inner-title {
     font-family: var(--font-display);
-    font-size: 1.65rem;
-    text-transform: uppercase;
+    font-size: 1.75rem;
     color: var(--text-charcoal);
     margin: 0;
-    line-height: 1.1;
-    letter-spacing: 0.03em;
   }
 
   .sidebar-card-text {
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--text-charcoal);
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.5;
     margin: 0;
   }
 
-  .sidebar-card-text.italic-text {
-    font-family: var(--font-serif);
+  .italic-text {
     font-style: italic;
-    color: var(--text-muted);
-  }
-
-  /* --- Stand Detail Card (Dynamic) --- */
-  .info-card-detail {
-    height: 100%;
-    transition: all 0.3s;
-  }
-
-  .info-card-detail .card-padded {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  #default-info-state {
-    justify-content: center;
-  }
-
-  .info-card-header-art {
-    font-size: 3rem;
-    text-align: center;
-    line-height: 1;
-    margin-bottom: 0.5rem;
   }
 
   .detail-stand-badge-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid var(--text-charcoal);
-    padding-bottom: 0.75rem;
-    margin-bottom: 0.5rem;
   }
 
   .detail-stand-number {
-    font-family: var(--font-display);
-    font-size: 2.25rem;
-    color: var(--whisky-gold-dark);
-    line-height: 1;
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
-  .detail-content-block {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
+  .detail-hall-row {
+    margin-bottom: 0.5rem;
+  }
+
+  .hall-badge {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    background-color: rgba(30, 58, 138, 0.08);
+    padding: 0.25rem 0.65rem;
+    border-radius: 3px;
+    display: inline-block;
+  }
+
+  .status-badge {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .category-tag {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tag-belgian {
+    background-color: rgba(30, 58, 138, 0.12);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+  }
+
+  .tag-scotch {
+    background-color: rgba(255, 101, 0, 0.12);
+    color: #C04D00;
+    border: 1px solid #FF6500;
+  }
+
+  .tag-independent {
+    background-color: rgba(79, 70, 229, 0.12);
+    color: #4338CA;
+    border: 1px solid #4F46E5;
+  }
+
+  .tag-world {
+    background-color: rgba(13, 148, 136, 0.12);
+    color: #0F766E;
+    border: 1px solid #0D9488;
+  }
+
+  .tag-catering {
+    background-color: rgba(217, 119, 6, 0.12);
+    color: #B45309;
+    border: 1px solid #D97706;
+  }
+
+  .tag-organisation {
+    background-color: rgba(15, 23, 42, 0.12);
+    color: #0F172A;
+    border: 1px solid #0F172A;
   }
 
   .detail-brands-box {
-    border-top: 1px dotted var(--border-color-dark);
-    padding-top: 0.85rem;
+    margin-top: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 0.6rem;
   }
 
   .brands-label {
     font-family: var(--font-sans);
+    font-size: 0.85rem;
     font-weight: 800;
-    font-size: 0.75rem;
+    color: var(--text-charcoal);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--text-muted);
   }
 
   .brands-list-tags {
@@ -909,125 +1146,48 @@ const exhibitors = await getStandhouders('gent');
 
   .brand-tag {
     background-color: var(--bg-sand);
-    border: 1px solid var(--border-color-dark);
-    color: var(--text-charcoal);
+    border: 1px solid var(--border-color);
     font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.25rem 0.55rem;
     border-radius: 3px;
-  }
-
-  /* --- Search & Filters Card --- */
-  .search-input-wrapper {
-    position: relative;
-    width: 100%;
-  }
-
-  .form-control {
-    width: 100%;
-    background-color: var(--bg-sand);
-    border: 2px solid var(--text-charcoal);
-    border-radius: 4px;
-    padding: 0.75rem 1rem;
-    padding-right: 2.5rem;
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    color: var(--text-charcoal);
-    outline: none;
-    transition: all 0.2s;
-  }
-
-  .form-control:focus {
-    background-color: var(--bg-paper-card);
-    border-color: var(--whisky-gold-dark);
-    box-shadow: 0 0 0 3px var(--whisky-gold-trans);
-  }
-
-  .search-icon-inside {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1rem;
-    pointer-events: none;
-  }
-
-  .filter-buttons-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    flex: 2;
-    justify-content: flex-end;
-  }
-
-  .filter-tab {
-    background-color: var(--bg-sand);
-    border: 1.5px solid var(--text-charcoal);
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.65rem 0.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-    color: var(--text-muted);
-  }
-
-  .filter-tab:hover {
-    background-color: var(--bg-paper-card);
     color: var(--text-charcoal);
   }
 
-  .filter-tab.active {
-    background-color: var(--text-charcoal);
-    color: var(--whisky-gold-light);
-    border-color: var(--text-charcoal);
-  }
-
-  /* --- Directory Section Below --- */
+  /* --- Directory List Grid --- */
   .directory-list-section {
-    border-top: 2px solid var(--text-charcoal);
-    padding-top: 3.5rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .directory-section-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
+    align-items: baseline;
+    border-bottom: 2px solid var(--text-charcoal);
+    padding-bottom: 0.75rem;
   }
 
   .directory-title {
     font-family: var(--font-display);
     font-size: 2.25rem;
+    color: var(--text-charcoal);
     margin: 0;
   }
 
   .results-counter {
     font-family: var(--font-sans);
-    font-weight: 800;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-size: 0.9rem;
+    font-weight: 700;
     color: var(--text-muted);
-    background-color: var(--bg-sand);
-    padding: 0.35rem 0.85rem;
-    border-radius: 20px;
-    border: 1px solid var(--border-color-dark);
   }
 
   .directory-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
   }
 
   .directory-item-card {
@@ -1035,165 +1195,113 @@ const exhibitors = await getStandhouders('gent');
     border: 2px solid var(--text-charcoal);
     border-radius: 4px;
     box-shadow: 4px 4px 0px var(--text-charcoal);
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    min-height: 240px;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    justify-content: space-between;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
   }
 
   .directory-item-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: 6px 6px 0px var(--text-charcoal);
-    border-color: var(--whisky-gold-dark);
   }
 
   .directory-item-card.selected-card {
-    border-color: var(--whisky-gold-dark);
-    background-color: rgba(197, 139, 57, 0.03);
-    box-shadow: 6px 6px 0px var(--whisky-gold-dark);
+    border-color: #FF6500;
+    outline: 2px solid #FF6500;
+    background-color: #FFFDF9;
   }
 
   .card-top-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    border-bottom: 1.5px solid var(--text-charcoal);
-    padding: 0.85rem 1.25rem;
-    background-color: var(--bg-sand);
+    align-items: flex-start;
   }
 
   .card-stand-number {
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    color: var(--text-charcoal);
-    line-height: 1;
-  }
-
-  .category-tag {
     font-family: var(--font-sans);
     font-weight: 800;
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.2rem 0.5rem;
-    border-radius: 20px;
-  }
-
-  .category-tag.tag-scotch { background-color: var(--whisky-gold-trans); color: var(--whisky-gold-dark); border: 1px solid var(--whisky-gold); }
-  .category-tag.tag-dutch { background-color: rgba(44, 94, 67, 0.05); color: var(--success-green); border: 1px solid var(--success-green); }
-  .category-tag.tag-independent { background-color: #E2ECF7; color: #2C5A94; border: 1px solid #A2C4EC; }
-  .category-tag.tag-world { background-color: #F8E6E2; color: #9E3E2B; border: 1px solid #EFA79A; }
-  .category-tag.tag-catering { background-color: #FFF3CD; color: #856404; border: 1px solid #FFEBAA; }
-  .category-tag.tag-organisation { background-color: #E2E3E5; color: #383D41; border: 1px solid #D6D8DB; }
-
-  .card-body-content {
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.65rem;
-    flex-grow: 1;
+    font-size: 0.95rem;
+    color: var(--primary-color);
   }
 
   .card-body-content h4 {
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: 1.15rem;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
     color: var(--text-charcoal);
-    text-transform: none;
-    letter-spacing: 0;
+    margin: 0 0 0.4rem 0;
+  }
+
+  .card-hall-tag {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
   }
 
   .card-body-content p {
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
     color: var(--text-muted);
-    margin: 0;
+    line-height: 1.45;
+    margin: 0 0 0.75rem 0;
   }
 
   .card-brands-row {
     font-family: var(--font-sans);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-charcoal);
-    border-top: 1px dotted var(--border-color-dark);
-    padding-top: 0.65rem;
-    margin-top: auto;
-  }
-
-  .card-brands-row strong {
-    font-weight: 800;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--text-muted);
+    line-height: 1.4;
   }
 
   .card-action-footer {
-    border-top: 1px solid var(--border-color);
-    padding: 0.85rem 1.25rem;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 0.75rem;
     display: flex;
     justify-content: flex-end;
   }
 
   .btn-locate-stand {
-    background: transparent;
+    background: none;
     border: none;
+    color: var(--primary-color);
     font-family: var(--font-sans);
     font-weight: 800;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--whisky-gold-dark);
+    font-size: 0.85rem;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    transition: color 0.2s;
+    transition: all 0.2s;
+    padding: 0;
   }
 
   .btn-locate-stand:hover {
-    color: var(--text-charcoal);
+    color: #FF6500;
+    transform: translateX(3px);
   }
 
-  /* --- Responsive Breakpoints --- */
-  @media (max-width: 1200px) {
-    .directory-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 1050px) {
+  /* Responsive Design */
+  @media (max-width: 1024px) {
     .map-detail-layout {
       grid-template-columns: 1fr;
     }
-    
-    .info-card-detail {
-      height: auto;
-      min-height: auto;
+  }
+
+  @media (max-width: 768px) {
+    .standhouders-page-wrapper {
+      padding: 7rem 1.5rem 4rem;
     }
 
     .horizontal-bar-inner {
       flex-direction: column;
-      align-items: stretch;
-      gap: 1.25rem;
-      padding: 1.5rem;
+      gap: 1rem;
+      padding: 1rem;
     }
-    
+
     .search-filter-horizontal-bar .search-input-wrapper {
       width: 100%;
-    }
-    
-    .filter-buttons-row {
-      justify-content: center;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .standhouders-page-wrapper {
-      padding: 7rem 1rem 4rem;
-      gap: 2.5rem;
-    }
-
-    .page-title {
-      font-size: 2.75rem;
     }
 
     .directory-grid {
@@ -1212,7 +1320,6 @@ const exhibitors = await getStandhouders('gent');
   // Initialize elements
   const searchInput = document.getElementById('exhibitor-search');
   const filterTabs = document.querySelectorAll('.filter-tab');
-  const directoryGrid = document.getElementById('directory-grid');
   const directoryCards = document.querySelectorAll('.directory-item-card');
   const resultsCount = document.getElementById('results-count');
   
@@ -1223,10 +1330,12 @@ const exhibitors = await getStandhouders('gent');
   const detailCategory = document.getElementById('detail-category-badge');
   const detailName = document.getElementById('detail-name');
   const detailDesc = document.getElementById('detail-description');
+  const detailBrandsBox = document.getElementById('detail-brands-box');
   const detailBrands = document.getElementById('detail-brands');
+  const detailHallBox = document.getElementById('detail-hall-box');
+  const detailHall = document.getElementById('detail-hall');
 
   // SVG Elements
-  const svgMap = document.getElementById('church-map');
   const svgStands = document.querySelectorAll('.svg-stand');
   const zoomTarget = document.getElementById('svg-zoom-target');
 
@@ -1242,11 +1351,11 @@ const exhibitors = await getStandhouders('gent');
 
   // Map Category Mapping Helper
   const categoryLabels = {
+    belgian: 'Belgisch',
     scotch: 'Schots',
-    dutch: 'Nederlands',
     independent: 'Onafhankelijk',
     world: 'Wereld',
-    catering: 'Catering',
+    catering: 'Food & Catering',
     organisation: 'Organisatie'
   };
 
@@ -1271,7 +1380,7 @@ const exhibitors = await getStandhouders('gent');
   });
 
   function applyZoom() {
-    zoomTarget.style.transform = `scale(${scale})`;
+    zoomTarget.style.transform = 'scale(' + scale + ')';
   }
 
   // --- Update Details Card ---
@@ -1283,22 +1392,46 @@ const exhibitors = await getStandhouders('gent');
     }
 
     // Set stand numbers & titles
-    detailNumber.textContent = exh.isNotOnMap ? "Niet op plattegrond" : "Stand " + exh.id;
+    if (exh.isNotOnMap) {
+      detailNumber.textContent = "Niet op plattegrond";
+    } else if (exh.id === 'BAR') {
+      detailNumber.textContent = "Festival Bar";
+    } else if (exh.id === 'O') {
+      detailNumber.textContent = "Organisatie & Infodesk";
+    } else if (exh.id.startsWith('F')) {
+      detailNumber.textContent = "Foodtruck " + exh.id;
+    } else {
+      detailNumber.textContent = "Stand " + exh.id;
+    }
+
     detailName.textContent = exh.name;
     detailDesc.textContent = exh.description;
     
+    // Hall info
+    if (exh.hall) {
+      detailHall.textContent = exh.hall;
+      detailHallBox.style.display = 'block';
+    } else {
+      detailHallBox.style.display = 'none';
+    }
+
     // Category mapping
     detailCategory.textContent = categoryLabels[exh.category] || 'Overig';
-    detailCategory.className = `status-badge category-tag tag-${exh.category}`;
+    detailCategory.className = 'status-badge category-tag tag-' + exh.category;
 
     // Clear and fill brands
     detailBrands.innerHTML = '';
-    exh.brands.forEach(brand => {
-      const tag = document.createElement('span');
-      tag.className = 'brand-tag';
-      tag.textContent = brand;
-      detailBrands.appendChild(tag);
-    });
+    if (exh.brands && exh.brands.length > 0) {
+      exh.brands.forEach(brand => {
+        const tag = document.createElement('span');
+        tag.className = 'brand-tag';
+        tag.textContent = brand;
+        detailBrands.appendChild(tag);
+      });
+      detailBrandsBox.style.display = 'flex';
+    } else {
+      detailBrandsBox.style.display = 'none';
+    }
 
     defaultInfoState.style.display = 'none';
     activeInfoState.style.display = 'flex';
@@ -1310,9 +1443,10 @@ const exhibitors = await getStandhouders('gent');
     
     directoryCards.forEach(card => {
       const name = card.getAttribute('data-name');
-      const brands = card.getAttribute('data-brands');
+      const brands = card.getAttribute('data-brands') || '';
       const cat = card.getAttribute('data-cat');
-      const matchesSearch = name.includes(activeSearch) || brands.includes(activeSearch);
+      const hall = card.getAttribute('data-hall') || '';
+      const matchesSearch = name.includes(activeSearch) || brands.includes(activeSearch) || hall.includes(activeSearch);
       const matchesFilter = activeFilter === 'all' || cat === activeFilter;
 
       if (matchesSearch && matchesFilter) {
@@ -1323,20 +1457,20 @@ const exhibitors = await getStandhouders('gent');
       }
     });
 
-    resultsCount.textContent = `${count} standhouders gevonden`;
+    resultsCount.textContent = count + ' standhouders gevonden';
 
-    // Also update SVG map visuals (dim non-matching stands)
+    // Update SVG map visuals (dim non-matching stands)
     svgStands.forEach(group => {
       const standId = group.getAttribute('data-stand');
       const standExhibitors = exhibitors.filter(e => e.id === standId);
 
-      // Check if any exhibitor on this stand matches
       let matches = false;
       if (standExhibitors.length > 0) {
         matches = standExhibitors.some(e => {
           const nameMatches = e.name.toLowerCase().includes(activeSearch);
-          const brandsMatches = e.brands.join(' ').toLowerCase().includes(activeSearch);
-          const matchesSearch = nameMatches || brandsMatches;
+          const brandsMatches = (e.brands || []).join(' ').toLowerCase().includes(activeSearch);
+          const hallMatches = (e.hall || '').toLowerCase().includes(activeSearch);
+          const matchesSearch = nameMatches || brandsMatches || hallMatches;
           const matchesFilter = activeFilter === 'all' || e.category === activeFilter;
           return matchesSearch && matchesFilter;
         });
@@ -1377,7 +1511,7 @@ const exhibitors = await getStandhouders('gent');
   function selectStand(standId) {
     selectedStandId = standId;
 
-    // 1. Highlight in SVG
+    // 1. Highlight in SVG (supports multiple nodes with same data-stand, like stand 4)
     svgStands.forEach(group => {
       if (group.getAttribute('data-stand') === standId) {
         group.classList.add('selected-stand');
@@ -1411,9 +1545,7 @@ const exhibitors = await getStandhouders('gent');
   // --- List card click & locate listeners ---
   directoryCards.forEach(card => {
     card.addEventListener('click', (e) => {
-      // Don't trigger if clicking the button (handled separately)
       if (e.target.classList.contains('btn-locate-stand')) return;
-      
       const id = card.getAttribute('data-id');
       selectStand(id);
     });
@@ -1427,7 +1559,7 @@ const exhibitors = await getStandhouders('gent');
       const targetId = btn.getAttribute('data-target');
       selectStand(targetId);
       
-      // Scroll to SVG map
+      // Scroll smoothly to SVG map
       document.querySelector('.map-visual-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
   });

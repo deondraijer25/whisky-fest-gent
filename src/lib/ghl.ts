@@ -4,10 +4,10 @@ import { TICKETS_GENT, type TicketItem } from '../data/ticketsGent';
 import { EXHIBITORS_GENT, type ExhibitorItem } from '../data/standhoudersGent';
 
 const GHL_API_BASE = 'https://services.leadconnectorhq.com';
-const GHL_API_KEY = import.meta.env.GHL_API_KEY || process.env.GHL_API_KEY;
-const GHL_LOCATION_ID = import.meta.env.GHL_LOCATION_ID || process.env.GHL_LOCATION_ID || '1OZ9uxIBFoxwbheVC5iN';
-const GHL_TICKETS_OBJECT_KEY = import.meta.env.GHL_TICKETS_SCHEMA_ID || process.env.GHL_TICKETS_SCHEMA_ID || 'custom_objects.festival_tickets';
-const GHL_STANDS_OBJECT_KEY = import.meta.env.GHL_STANDS_SCHEMA_ID || process.env.GHL_STANDS_SCHEMA_ID || 'custom_objects.festival_standhouders';
+const GHL_API_KEY = process.env.GHL_API_KEY || (typeof import.meta !== 'undefined' && import.meta.env?.GHL_API_KEY) || '';
+const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || (typeof import.meta !== 'undefined' && import.meta.env?.GHL_LOCATION_ID) || '1OZ9uxIBFoxwbheVC5iN';
+const GHL_TICKETS_OBJECT_KEY = process.env.GHL_TICKETS_SCHEMA_ID || (typeof import.meta !== 'undefined' && import.meta.env?.GHL_TICKETS_SCHEMA_ID) || 'custom_objects.festival_tickets';
+const GHL_STANDS_OBJECT_KEY = process.env.GHL_STANDS_SCHEMA_ID || (typeof import.meta !== 'undefined' && import.meta.env?.GHL_STANDS_SCHEMA_ID) || 'custom_objects.festival_standhouders';
 
 const CACHE_TTL_MS = 60 * 1000;
 interface CacheEntry<T> {
@@ -92,6 +92,7 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
   }
 
   if (!GHL_API_KEY) {
+    console.warn(`[GHL API] No API Key set for ${city}. Using fallback dataset.`);
     return TICKETS_GENT;
   }
 
@@ -99,6 +100,7 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
 
   try {
     const url = `${GHL_API_BASE}/objects/${GHL_TICKETS_OBJECT_KEY}/records/search`;
+    console.log(`[GHL API] Fetching live tickets for ${city} (query: ${citySearchQuery})...`);
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -122,6 +124,7 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
 
     const json = await response.json();
     const records = json.customObjectRecords || json.records || [];
+    console.log(`[GHL API] Successfully received ${records.length} tickets from GHL for ${city}!`);
     
     if (!Array.isArray(records) || records.length === 0) {
       console.info(`[GHL API] No ticket records found in GHL for ${city}. Using fallback dataset.`);
@@ -243,7 +246,19 @@ export async function getStandhouders(city: string = 'gent'): Promise<ExhibitorI
       };
     });
 
-    const sortedStandhouders = sortStandhouders(parsedStandhouders);
+    // Merge with static dataset so all 33+ stands remain active even if GHL only has a subset
+    const ghlMap = new Map(parsedStandhouders.map(e => [e.id, e]));
+    const mergedStandhouders = EXHIBITORS_GENT.map(fallback => {
+      const ghlExh = ghlMap.get(fallback.id);
+      return ghlExh ? { ...fallback, ...ghlExh } : fallback;
+    });
+    parsedStandhouders.forEach(ge => {
+      if (!EXHIBITORS_GENT.some(fe => fe.id === ge.id)) {
+        mergedStandhouders.push(ge);
+      }
+    });
+
+    const sortedStandhouders = sortStandhouders(mergedStandhouders);
     standsCache[normalizedCity] = { data: sortedStandhouders, timestamp: now };
     return sortedStandhouders;
   } catch (err) {
