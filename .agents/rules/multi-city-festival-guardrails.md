@@ -34,3 +34,10 @@ Voordat een stadswebsite als voltooid wordt gemarkeerd:
 1. `npm run build` moet foutloos slagen.
 2. Geautomatiseerde regex check moet bevestigen: `Total foreign city color occurrences: 0`.
 3. Lokale poort check (Den Haag 4330, Gent 4332, Amsterdam 4331) moet 200 OK leveren met geverifieerde branding markers.
+
+## 5. Absolute Layout & Design Invariantie (1-op-1 Blauwdruk)
+- Het visuele ontwerp, de DOM-structuur, CSS-layout, componenthiërarchie, tabellen en interactieve elementen zijn **100% IDENTIEK** over alle festivalwebsites (Den Haag, Gent, Amsterdam).
+- Het is ten strengste **VERBODEN** om bij een stadsmigratie een afwijkende layout, alternatieve card-grids of een eigen pagina-structuur te introduceren.
+- **Den Haag is de master-blauwdruk:**
+  - De tabellen, timetable-rijen, tabbladen, ticket-cards en pop-ups behouden exact dezelfde markup en styling.
+  - Alleen de **data** (titels, sprekers, tijden, data, prijzen) en de **stadskleuren / media** worden dynamisch geladen.
