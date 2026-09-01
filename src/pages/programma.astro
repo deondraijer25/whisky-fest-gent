@@ -393,10 +393,11 @@ const SESSIONS: SessionData[] = [
   }
 ];
 
-const GENT_SPECIALS_ROWS: ProgramRow[] = [
+const GENT_SPECIALS_ROWS: (ProgramRow & { dayLabel?: string })[] = [
   {
     id: 'gent-special-bootje-zaterdag',
-    time: 'Zaterdag 3 Okt • 12:00 – 13:00',
+    time: '12:00 – 13:00',
+    dayLabel: 'Zaterdag 3 Okt',
     location: 'Aanlegsteiger De Oude Vismijn',
     title: 'Rondvaart Gent - Whisky Bootje',
     category: 'tram',
@@ -407,7 +408,8 @@ const GENT_SPECIALS_ROWS: ProgramRow[] = [
   },
   {
     id: 'gent-special-dada-tour-vrijdag',
-    time: 'Vrijdag 2 Okt • 18:00 – 19:30',
+    time: '18:00 – 19:30',
+    dayLabel: 'Vrijdag 2 Okt',
     location: 'Melden bij entree-deur De Oude Vismijn',
     title: 'Rondleiding Dada Chapel Distilleerderij',
     category: 'warehouse',
@@ -418,7 +420,8 @@ const GENT_SPECIALS_ROWS: ProgramRow[] = [
   },
   {
     id: 'gent-special-dada-tour-zaterdag',
-    time: 'Zaterdag 3 Okt • 11:00 – 12:30',
+    time: '11:00 – 12:30',
+    dayLabel: 'Zaterdag 3 Okt',
     location: 'Melden bij entree-deur De Oude Vismijn',
     title: 'Rondleiding Dada Chapel Distilleerderij',
     category: 'warehouse',
@@ -518,7 +521,7 @@ function formatSpeaker(host: string) {
         >
           <span class="btn-card-day">Gentse Beleving</span>
           <span class="btn-card-name">Bootjes &amp; Tours</span>
-          <span class="btn-card-time">Rondvaart &amp; Dada Chapel</span>
+          <span class="btn-card-time">Rondvaart &amp; Bezoek</span>
         </button>
       </nav>
 
@@ -620,7 +623,7 @@ function formatSpeaker(host: string) {
         <section class="session-agenda-pane" id="pane-bottelingen">
           <div class="pane-header-bar">
             <h2 class="pane-title">Exclusieve Festival Bottelingen 2026</h2>
-            <span class="pane-badge-time">Afhalen bij Festivalslijterij (Grote Kerk)</span>
+            <span class="pane-badge-time">Afhalen bij Festivalslijterij (De Oude Vismijn)</span>
           </div>
 
           <div class="pane-rows-list">
@@ -654,7 +657,7 @@ function formatSpeaker(host: string) {
                       type="button" 
                       class="btn-trigger-details"
                       data-title={b.title}
-                      data-loc="Festivalslijterij (Grote Kerk)"
+                      data-loc="Festivalslijterij (De Oude Vismijn)"
                       data-time="Tijdens festival afhalen"
                       data-host={b.spec}
                       data-desc={b.description}
@@ -706,6 +709,7 @@ function formatSpeaker(host: string) {
                 <article class="agenda-row-item">
                   <div class="col-time">
                     <span class="item-time-val">{item.time}</span>
+                    {item.dayLabel && <span class="item-day-sub">{item.dayLabel}</span>}
                   </div>
 
                   <div class="col-title">
@@ -1083,6 +1087,14 @@ function formatSpeaker(host: string) {
     transition: background 0.15s ease;
   }
 
+  #pane-bottelingen .agenda-row-item {
+    grid-template-columns: 140px 1fr auto;
+  }
+
+  #pane-bottelingen .col-action {
+    justify-self: end;
+  }
+
   .agenda-row-item:hover {
     background-color: rgba(255, 255, 255, 0.45);
   }
@@ -1094,7 +1106,9 @@ function formatSpeaker(host: string) {
   /* 1. Tijd */
   .col-time {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
   }
 
   .item-time-val {
@@ -1103,6 +1117,17 @@ function formatSpeaker(host: string) {
     font-weight: 800;
     color: var(--text-charcoal, #171614);
     line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .item-day-sub {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #FF6500;
+    margin-top: 0.15rem;
+    letter-spacing: 0.04em;
     white-space: nowrap;
   }
 
