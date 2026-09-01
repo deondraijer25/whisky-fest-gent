@@ -22,29 +22,29 @@ const {
 const eventSchema = {
   "@context": "https://schema.org",
   "@type": "Festival",
-  "name": "Gents Whisky Festival 2026",
-  "description": "Het meest sfeervolle en toonaangevende whisky festival van Vlaanderen in Gent. Proef honderden whisky's, volg exclusieve masterclasses en geniet van de sfeer in Gent.",
+  "name": "International Whisky Festival Gent 2026",
+  "description": "Het bekendste en meest premium whisky festival van Nederland. Proef honderden whisky's, volg exclusieve masterclasses en geniet van de sfeer in de De Oude Vismijn Gent.",
   "startDate": "2026-11-13T13:00:00+01:00",
   "endDate": "2026-11-15T17:00:00+01:00",
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "location": {
     "@type": "Place",
-    "name": "ICC Gent (International Convention Center)",
+    "name": "De Oude Vismijn Gent",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Familie Van Rysselberghedreef 2",
+      "streetAddress": "Rond de Grote Kerk 12",
       "addressLocality": "Gent",
-      "postalCode": "9000",
-      "addressCountry": "BE"
+      "postalCode": "2513 AM",
+      "addressCountry": "NL"
     }
   },
   "image": [
-    "https://www.gentswhiskyfestival.be/assets/whisky-fest-og.jpg"
+    "https://www.whiskyfestival.nl/assets/whisky-fest-og.jpg"
   ],
   "offers": {
     "@type": "AggregateOffer",
-    "url": "https://www.gentswhiskyfestival.be/bestellen",
+    "url": "https://www.whiskyfestival.nl/bestellen",
     "priceCurrency": "EUR",
     "lowPrice": "55.00",
     "highPrice": "79.50",
@@ -54,29 +54,29 @@ const eventSchema = {
   },
   "organizer": {
     "@type": "Organization",
-    "name": "Gents Whisky Festival Organisatie",
-    "url": "https://www.gentswhiskyfestival.be",
-    "email": "info@gentswhiskyfestival.be"
+    "name": "Highland Consultancy",
+    "url": "https://www.whiskyfestival.nl",
+    "email": "info@whiskyfestival.nl"
   }
 };
 
 const orgSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Gents Whisky Festival",
-  "alternateName": "Whisky Fest Gent",
-  "url": "https://www.gentswhiskyfestival.be",
-  "logo": "https://www.gentswhiskyfestival.be/assets/logo.png",
+  "name": "International Whisky Festival",
+  "alternateName": "Whisky Fest",
+  "url": "https://www.whiskyfestival.nl",
+  "logo": "https://www.whiskyfestival.nl/assets/logo.png",
   "contactPoint": {
     "@type": "ContactPoint",
     "telephone": "",
     "contactType": "customer service",
-    "email": "info@gentswhiskyfestival.be",
+    "email": "info@whiskyfestival.nl",
     "availableLanguage": ["Dutch", "English"]
   },
   "sameAs": [
-    "https://www.facebook.com/gentswhiskyfestival",
-    "https://www.instagram.com/gentswhiskyfestival"
+    "https://www.facebook.com/whiskyfestivalnl",
+    "https://www.instagram.com/whiskyfestivalnl"
   ]
 };
 ---
@@ -90,8 +90,8 @@ const orgSchema = {
     <meta name="generator" content={Astro.generator} />
     
     <!-- Primary Meta Tags -->
-    <title>{title} | Gents Whisky Festival</title>
-    <meta name="title" content={`${title} | Gents Whisky Festival`} />
+    <title>{title} | International Whisky Festival</title>
+    <meta name="title" content={`${title} | International Whisky Festival`} />
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonicalUrl} />
@@ -99,14 +99,14 @@ const orgSchema = {
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:title" content={`${title} | Gents Whisky Festival`} />
+    <meta property="og:title" content={`${title} | International Whisky Festival`} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalUrl} />
-    <meta property="twitter:title" content={`${title} | Gents Whisky Festival`} />
+    <meta property="twitter:title" content={`${title} | International Whisky Festival`} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={image} />
 
@@ -182,7 +182,7 @@ const orgSchema = {
       }
 
       .dock-inner:hover {
-        outline-color: #8B1E1E;
+        outline-color: #1e6b48;
         box-shadow: 
           0 8px 24px rgba(30, 28, 26, 0.28),
           0 0 14px rgba(213, 194, 138, 0.3);
@@ -205,7 +205,7 @@ const orgSchema = {
 
       .social-dock-link:hover {
         color: #ffffff;
-        background: #8B1E1E;
+        background: #1e6b48;
         transform: translateY(-2px) scale(1.1);
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
       }

@@ -1,9 +1,10 @@
 ---
 // src/components/Header.astro
-import LogoImg from '../assets/Logo/Logo.svg';
+import LogoSvg from '../assets/Logo/Logo.svg?raw';
 
 const pathname = Astro.url.pathname;
 const isStandhouders = pathname.startsWith("/standhouders");
+const isProgramma = pathname.startsWith("/programma");
 const isAccount = pathname.startsWith("/account");
 ---
 
@@ -14,15 +15,69 @@ const isAccount = pathname.startsWith("/account");
   <div class="header-container">
     <!-- Overlapping Logo Image (links to Home) -->
     <a href="/" class="logo-image-container" aria-label="Whisky Fest Gent Home">
-      <img src={LogoImg.src} alt="Gents Whisky Festival Logo" class="navbar-logo-img" width="120" height="150" />
+      <Fragment set:html={LogoSvg} />
     </a>
 
-    <!-- Navigation links (Home removed: clicking logo goes home) -->
+    <!-- Navigation links -->
     <nav class="nav-menu">
-      <a href="/standhouders" class={`nav-link ${isStandhouders ? 'active' : ''}`}>Plattegrond & Stands</a>
-      <a href="/#sessies" class="nav-link">Sessies & Tickets</a>
-      <a href="/#ervaring" class="nav-link">De Ervaring</a>
-      <a href="/#historie" class="nav-link">Historie</a>
+      <!-- 1. TICKETS DROPDOWN -->
+      <div class="header-nav-dropdown-wrapper" id="header-tickets-wrapper">
+        <a href="/#sessies" class="nav-link nav-dropdown-trigger" id="nav-tickets-trigger">
+          <span>Tickets</span>
+          <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+        <div class="header-nav-dropdown" id="header-tickets-dropdown">
+          <a href="/?cat=all#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Alle Tickets</span>
+            <span class="nav-drop-sub">Overzicht van alle beschikbare festivaltickets</span>
+          </a>
+          <a href="/?cat=entree#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Sessie Entreetickets</span>
+            <span class="nav-drop-sub">VIP, vrijdag-, zaterdag- &amp; zondagsessies</span>
+          </a>
+          <a href="/?cat=masterclass#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Masterclasses</span>
+            <span class="nav-drop-sub">Exclusieve proeverijen in De Oude Vismijn MC-ruimte</span>
+          </a>
+          <a href="/?cat=tram#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Gentse Whisky Bootjes</span>
+            <span class="nav-drop-sub">4 drams tijdens een historische boottocht</span>
+          </a>
+          <a href="/?cat=trail#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Whisky Trails (Gidsen)</span>
+            <span class="nav-drop-sub">Rondleidingen met onze 5 gidsen</span>
+          </a>
+          <a href="/?cat=warehouse#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Warehouse Tastings</span>
+            <span class="nav-drop-sub">Intieme proeverijen direct aan de stands</span>
+          </a>
+          <a href="/?cat=botteling#sessies" class="nav-dropdown-item">
+            <span class="nav-drop-title">Festival Bottelingen</span>
+            <span class="nav-drop-sub">Gelimiteerde single cask flessen</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. PLATTEGROND & STANDS -->
+      <a href="/standhouders" class={`nav-link ${isStandhouders ? 'active' : ''}`}>Plattegrond &amp; Stands</a>
+
+      <!-- 3. PROGRAMMA DROPDOWN -->
+      <div class="header-nav-dropdown-wrapper" id="header-programma-wrapper">
+        <a href="/programma" class={`nav-link nav-dropdown-trigger ${isProgramma ? 'active' : ''}`} id="nav-programma-trigger">
+          <span>Programma</span>
+          <svg class="nav-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+        <div class="header-nav-dropdown" id="header-programma-dropdown">
+          <a href="/programma" class="nav-dropdown-item">
+            <span class="nav-drop-title">Festival Programma</span>
+            <span class="nav-drop-sub">Masterclasses, tram &amp; proeverijen</span>
+          </a>
+          <a href="/programma?view=gidsen" class="nav-dropdown-item">
+            <span class="nav-drop-title">Gidsen Planning</span>
+            <span class="nav-drop-sub">Whisky trails &amp; tijdsloten</span>
+          </a>
+        </div>
+      </div>
     </nav>
 
     <!-- Header Actions: 1. Cart Icon > 2. Bestel Tickets > 3. Mijn Account (Text link) -->
@@ -66,10 +121,51 @@ const isAccount = pathname.startsWith("/account");
       <!-- 2. Bestel Tickets Button -->
       <a href="/#sessies" class="btn btn-gold btn-header">Bestel Tickets</a>
 
-      <!-- 3. Mijn Account (Clean Text Link) -->
-      <a href="/account" class={`header-account-link ${isAccount ? 'active' : ''}`} id="header-my-account-link">
-        Mijn Account
-      </a>
+      <!-- 3. Mijn Account (Dropdown Menu) -->
+      <div class="header-account-wrapper" id="header-account-wrapper">
+        <button type="button" class={`header-account-btn ${isAccount ? 'active' : ''}`} id="header-account-btn" aria-label="Mijn Account menu openen">
+          <span>Mijn Account</span>
+          <svg class="account-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+
+        <div class="header-account-dropdown" id="header-account-dropdown">
+          <div id="header-account-logged-in">
+            <div class="account-dropdown-user">
+              <span class="user-greeting">Bezoekers Portaal</span>
+              <strong class="user-name" id="header-account-user-name">Mijn Account</strong>
+            </div>
+
+            <div class="account-dropdown-menu">
+              <a href="/account" class="account-drop-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>Mijn Tickets</span>
+              </a>
+              <a href="/account?tab=tab-profile" class="account-drop-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>Persoonsgegevens</span>
+              </a>
+              <a href="/account?tab=tab-info" class="account-drop-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                <span>Plattegrond &amp; Info</span>
+              </a>
+            </div>
+
+            <div class="account-dropdown-divider"></div>
+
+            <button type="button" class="account-drop-item logout-btn" id="header-nav-logout-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              <span>Uitloggen</span>
+            </button>
+          </div>
+
+          <div id="header-account-logged-out" style="display: none;">
+            <p class="account-drop-intro">Bekijk uw festivaltickets en beheer uw bestelling.</p>
+            <a href="/account" class="btn btn-gold btn-drop-login">
+              Inloggen bij Portaal →
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </header>
@@ -125,9 +221,7 @@ const isAccount = pathname.startsWith("/account");
     width: 120px;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .logo-image-container svg,
-  .logo-image-container img,
-  .navbar-logo-img {
+  .logo-image-container svg {
     position: absolute;
     top: -48px;
     left: 0;
@@ -137,30 +231,30 @@ const isAccount = pathname.startsWith("/account");
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     transform-origin: center;
   }
-  .logo-image-container:hover svg,
-  .logo-image-container:hover img,
-  .logo-image-container:hover .navbar-logo-img {
+  .logo-image-container:hover svg {
     transform: scale(1.05) rotate(-2deg);
     filter: drop-shadow(0 6px 20px rgba(197, 139, 57, 0.3));
   }
 
-  /* Nav Links styling */
+  /* Nav Links styling (Shifted to the right near cart & actions) */
   .nav-menu {
     display: flex;
-    gap: 2rem;
+    gap: 2.25rem;
     align-items: center;
+    margin-left: auto;
+    margin-right: 3rem;
   }
   .nav-link {
     font-family: var(--font-sans);
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.88rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-charcoal);
     text-decoration: none;
     position: relative;
     padding: 0.5rem 0;
-    transition: color 0.3s;
+    transition: color 0.3s ease;
     white-space: nowrap;
   }
   .nav-link:hover {
@@ -203,6 +297,100 @@ const isAccount = pathname.startsWith("/account");
     box-sizing: border-box;
   }
 
+  
+  
+  /* Navigation Dropdowns with Rock-Solid Hover Bridge */
+  .header-nav-dropdown-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+
+  /* Invisible hover bridge connecting trigger to menu */
+  .header-nav-dropdown-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: -10px;
+    right: -10px;
+    height: 14px;
+    background: transparent;
+    z-index: 999;
+  }
+
+  .nav-dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+  }
+
+  .nav-chevron {
+    transition: transform 0.2s ease;
+  }
+
+  .header-nav-dropdown-wrapper:hover .nav-chevron,
+  .header-nav-dropdown-wrapper.open .nav-chevron {
+    transform: rotate(180deg);
+  }
+
+  .header-nav-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 290px;
+    background-color: #FFFFFF;
+    border: 2px solid var(--text-charcoal);
+    border-radius: 4px;
+    box-shadow: 5px 5px 0px var(--text-charcoal);
+    padding: 0.5rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+    z-index: 1000;
+    animation: dropdownFade 0.15s ease-out;
+  }
+
+  .header-nav-dropdown-wrapper:hover .header-nav-dropdown,
+  .header-nav-dropdown-wrapper.open .header-nav-dropdown {
+    display: flex;
+  }
+
+  .nav-dropdown-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    border-bottom: 1px dashed rgba(226, 217, 204, 0.6);
+  }
+
+  .nav-dropdown-item:last-child {
+    border-bottom: none;
+  }
+
+  .nav-dropdown-item:hover {
+    background: rgba(197, 139, 57, 0.12);
+    transform: translateX(2px);
+  }
+
+  .nav-drop-title {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--text-charcoal);
+  }
+
+  .nav-drop-sub {
+    font-family: var(--font-serif);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.25;
+  }
+
   /* Mijn Account Clean Text Link */
   .header-account-link {
     font-family: var(--font-sans);
@@ -241,6 +429,171 @@ const isAccount = pathname.startsWith("/account");
 
   .header-account-link.active {
     color: var(--whisky-gold-dark);
+  }
+
+  
+  /* Account Dropdown Styling */
+  .header-account-wrapper {
+    position: relative;
+  }
+
+  .header-account-btn {
+    background: transparent;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-charcoal);
+    padding: 0.5rem 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .header-account-btn:hover,
+  .header-account-btn.active {
+    color: var(--whisky-gold-dark);
+  }
+
+  .header-account-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--whisky-gold-dark);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+
+  .header-account-btn:hover::after,
+  .header-account-btn.active::after {
+    width: 100%;
+  }
+
+  .account-chevron {
+    transition: transform 0.2s ease;
+  }
+
+  .header-account-dropdown.active ~ .header-account-btn .account-chevron,
+  .header-account-wrapper.open .account-chevron {
+    transform: rotate(180deg);
+  }
+
+  .header-account-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 250px;
+    background-color: var(--bg-paper-card, #FAF7F2);
+    border: 2px solid var(--text-charcoal);
+    border-radius: 4px;
+    box-shadow: 6px 6px 0px var(--text-charcoal);
+    padding: 1.15rem 1rem;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    gap: 0.65rem;
+    animation: dropdownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .header-account-dropdown.active {
+    display: flex;
+  }
+
+  .account-dropdown-user {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    border-bottom: 1px solid var(--border-color, #E2D9CC);
+    padding-bottom: 0.65rem;
+  }
+
+  .user-greeting {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+    color: var(--whisky-gold-dark);
+  }
+
+  .user-name {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-charcoal);
+  }
+
+  .account-dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .account-drop-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.5rem 0.65rem;
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--text-charcoal);
+    text-decoration: none;
+    border-radius: 3px;
+    transition: all 0.15s ease;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .account-drop-item:hover {
+    background: rgba(197, 139, 57, 0.12);
+    color: var(--whisky-gold-dark);
+  }
+
+  .account-dropdown-divider {
+    height: 1px;
+    background: var(--border-color, #E2D9CC);
+    margin: 0.2rem 0;
+  }
+
+  .account-drop-item.logout-btn {
+    color: var(--brand-red, #E30613);
+  }
+
+  .account-drop-item.logout-btn:hover {
+    background: rgba(227, 6, 19, 0.08);
+    color: #A8040E;
+  }
+
+  .account-drop-intro {
+    font-family: var(--font-serif);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .btn-drop-login {
+    width: 100%;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 800;
+    padding: 0.6rem 0.85rem;
+    text-decoration: none;
+    display: block;
+    border-radius: 3px;
   }
 
   /* Cart Wrapper & Button */
@@ -310,22 +663,39 @@ const isAccount = pathname.startsWith("/account");
     z-index: 10;
   }
 
-  /* Dropdown Menu (Wider and table-structured) */
+  /* Dropdown Menu (Centered under cart icon with caret pointer) */
   .header-cart-dropdown {
     position: absolute;
-    top: calc(100% + 12px);
-    right: 0;
-    width: 420px;
-    background-color: var(--bg-paper-card);
-    border: 3px solid var(--border-color-dark);
-    border-radius: 4px;
-    box-shadow: 6px 6px 0px var(--text-charcoal);
-    padding: 1.25rem 1.25rem 1rem 1.25rem;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 440px;
+    max-width: min(440px, calc(100vw - 2rem));
+    background-color: var(--bg-paper-card, #FAF7F2);
+    border: 1.5px solid var(--border-color, #E2D9CC);
+    border-radius: 10px;
+    box-shadow: 0 16px 45px rgba(29, 28, 26, 0.14);
+    padding: 1.35rem 1.35rem 1.15rem 1.35rem;
     z-index: 1000;
     display: none;
     flex-direction: column;
-    gap: 0.85rem;
+    gap: 0.95rem;
     animation: dropdownFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+  }
+
+  .header-cart-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background-color: var(--bg-paper-card, #FAF7F2);
+    border-top: 1.5px solid var(--border-color, #E2D9CC);
+    border-left: 1.5px solid var(--border-color, #E2D9CC);
+    z-index: 1;
   }
 
   .header-cart-dropdown.active {
@@ -333,118 +703,161 @@ const isAccount = pathname.startsWith("/account");
   }
 
   @keyframes dropdownFade {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translate(-50%, -8px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
   }
 
   .cart-dropdown-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 0.65rem;
+    border-bottom: 1.5px solid var(--border-color, #E2D9CC);
+    padding-bottom: 0.75rem;
   }
 
   .cart-dropdown-title {
     font-family: var(--font-display);
-    font-size: 1.2rem;
-    color: var(--text-charcoal);
+    font-size: 1.3rem;
+    color: var(--text-charcoal, #1D1C1A);
     margin: 0;
     letter-spacing: 0.04em;
     line-height: 1;
+    text-transform: uppercase;
   }
 
   .cart-dropdown-badge-count {
     font-family: var(--font-sans);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 800;
-    color: var(--brand-red, #E30613);
+    color: var(--brand-green, #1E3A8A);
     text-transform: uppercase;
-    background: rgba(227, 6, 19, 0.08);
-    padding: 0.2rem 0.55rem;
-    border-radius: 3px;
-    border: 1px solid rgba(227, 6, 19, 0.2);
+    background: rgba(30, 58, 138, 0.08);
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+    border: 1px solid rgba(30, 58, 138, 0.2);
+    letter-spacing: 0.06em;
   }
 
   .cart-dropdown-list {
-    max-height: 270px;
+    max-height: 290px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 0;
+    padding-right: 0.25rem;
   }
 
   .empty-dropdown-msg {
-    font-family: var(--font-serif);
-    font-size: 0.95rem;
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
     color: var(--text-muted);
     text-align: center;
-    padding: 1.25rem 0;
+    padding: 1.5rem 0;
     margin: 0;
   }
 
-  /* Table-like row layout */
-  .dropdown-cart-item {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 1.25rem;
-    align-items: center;
-    padding: 0.85rem 0;
-    border-bottom: 1px solid var(--border-color);
+  /* Single-line item row with horizontal divider */
+  :global(.cart-dropdown-row) {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.75rem !important;
+    padding: 0.7rem 0 !important;
+    border-bottom: 1px solid #E5DFD5 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
-  .dropdown-cart-item:last-child {
-    border-bottom: none;
+  :global(.cart-dropdown-row:last-child) {
+    border-bottom: none !important;
   }
 
-  .dropdown-item-main {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    min-width: 0;
+  :global(.hdr-cart-stepper) {
+    display: inline-flex !important;
+    align-items: center !important;
+    background: rgba(30, 58, 138, 0.08) !important;
+    border: 1px solid rgba(30, 58, 138, 0.22) !important;
+    border-radius: 4px !important;
+    padding: 1px !important;
+    gap: 1px !important;
+    flex-shrink: 0 !important;
+    user-select: none !important;
   }
 
-  .dropdown-item-title {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--text-charcoal);
-    line-height: 1.3;
-    word-break: break-word;
+  :global(.hdr-cart-btn-qty) {
+    width: 22px !important;
+    height: 22px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 3px !important;
+    color: var(--brand-green, #1E3A8A) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    transition: all 0.15s ease !important;
+    user-select: none !important;
   }
 
-  .dropdown-item-variant {
-    font-family: var(--font-sans);
-    font-size: 0.76rem;
-    font-weight: 600;
-    color: var(--whisky-gold-dark);
+  :global(.hdr-cart-btn-qty:hover) {
+    background: rgba(30, 58, 138, 0.22) !important;
+    color: #172554 !important;
   }
 
-  .dropdown-item-qty-rate {
-    font-family: var(--font-sans);
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--text-muted);
+  :global(.hdr-cart-btn-qty.hdr-minus:hover) {
+    background: rgba(227, 6, 19, 0.14) !important;
+    color: var(--brand-red, #E30613) !important;
   }
 
-  .dropdown-item-total {
-    text-align: right;
-    white-space: nowrap;
+  :global(.hdr-cart-btn-qty:active) {
+    transform: scale(0.92) !important;
   }
 
-  .dropdown-item-price-val {
-    font-family: var(--font-sans);
-    font-weight: 800;
-    font-size: 1.08rem;
-    color: var(--text-charcoal);
+  :global(.hdr-cart-qty-text) {
+    font-family: var(--font-sans) !important;
+    font-weight: 800 !important;
+    font-size: 0.82rem !important;
+    color: var(--brand-green, #1E3A8A) !important;
+    padding: 0 3px !important;
+    min-width: 20px !important;
+    text-align: center !important;
+    line-height: 1 !important;
+  }
+
+  :global(.cart-row-title) {
+    font-family: var(--font-sans) !important;
+    font-weight: 700 !important;
+    font-size: 0.88rem !important;
+    color: var(--text-charcoal, #1D1C1A) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    text-align: left !important;
+  }
+
+  :global(.cart-row-price) {
+    font-family: var(--font-sans) !important;
+    font-weight: 800 !important;
+    font-size: 0.95rem !important;
+    color: var(--text-charcoal, #1D1C1A) !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    text-align: right !important;
   }
 
   .cart-dropdown-bottom {
-    border-top: 2px solid var(--border-color);
-    padding-top: 0.85rem;
+    border-top: 1.5px solid var(--border-color, #E2D9CC);
+    padding-top: 0.95rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.85rem;
   }
 
   .cart-dropdown-subtotal-row {
@@ -452,26 +865,41 @@ const isAccount = pathname.startsWith("/account");
     justify-content: space-between;
     align-items: center;
     font-family: var(--font-sans);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    color: var(--text-charcoal);
+    color: var(--text-muted, #555);
   }
 
   .subtotal-val {
     font-family: var(--font-sans);
     font-size: 1.25rem;
     font-weight: 800;
-    color: var(--brand-red, #E30613);
+    color: var(--text-charcoal, #1D1C1A);
   }
 
   .btn-dropdown-checkout {
     width: 100%;
     text-align: center;
-    font-size: 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
     font-weight: 800;
-    padding: 0.75rem 1rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.25rem;
     text-decoration: none;
     display: block;
+    border-radius: 4px;
+    background-color: var(--brand-green, #1E3A8A);
+    color: #FFFFFF;
+    border: none;
+    box-shadow: 0 4px 14px rgba(30, 58, 138, 0.25);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-dropdown-checkout:hover {
+    background-color: #172554;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(30, 58, 138, 0.35);
   }
 
   /* Responsive styling */
@@ -515,7 +943,20 @@ const isAccount = pathname.startsWith("/account");
   function getStoredCart() {
     try {
       const raw = localStorage.getItem('whiskyfest_cart');
-      return raw ? JSON.parse(raw) : { items: [], subtotal: 0, totalItems: 0 };
+      if (!raw) return { items: [], subtotal: 0, totalItems: 0 };
+      const parsed = JSON.parse(raw);
+      let items = parsed.items;
+      if (!items && parsed.cartRaw) {
+        items = Object.keys(parsed.cartRaw)
+          .filter(id => parsed.cartRaw[id] && parsed.cartRaw[id].qty > 0)
+          .map(id => parsed.cartRaw[id]);
+      }
+      return { 
+        items: items || [], 
+        subtotal: parsed.subtotal || (items ? items.reduce((a: number, b: any) => a + (b.price * b.qty), 0) : 0), 
+        totalItems: parsed.totalItems || (items ? items.reduce((a: number, b: any) => a + (b.qty || 0), 0) : 0),
+        cartRaw: parsed.cartRaw || {}
+      };
     } catch(e) {
       return { items: [], subtotal: 0, totalItems: 0 };
     }
@@ -557,16 +998,16 @@ const isAccount = pathname.startsWith("/account");
       } else {
         let html = '';
         items.forEach((item: any) => {
+          const totalVal = (item.price * item.qty).toFixed(2).replace('.', ',');
           html += `
-            <div class="dropdown-cart-item">
-              <div class="dropdown-item-main">
-                <span class="dropdown-item-title">${item.title}</span>
-                ${item.variant ? `<span class="dropdown-item-variant">${item.variant}</span>` : ''}
-                <span class="dropdown-item-qty-rate">${item.qty} × &euro; ${item.price.toFixed(2).replace('.', ',')}</span>
+            <div class="cart-dropdown-row" data-id="${item.id}">
+              <div class="hdr-cart-stepper">
+                <button type="button" class="hdr-cart-btn-qty hdr-minus" data-id="${item.id}" aria-label="Kaartje verminderen" title="${item.qty === 1 ? 'Verwijderen uit winkelwagen' : 'Kaartje verminderen'}">&minus;</button>
+                <span class="hdr-cart-qty-text">${item.qty}x</span>
+                <button type="button" class="hdr-cart-btn-qty hdr-plus" data-id="${item.id}" aria-label="Kaartje toevoegen" title="Kaartje toevoegen">+</button>
               </div>
-              <div class="dropdown-item-total">
-                <span class="dropdown-item-price-val">&euro; ${(item.price * item.qty).toFixed(2).replace('.', ',')}</span>
-              </div>
+              <span class="cart-row-title" title="${item.title}">${item.title}</span>
+              <span class="cart-row-price">&euro; ${totalVal}</span>
             </div>
           `;
         });
@@ -574,6 +1015,90 @@ const isAccount = pathname.startsWith("/account");
         if (cartBottom) cartBottom.style.display = 'flex';
       }
     }
+  }
+
+  // Delegated click listener for direct quantity adjustments in header cart dropdown
+  if (cartList) {
+    cartList.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const btn = target.closest('.hdr-cart-btn-qty') as HTMLButtonElement;
+      if (!btn) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const id = btn.getAttribute('data-id');
+      if (!id) return;
+      const isPlus = btn.classList.contains('hdr-plus');
+
+      try {
+        const raw = localStorage.getItem('whiskyfest_cart');
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        const cartRaw = parsed.cartRaw || {};
+        let items = parsed.items || [];
+
+        let currentItem = cartRaw[id];
+        if (!currentItem) {
+          const found = items.find((x: any) => x.id === id);
+          if (found) {
+            cartRaw[id] = { ...found };
+            currentItem = cartRaw[id];
+          }
+        }
+
+        if (!currentItem) return;
+
+        if (isPlus) {
+          currentItem.qty = Math.min(10, (currentItem.qty || 0) + 1);
+        } else {
+          currentItem.qty = (currentItem.qty || 0) - 1;
+        }
+
+        if (currentItem.qty <= 0) {
+          currentItem.qty = 0;
+          delete cartRaw[id];
+          items = items.filter((x: any) => x.id !== id);
+        } else {
+          const it = items.find((x: any) => x.id === id);
+          if (it) it.qty = currentItem.qty;
+        }
+
+        const activeItems = Object.keys(cartRaw)
+          .filter(k => cartRaw[k] && cartRaw[k].qty > 0)
+          .map(k => {
+            const it = cartRaw[k];
+            return {
+              id: k,
+              title: it.title,
+              price: it.price,
+              qty: it.qty,
+              category: it.category || 'entree',
+              date: it.date || '',
+              time: it.time || ''
+            };
+          });
+
+        const newSubtotal = activeItems.reduce((sum: number, it: any) => sum + (it.price * it.qty), 0);
+        const newTotalItems = activeItems.reduce((sum: number, it: any) => sum + it.qty, 0);
+
+        localStorage.setItem('whiskyfest_cart', JSON.stringify({
+          subtotal: newSubtotal,
+          totalItems: newTotalItems,
+          items: activeItems,
+          cartRaw
+        }));
+
+        updateHeaderCartUI();
+
+        // Dispatch cart-updated with source: 'header'
+        window.dispatchEvent(new CustomEvent('cart-updated', {
+          detail: { id, source: 'header' }
+        }));
+      } catch(err) {
+        console.error('Error modifying header cart item:', err);
+      }
+    });
   }
 
   if (cartBtn && cartDropdown) {
@@ -610,4 +1135,88 @@ const isAccount = pathname.startsWith("/account");
   window.addEventListener('cart-updated', updateHeaderCartUI);
   document.addEventListener('DOMContentLoaded', updateHeaderCartUI);
   updateHeaderCartUI();
+
+  // Header Account Dropdown Logic
+  const accountBtn = document.getElementById('header-account-btn');
+  const accountDropdown = document.getElementById('header-account-dropdown');
+  const accountUserName = document.getElementById('header-account-user-name');
+  const loggedInView = document.getElementById('header-account-logged-in');
+  const loggedOutView = document.getElementById('header-account-logged-out');
+  const navLogoutBtn = document.getElementById('header-nav-logout-btn');
+  const navLoginBtn = document.querySelector('.btn-drop-login');
+
+  function updateHeaderAccountState() {
+    const isLoggedOut = localStorage.getItem('wf_user_logged_out') === 'true';
+    const storedOrder = localStorage.getItem('wf_last_order');
+    const storedAuth = sessionStorage.getItem('wf_auth_session') || localStorage.getItem('wf_auth_session');
+
+    let userName = 'Deon Draijer';
+
+    if (storedOrder) {
+      try {
+        const p = JSON.parse(storedOrder);
+        if (p.name) userName = p.name;
+      } catch(e) {}
+    } else if (storedAuth) {
+      try {
+        const s = JSON.parse(storedAuth);
+        if (s.name) userName = s.name;
+        else if (s.email) userName = s.email.split('@')[0];
+      } catch(e) {}
+    }
+
+    if (accountUserName) {
+      accountUserName.textContent = userName;
+    }
+
+    if (isLoggedOut) {
+      if (loggedInView) loggedInView.style.display = 'none';
+      if (loggedOutView) loggedOutView.style.display = 'block';
+    } else {
+      if (loggedInView) loggedInView.style.display = 'block';
+      if (loggedOutView) loggedOutView.style.display = 'none';
+    }
+  }
+
+  if (accountBtn && accountDropdown) {
+    accountBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Close cart if open
+      if (cartDropdown) cartDropdown.classList.remove('active');
+      accountDropdown.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!accountDropdown.contains(e.target as Node) && e.target !== accountBtn) {
+        accountDropdown.classList.remove('active');
+      }
+    });
+  }
+
+  if (navLogoutBtn) {
+    navLogoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.setItem('wf_user_logged_out', 'true');
+      sessionStorage.removeItem('wf_auth_session');
+      localStorage.removeItem('wf_auth_session');
+      if (accountDropdown) accountDropdown.classList.remove('active');
+      updateHeaderAccountState();
+      
+      // If on account page, reload or redirect
+      if (window.location.pathname.startsWith('/account')) {
+        window.location.href = '/account';
+      }
+    });
+  }
+
+  if (navLoginBtn) {
+    navLoginBtn.addEventListener('click', () => {
+      localStorage.removeItem('wf_user_logged_out');
+    });
+  }
+
+  window.addEventListener('storage', updateHeaderAccountState);
+  document.addEventListener('DOMContentLoaded', updateHeaderAccountState);
+  updateHeaderAccountState();
+
 </script>

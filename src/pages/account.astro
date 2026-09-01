@@ -5,21 +5,85 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
 
-<Layout title="Mijn Account Portaal" description="Beheer uw tickets, bestellingen en gegevens voor Whisky Fest Gent.">
+<Layout title="Mijn Account Portaal" description="Beheer uw tickets, bestellingen en gegevens voor International Whisky Festival.">
   <!-- 1. Global Navigation Header -->
   <Header />
 
   <main class="account-page-wrapper">
-    <!-- Top Welcome Header -->
-    <div class="portal-header animate-fade-in">
-      <span class="portal-tag">Bezoekers Portaal</span>
-      <h1 class="portal-title" id="portal-title-name">Portaal van Deon Draijer</h1>
-      <div class="vintage-line"></div>
-      <p class="portal-subtitle" id="portal-welcome-email">Welkom in uw bezoeker omgeving · deondraijer@gmail.com</p>
+    <!-- Login / Access View (shown when logged out) -->
+    <div id="portal-login-area" class="login-view-wrapper animate-fade-in" style="display: none;">
+      <div class="login-card-box">
+        <div class="login-card-header">
+          <span class="portal-tag">BEZOEKERS PORTAAL</span>
+          <h2 class="login-card-title">Inloggen Portaal</h2>
+          <p class="login-card-subtitle">Vul uw e-mailadres en ordernummer in om direct toegang te krijgen tot uw e-tickets en bestelgegevens.</p>
+        </div>
+
+        <div id="auth-error-box" class="auth-error-alert" style="display: none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span id="auth-error-text">Ongeldige inloggegevens. Controleer uw e-mailadres en ordernummer.</span>
+        </div>
+
+        <form id="portal-login-form" class="login-form-body">
+          <div class="form-group">
+            <label class="form-label" for="login-email">E-mailadres</label>
+            <input 
+              type="email" 
+              id="login-email" 
+              class="form-input" 
+              placeholder="bijv. deondraijer@gmail.com" 
+              required 
+            />
+            <span class="form-subtext">Het e-mailadres waarmee de tickets zijn besteld.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="login-res-no">Ordernummer of Reservering (Optioneel)</label>
+            <input 
+              type="text" 
+              id="login-res-no" 
+              class="form-input" 
+              placeholder="bijv. #WF-2026-84387" 
+            />
+            <span class="form-subtext">U vindt uw ordernummer in de bevestigingsmail.</span>
+          </div>
+
+          <button type="submit" class="btn btn-gold btn-login-submit">
+            Toegang tot Mijn Portaal &rarr;
+          </button>
+        </form>
+
+        <div class="login-card-footer">
+          <p class="login-footer-help">
+            Nog geen tickets? <a href="/#sessies" class="tt-text-link" style="color: var(--whisky-gold-dark); font-weight: 800;">Bestel uw tickets hier</a>
+          </p>
+          <button type="button" id="btn-quick-demo-login" class="btn-demo-quick">
+            Direct bekijken als voorbeeldaccount (Deon Draijer)
+          </button>
+        </div>
+      </div>
     </div>
 
+    <!-- Authenticated Portal Area -->
+    <div id="portal-authenticated-area">
+      <!-- Top Welcome Header -->
+      <div class="portal-header animate-fade-in">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; max-width: 1300px; margin: 0 auto; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span class="portal-tag">Bezoekers Portaal</span>
+            <h1 class="portal-title" id="portal-title-name">Portaal van Deon Draijer</h1>
+            <p class="portal-subtitle" id="portal-welcome-email">Welkom in uw bezoeker omgeving · deondraijer@gmail.com</p>
+          </div>
+          <button type="button" id="portal-page-logout-btn" class="btn-clean-logout" style="margin-top: 0.5rem;" title="Uitloggen uit dit account">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            <span>Uitloggen</span>
+          </button>
+        </div>
+        <div class="vintage-line"></div>
+      </div>
+
     <!-- Demonstration Banner (shown if demo account is active) -->
-    <div class="demo-banner animate-fade-in" id="demo-banner" style="display: none;">
+    <div class="demo-banner animate-fade-in portal-authenticated-block" id="demo-banner" style="display: none;">
       <div class="demo-banner-inner">
         <div class="demo-text">
           <strong>Demonstratie Account Actief</strong>
@@ -29,7 +93,7 @@ import Footer from '../components/Footer.astro';
     </div>
 
     <!-- Vintage Portal Tab Menu (Restored Original Design Structure) -->
-    <div class="portal-tabs-container animate-fade-in">
+    <div class="portal-tabs-container animate-fade-in portal-authenticated-block">
       <div class="portal-tabs-inner">
         <button class="portal-tab-trigger active" data-tab="tab-tickets">
           Mijn Tickets
@@ -48,15 +112,15 @@ import Footer from '../components/Footer.astro';
       <div class="portal-container">
         <!-- Dynamic Tickets List (Rendered via JS) -->
         <div id="tickets-container" class="tickets-main-column">
-          <!-- Static SSR Initial Ticket Envelope -->
+          <!-- Balanced 3-Layer Ticket Card (SSR) -->
           <div class="ticket-envelope">
             <div class="ticket-stub-large">
-              <!-- QR Code & Scanner stub -->
+              <!-- Scanner Stub -->
               <div class="ticket-right-stub">
                 <span class="scan-label">CONTROLE STUB</span>
                 
                 <div class="qr-code-holder">
-                  <svg width="110" height="110" viewBox="0 0 100 100" style="shape-rendering: crispedges; display:block;">
+                  <svg width="105" height="105" viewBox="0 0 100 100" style="shape-rendering: crispedges; display:block;">
                     <path d="M0,0 h30 v10 h-20 v20 h-10 z" fill="#1D1C1A"/>
                     <path d="M10,10 h10 v10 h-10 z" fill="#1D1C1A"/>
                     <path d="M70,0 h30 v30 h-10 v-20 h-20 z" fill="#1D1C1A"/>
@@ -75,104 +139,64 @@ import Footer from '../components/Footer.astro';
                 <span class="scan-res-hash">#WF-2026-84387-1</span>
               </div>
 
-              <!-- Session & Holder details -->
+              <!-- Clean Main Body -->
               <div class="ticket-left-stub">
                 <div class="ticket-watermark">WF</div>
                 
-                <div class="ticket-stub-header">
-                  <div class="ticket-stub-date-badge">
-                    <span class="badge-month">NOV</span>
-                    <span class="badge-day">13</span>
+                <!-- 1. Header Row -->
+                <div class="ticket-header-row">
+                  <div class="ticket-title-block">
+                    <h2 class="ticket-session-title">VIP Sessie - Vrijdag</h2>
+                    <p class="ticket-schedule-text">Vrijdag 13 november 2026 &bull; 13:00 – 17:00 UUR</p>
                   </div>
-                  <div class="ticket-stub-org">
-                    <span class="org-established">Est. 2000</span>
-                    <span class="org-name">International Whisky Festival</span>
-                    <span class="org-location">ICC Gent</span>
+                  <div class="ticket-badges-block">
+                    <span class="ticket-status-tag">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      Geldig Toegangsbewijs
+                    </span>
                   </div>
                 </div>
 
-                <div class="vintage-divider"></div>
-
-                <div class="ticket-stub-body">
-                  <h2 class="ticket-session-title">VIP Sessie - Vrijdag</h2>
-                  
-                  <div class="ticket-meta-grid">
-                    <div class="meta-item">
-                      <span class="meta-label">KAARTHOUDER:</span>
-                      <strong class="meta-value">Deon Draijer</strong>
-                    </div>
-                    <div class="meta-item">
-                      <span class="meta-label">STATUS:</span>
-                      <strong class="meta-value" style="color: var(--success-green);">GELDIG TOEGANGSBEWIJS</strong>
-                    </div>
-                    <div class="meta-item">
-                      <span class="meta-label">TIJDSSLOT:</span>
-                      <strong class="meta-value">13:00 - 17:00 UUR</strong>
-                    </div>
-                    <div class="meta-item">
-                      <span class="meta-label">TICKET CODE:</span>
-                      <strong class="meta-value" style="color: var(--brand-red, #8B1E1E);">#WF-2026-84387-1</strong>
-                    </div>
+                <!-- 2. Middle Row: 3-Column Meta Grid -->
+                <div class="ticket-meta-trio">
+                  <div class="meta-col">
+                    <span class="meta-col-label">Kaarthouder</span>
+                    <strong class="meta-col-val">Deon Draijer</strong>
                   </div>
+                  <div class="meta-col">
+                    <span class="meta-col-label">Locatie</span>
+                    <strong class="meta-col-val">Grote Kerk, Den Haag</strong>
+                  </div>
+                  <div class="meta-col">
+                    <span class="meta-col-label">Ticket Code</span>
+                    <strong class="meta-col-val font-mono">#WF-2026-84387-1</strong>
+                  </div>
+                </div>
 
-                  <!-- Individual Ticket Actions: Download & Share -->
-                  <div class="ticket-action-buttons-row">
-                    <button type="button" class="btn-ticket-action btn-ticket-download" onclick="window.open('/ticket?id=WF-2026-84387-1&title=VIP%20Sessie%20-%20Vrijdag&name=Deon%20Draijer&time=13:00%20-%2017:00%20UUR', '_blank')">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                      </svg>
-                      Download E-Ticket (PDF)
+                <!-- 3. Bottom Row: Action Buttons -->
+                <div class="ticket-actions-row">
+                  <button type="button" class="btn-ticket-download-gold" onclick="window.open('/ticket?id=WF-2026-84387-1&title=VIP%20Sessie%20-%20Vrijdag&name=Deon%20Draijer&time=13:00%20-%2017:00%20UUR', '_blank')">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Download E-Ticket (PDF)</span>
+                  </button>
+
+                  <div class="ticket-share-wrapper">
+                    <button type="button" class="btn-ticket-share-white btn-share-trigger">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                      <span>Deel Ticket</span>
                     </button>
-
-                    <div class="ticket-share-wrapper">
-                      <button type="button" class="btn-ticket-action btn-ticket-share btn-share-trigger">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                          <circle cx="18" cy="5" r="3"></circle>
-                          <circle cx="6" cy="12" r="3"></circle>
-                          <circle cx="18" cy="19" r="3"></circle>
-                          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                        </svg>
-                        Deel Ticket
+                    <div class="ticket-share-menu">
+                      <a href="https://api.whatsapp.com/send?text=*Whisky%20Fest%20Den%20Haag%202026*%0AE-ticket%3A%20VIP%20Sessie%20-%20Vrijdag%0A%0AKaarthouder%3A%20Deon%20Draijer%0ATijdslot%3A%2013%3A00%20-%2017%3A00%20UUR%0ATicket%20Code%3A%20%23WF-2026-84387-1%0ALocatie%3A%20Grote%20Kerk%2C%20Den%20Haag" target="_blank" rel="noopener noreferrer" class="share-option-link">
+                        <span>Deel via WhatsApp</span>
+                      </a>
+                      <a href="mailto:?subject=E-ticket%20voor%20Whisky%20Fest%20Den%20Haag%3A%20VIP%20Sessie%20-%20Vrijdag" class="share-option-link">
+                        <span>Deel via E-mail</span>
+                      </a>
+                      <button type="button" class="share-option-link" onclick="navigator.clipboard.writeText(window.location.origin + '/ticket?id=WF-2026-84387-1&title=VIP%20Sessie%20-%20Vrijdag&name=Deon%20Draijer&time=13:00%20-%2017:00%20UUR'); alert('✓ Directe ticket link gekopieerd!');">
+                        <span>Kopieer Ticket Link</span>
                       </button>
-                      <div class="ticket-share-menu">
-                        <a href="https://api.whatsapp.com/send?text=*International%20Whisky%20Festival%202026*%0AE-ticket%3A%20VIP%20Sessie%20-%20Vrijdag%0A%0AKaarthouder%3A%20Deon%20Draijer%0ATijdslot%3A%2013%3A00%20-%2017%3A00%20UUR%0ATicket%20Code%3A%20%23WF-2026-84387-1%0ALocatie%3A%20ICC%20Gent%0A%0ABekijk%20en%20download%20je%20offici%C3%ABle%20E-ticket%3A%0Ahttps%3A%2F%2Fwhisky-fest-gent.vercel.app%2Fticket%3Fid%3DWF-2026-84387-1%26title%3DVIP%2520Sessie%2520-%2520Vrijdag%26name%3DDeon%2520Draijer%26time%3D13%3A00%2520-%252017%3A00%2520UUR" target="_blank" rel="noopener noreferrer" class="share-option-link whatsapp-opt">
-                          <span class="share-option-icon">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                            </svg>
-                          </span>
-                          <span>Deel via WhatsApp</span>
-                        </a>
-
-                        <a href="mailto:?subject=E-ticket%20voor%20International%20Whisky%20Festival%3A%20VIP%20Sessie%20-%20Vrijdag&body=Beste%20Deon%20Draijer%2C%0A%0AHierbij%20ontvang%20je%20jouw%20toegangsbewijs%20voor%20International%20Whisky%20Festival%202026.%0A%0ATicket%3A%20VIP%20Sessie%20-%20Vrijdag%0ATijdslot%3A%2013%3A00%20-%2017%3A00%20UUR%0ATicket%20Code%3A%20%23WF-2026-84387-1%0ALocatie%3A%20ICC%20Gent%0A%0ABekijk%20en%20download%20je%20digitale%20ticket%20direct%20via%20onderstaande%20link%3A%0Ahttps%3A%2F%2Fwhisky-fest-gent.vercel.app%2Fticket%3Fid%3DWF-2026-84387-1%26title%3DVIP%2520Sessie%2520-%2520Vrijdag%26name%3DDeon%2520Draijer%26time%3D13%3A00%2520-%252017%3A00%2520UUR%0A%0AGraag%20tot%20ziens%20op%20het%20festival!" class="share-option-link">
-                          <span class="share-option-icon">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                              <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                          </span>
-                          <span>Deel via E-mail</span>
-                        </a>
-
-                        <button type="button" class="share-option-link" onclick="navigator.clipboard.writeText(window.location.origin + '/ticket?id=WF-2026-84387-1&title=VIP%20Sessie%20-%20Vrijdag&name=Deon%20Draijer&time=13:00%20-%2017:00%20UUR'); alert('✓ Directe ticket link gekopieerd naar klembord!');">
-                          <span class="share-option-icon">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                          </span>
-                          <span>Kopieer Ticket Link</span>
-                        </button>
-                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div class="ticket-stub-footer">
-                  <span class="stub-disclaimer">* Toegang uitsluitend voor personen van 18 jaar en ouder. Legitimatie verplicht bij de deur.</span>
                 </div>
               </div>
             </div>
@@ -197,7 +221,7 @@ import Footer from '../components/Footer.astro';
                   Print Alle E-Tickets (PDF)
                 </button>
                 <p class="action-note-text">
-                  Tip: U kunt uw e-ticket ook digitaal op uw smartphone laten scannen bij de ingang van ICC, Gent.
+                  Tip: U kunt uw e-ticket ook digitaal op uw smartphone laten scannen bij de ingang van Grote Kerk, Den Haag.
                 </p>
               </div>
             </div>
@@ -209,7 +233,7 @@ import Footer from '../components/Footer.astro';
               <h3 class="card-inner-title">Locatie & Info</h3>
               <div class="vintage-line" style="margin: 0;"></div>
               <p class="sidebar-card-text">
-                <strong>ICC, Gent</strong><br/>
+                <strong>Grote Kerk, Den Haag</strong><br/>
                 Gedempt Hamerkanaal 231,<br/>
                 1021 KP Amsterdam
               </p>
@@ -270,8 +294,8 @@ import Footer from '../components/Footer.astro';
               </button>
             </form>
 
-            <div class="demo-banner" id="profile-success-banner" style="display: none; border-color: #006448; background-color: rgba(0, 100, 72, 0.08); margin-top: 1rem; padding: 0.75rem 1rem;">
-              <span style="color: #006448; font-family: var(--font-sans); font-weight: 700; font-size: 0.9rem;">Gegevens succesvol opgeslagen! De naam op uw e-tickets is bijgewerkt.</span>
+            <div class="demo-banner" id="profile-success-banner" style="display: none; border-color: #1E3A8A; background-color: rgba(30, 58, 138, 0.08); margin-top: 1rem; padding: 0.75rem 1rem;">
+              <span style="color: #1E3A8A; font-family: var(--font-sans); font-weight: 700; font-size: 0.9rem;">Gegevens succesvol opgeslagen! De naam op uw e-tickets is bijgewerkt.</span>
             </div>
           </div>
         </div>
@@ -322,7 +346,7 @@ import Footer from '../components/Footer.astro';
           <div class="card-padded">
             <div class="event-hero-header">
               <div>
-                <h3 class="card-inner-title">Interactieve Plattegrond ICC, Gent</h3>
+                <h3 class="card-inner-title">Interactieve Plattegrond Grote Kerk, Den Haag</h3>
                 <p class="sidebar-card-subtext" style="margin-top: 4px;">
                   Klik op een standnummer om direct de gegevens en merken van de standhouder te bekijken.
                 </p>
@@ -734,7 +758,7 @@ import Footer from '../components/Footer.astro';
                   <div class="program-booklet-column" style="margin-top: 0.75rem;">
                     <h4 class="booklet-chapter-title">II. Proefglas & Toegang</h4>
                     <p class="sidebar-card-subtext" style="margin-top: 0.4rem;">
-                      Officiële glas inbegrepen bij de deur. Gebruik de spoelstations. De Kromhouthal is volledig rolstoeltoegankelijk. 18+ legitimatie verplicht.
+                      Officiële proefglas inbegrepen bij de entree. Gebruik de spoelstations op de beursvloer. De Grote Kerk is rolstoeltoegankelijk. 18+ legitimatie verplicht.
                     </p>
                   </div>
                 </div>
@@ -746,6 +770,7 @@ import Footer from '../components/Footer.astro';
 
       </div>
     </div>
+  </div> <!-- End #portal-authenticated-area -->
 
   </main>
 
@@ -885,7 +910,7 @@ import Footer from '../components/Footer.astro';
   .portal-tab-trigger.active {
     background-color: var(--bg-paper-card);
     border: 2px solid var(--text-charcoal);
-    border-bottom: 3px solid var(--bg-paper-card);
+    border-bottom: 3px solid #FAF7F2; background-color: #FAF7F2;
     margin-bottom: -2px;
     position: relative;
     z-index: 2;
@@ -1207,190 +1232,300 @@ import Footer from '../components/Footer.astro';
   }
 
   /* --- Ticket Stub Card Styling --- */
+  
+    /* --- BALANCED 3-LAYER TICKET CARD --- */
   .ticket-envelope {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ticket-stub-large {
-    background-color: var(--bg-paper-card);
+    background-color: #FFFFFF;
     border: 2px solid var(--text-charcoal);
-    border-radius: 10px;
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.06);
+    border-radius: 4px;
+    box-shadow: 5px 5px 0px var(--text-charcoal);
     overflow: hidden;
     position: relative;
   }
 
+  .ticket-stub-large {
+    display: grid;
+    grid-template-columns: 185px 1fr;
+    min-height: 240px;
+    background: #FFFFFF;
+  }
+
+  @media (max-width: 768px) {
+    .ticket-stub-large {
+      grid-template-columns: 1fr;
+    }
+    .ticket-right-stub {
+      border-right: none !important;
+      border-bottom: 2px dashed var(--text-charcoal) !important;
+    }
+  }
+
   .ticket-right-stub {
-    background-color: var(--bg-sand);
-    border-right: 2px dashed var(--border-color-dark);
-    padding: 2rem 1.5rem;
+    background-color: #FAF7F2;
+    border-right: 2px dashed var(--text-charcoal);
+    padding: 1.5rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     text-align: center;
+    gap: 0.5rem;
   }
 
   .scan-label {
     font-family: var(--font-sans);
+    font-size: 0.65rem;
     font-weight: 800;
-    font-size: 0.7rem;
     letter-spacing: 0.12em;
     color: var(--text-muted);
-    margin-bottom: 1rem;
+    text-transform: uppercase;
   }
 
   .qr-code-holder {
-    background-color: #ffffff;
-    border: 2px solid var(--text-charcoal);
-    padding: 0.85rem;
-    border-radius: 6px;
-    margin-bottom: 0.85rem;
+    background-color: #FFFFFF;
+    padding: 8px;
+    border: 1.5px solid var(--border-color, #E2D9CC);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .scan-instructions {
     font-family: var(--font-sans);
+    font-size: 0.72rem;
     font-weight: 800;
-    font-size: 0.75rem;
+    color: var(--whisky-gold-dark, #8B5A1B);
     letter-spacing: 0.05em;
-    color: var(--whisky-gold-dark);
+    text-transform: uppercase;
   }
 
   .scan-res-hash {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 0.85rem;
+    font-family: monospace;
+    font-size: 0.75rem;
     color: var(--text-charcoal);
-    margin-top: 2px;
+    font-weight: 800;
   }
 
   .ticket-left-stub {
-    padding: 2rem 2.25rem;
+    padding: 1.75rem 2.25rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
+    background-color: #FFFFFF;
+    gap: 1.25rem;
   }
 
   .ticket-watermark {
     position: absolute;
-    right: 2rem;
-    bottom: 1rem;
+    right: 1.5rem;
+    bottom: -0.5rem;
     font-family: var(--font-display);
-    font-size: 7rem;
-    color: rgba(0, 100, 72, 0.04);
+    font-size: 8rem;
+    color: rgba(29, 28, 26, 0.03);
+    line-height: 1;
     pointer-events: none;
-    line-height: 1;
+    user-select: none;
   }
 
-  .ticket-stub-header {
+  /* 1. Header Row */
+  .ticket-header-row {
     display: flex;
-    align-items: center;
-    gap: 1.25rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 
-  .ticket-stub-date-badge {
-    background-color: var(--text-charcoal);
-    color: var(--whisky-gold);
-    border-radius: 6px;
-    padding: 0.4rem 0.85rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 54px;
-  }
-
-  .badge-month {
-    font-family: var(--font-sans);
-    font-size: 0.65rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-  }
-
-  .badge-day {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    line-height: 1;
-  }
-
-  .ticket-stub-org {
+  .ticket-title-block {
     display: flex;
     flex-direction: column;
-  }
-
-  .org-established {
-    font-family: var(--font-sans);
-    font-size: 0.65rem;
-    font-weight: 800;
-    color: var(--whisky-gold-dark);
-    letter-spacing: 0.1em;
-  }
-
-  .org-name {
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    font-weight: 800;
-    color: var(--text-charcoal);
-  }
-
-  .org-location {
-    font-family: var(--font-serif);
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
-
-  .vintage-divider {
-    border-bottom: 1px dashed var(--border-color-dark);
-    margin: 1.25rem 0;
+    gap: 0.2rem;
   }
 
   .ticket-session-title {
     font-family: var(--font-display);
-    font-size: 1.85rem;
+    font-size: 2.1rem;
     color: var(--text-charcoal);
-    margin: 0 0 1rem;
+    margin: 0;
     line-height: 1.15;
+    letter-spacing: 0.02em;
   }
 
-  .ticket-meta-grid {
+  .ticket-schedule-text {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--whisky-gold-dark, #8B5A1B);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
+  .ticket-badges-block {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .ticket-status-tag {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(30, 58, 138, 0.08);
+    color: #1E3A8A;
+    border: 1px solid rgba(30, 58, 138, 0.3);
+    padding: 0.35rem 0.75rem;
+    border-radius: 3px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .ticket-qty-tag {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 800;
+    background: rgba(140, 110, 70, 0.1);
+    color: var(--whisky-gold-dark);
+    border: 1px solid rgba(140, 110, 70, 0.25);
+    padding: 0.35rem 0.65rem;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  /* 2. Middle Row: 3-Column Meta Grid */
+  .ticket-meta-trio {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.85rem 1.5rem;
+    grid-template-columns: 1.2fr 1.2fr 1fr;
+    gap: 1.25rem;
+    background: #FAF7F2;
+    border: 1px solid var(--border-color, #E2D9CC);
+    border-radius: 4px;
+    padding: 0.85rem 1.25rem;
   }
 
-  .meta-item {
+  @media (max-width: 600px) {
+    .ticket-meta-trio {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+  }
+
+  .meta-col {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 0.15rem;
   }
 
-  .meta-label {
+  .meta-col-label {
     font-family: var(--font-sans);
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     font-weight: 800;
+    text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--text-muted);
+    color: var(--text-muted, #7A7268);
   }
 
-  .meta-value {
+  .meta-col-val {
     font-family: var(--font-sans);
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--text-charcoal);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-charcoal, #1D1C1A);
+    line-height: 1.25;
   }
 
-  .ticket-stub-footer {
-    margin-top: 1.25rem;
+  .meta-col-val.font-mono {
+    font-family: monospace;
+    color: var(--whisky-gold-dark, #8B5A1B);
+    font-size: 0.98rem;
   }
 
-  .stub-disclaimer {
-    font-family: var(--font-serif);
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-style: italic;
+  /* 3. Bottom Row: Action Buttons */
+  .ticket-actions-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-ticket-download-gold {
+    background-color: var(--whisky-gold, #C58B39) !important;
+    color: #171614 !important;
+    border: 2px solid var(--text-charcoal) !important;
+    padding: 0.75rem 1.4rem !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.85rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    box-shadow: 3px 3px 0px var(--text-charcoal) !important;
+    transition: all 0.2s ease !important;
+    text-decoration: none !important;
+  }
+
+  .btn-ticket-download-gold:hover {
+    transform: translate(-1px, -1px) !important;
+    box-shadow: 4px 4px 0px var(--text-charcoal) !important;
+    background-color: var(--whisky-gold-light, #DFC598) !important;
+  }
+
+  .btn-ticket-share-white {
+    background-color: #FFFFFF !important;
+    color: var(--text-charcoal) !important;
+    border: 2px solid var(--text-charcoal) !important;
+    padding: 0.75rem 1.25rem !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.85rem !important;
+    font-weight: 800 !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.45rem !important;
+    box-shadow: 3px 3px 0px var(--text-charcoal) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  .btn-ticket-share-white:hover {
+    transform: translate(-1px, -1px) !important;
+    box-shadow: 4px 4px 0px var(--text-charcoal) !important;
+    background-color: var(--bg-sand) !important;
+  }
+
+  .ticket-share-wrapper {
+    position: relative;
+  }
+
+  .ticket-share-menu {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+    background: #FFFFFF;
+    border: 2px solid var(--text-charcoal);
+    border-radius: 4px;
+    box-shadow: 4px 4px 0px var(--text-charcoal);
+    padding: 0.5rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 200px;
+    z-index: 100;
+  }
+
+  .ticket-share-wrapper.open .ticket-share-menu,
+  .ticket-share-menu.active {
+    display: flex;
   }
 
   /* --- Form Inputs Styling --- */
@@ -1470,9 +1605,9 @@ import Footer from '../components/Footer.astro';
   }
 
   .status-badge.paid {
-    background-color: rgba(0, 100, 72, 0.08);
+    background-color: rgba(30, 58, 138, 0.08);
     color: var(--whisky-gold-dark);
-    border: 1px solid rgba(0, 100, 72, 0.25);
+    border: 1px solid rgba(30, 58, 138, 0.25);
   }
 
   /* --- Event booklet layout --- */
@@ -1779,6 +1914,242 @@ import Footer from '../components/Footer.astro';
     border-color: #25D366 !important;
   }
 
+
+  /* --- High-End Login View Styles --- */
+  .login-view-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 3rem 1.5rem;
+    width: 100%;
+  }
+
+  .login-card-box {
+    background: var(--bg-paper-card, #FBF9F5);
+    border: 1.5px solid var(--border-color, #E2D9CC);
+    box-shadow: 0 12px 40px rgba(29, 28, 26, 0.08);
+    border-radius: 12px;
+    padding: 3rem 2.5rem;
+    max-width: 520px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .login-card-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .login-card-header .portal-tag {
+    background: rgba(30, 58, 138, 0.08);
+    color: var(--brand-green, #1E3A8A);
+    border: 1px solid rgba(30, 58, 138, 0.2);
+    padding: 0.35rem 0.85rem;
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: inline-block;
+  }
+
+  .login-card-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 2.5rem);
+    color: var(--text-charcoal, #1D1C1A);
+    margin: 0.25rem 0 0;
+    line-height: 1.15;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .login-card-subtitle {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    color: var(--text-muted, #666);
+    line-height: 1.55;
+    margin: 0.25rem 0 0;
+  }
+
+  .auth-error-alert {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: rgba(227, 6, 19, 0.08);
+    border: 1.5px solid #E30613;
+    color: #A8040E;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  .login-form-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .login-form-body .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    text-align: left;
+  }
+
+  .login-form-body .form-label {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-charcoal, #1D1C1A);
+  }
+
+  .login-form-body .form-input {
+    width: 100% !important;
+    padding: 0.85rem 1.15rem !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid var(--border-color-dark, #D1C7B7) !important;
+    border-radius: 6px !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    color: var(--text-charcoal, #1D1C1A) !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
+  }
+
+  .login-form-body .form-input:focus {
+    outline: none !important;
+    border-color: var(--whisky-gold-dark, #C58B39) !important;
+    box-shadow: 0 0 0 3.5px rgba(197, 139, 57, 0.18) !important;
+    background: #FFFFFF !important;
+  }
+
+  .login-form-body .form-input::placeholder {
+    color: #A0988C !important;
+    font-weight: 500 !important;
+  }
+
+  .form-subtext {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--text-muted, #7A746B);
+    line-height: 1.4;
+  }
+
+  .btn-login-submit {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 1rem 1.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    background-color: var(--brand-green, #1E3A8A);
+    color: #FFFFFF;
+    border: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.25);
+  }
+
+  .btn-login-submit:hover {
+    background-color: #172554;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.35);
+  }
+
+  .login-card-footer {
+    text-align: center;
+    border-top: 1px dashed var(--border-color, #E2D9CC);
+    padding-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .login-footer-help {
+    font-family: var(--font-sans);
+    font-size: 0.86rem;
+    color: var(--text-muted, #666);
+    margin: 0;
+  }
+
+  .btn-demo-quick {
+    background: rgba(197, 139, 57, 0.08);
+    border: 1px solid rgba(197, 139, 57, 0.3);
+    color: var(--whisky-gold-dark, #C58B39);
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-demo-quick:hover {
+    background: rgba(197, 139, 57, 0.16);
+    border-color: var(--whisky-gold-dark, #C58B39);
+    color: #A36F25;
+  }
+
+  
+  .portal-user-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-clean-logout {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: transparent;
+    border: 1.5px solid var(--text-charcoal);
+    padding: 0.3rem 0.75rem;
+    border-radius: 3px;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--text-charcoal);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .btn-clean-logout:hover {
+    background: rgba(227, 6, 19, 0.08);
+    color: #E30613;
+    border-color: #E30613;
+  }
+
+  .logout-link {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--brand-red, #E30613);
+    text-decoration: underline;
+    margin-left: 0.5rem;
+    cursor: pointer;
+  }
+
 </style>
 
 <script>
@@ -1974,38 +2345,47 @@ import Footer from '../components/Footer.astro';
             const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(item.title)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}`;
             
             const shareText = encodeURIComponent(
-              `*${'Whisky Fest Gent 2026'}*\n` +
+              `*${'International Whisky Festival 2026'}*\n` +
               `E-ticket: ${item.title}\n\n` +
               `Kaarthouder: ${userName}\n` +
               `Tijdslot: ${displayTime}\n` +
               `Ticket Code: ${displayCode}\n` +
-              `Locatie: ICC, Gent\n\n` +
+              `Locatie: Grote Kerk, Den Haag\n\n` +
               `Bekijk en download je officiële E-ticket:\n` +
               `${ticketLink}`
             );
             
-            const mailSubject = encodeURIComponent(`E-ticket voor Whisky Fest Gent: ${item.title}`);
+            const mailSubject = encodeURIComponent(`E-ticket voor International Whisky Festival: ${item.title}`);
             const mailBody = encodeURIComponent(
               `Beste ${userName},\n\n` +
-              `Hierbij ontvang je jouw toegangsbewijs voor Whisky Fest Gent 2026.\n\n` +
+              `Hierbij ontvang je jouw toegangsbewijs voor International Whisky Festival 2026.\n\n` +
               `Ticket: ${item.title}\n` +
               `Tijdslot: ${displayTime}\n` +
               `Ticket Code: ${displayCode}\n` +
-              `Locatie: ICC, Gent\n\n` +
+              `Locatie: Grote Kerk, Den Haag\n\n` +
               `Bekijk en download je digitale ticket direct via onderstaande link:\n` +
               `${ticketLink}\n\n` +
               `Graag tot ziens op het festival!`
             );
 
+            // Natural schedule string
+            let formattedSchedule = "Vrijdag 13 november 2026 • " + displayTime;
+            if (titleLower.includes("zaterdag")) {
+              formattedSchedule = "Zaterdag 14 november 2026 • " + displayTime;
+            } else if (titleLower.includes("zondag")) {
+              formattedSchedule = "Zondag 15 november 2026 • " + displayTime;
+            } else if (item.category === 'masterclass') {
+              formattedSchedule = "Zaterdag 14 november 2026 • " + displayTime;
+            }
+
             const ticketHTML = `
               <div class="ticket-envelope">
                 <div class="ticket-stub-large">
-                  <!-- QR Code & Scanner stub -->
+                  <!-- Scanner Stub -->
                   <div class="ticket-right-stub">
                     <span class="scan-label">CONTROLE STUB</span>
-                    
                     <div class="qr-code-holder">
-                      <svg width="110" height="110" viewBox="0 0 100 100" style="shape-rendering: crispedges; display:block;">
+                      <svg width="105" height="105" viewBox="0 0 100 100" style="shape-rendering: crispedges; display:block;">
                         <path d="M0,0 h30 v10 h-20 v20 h-10 z" fill="#1D1C1A"/>
                         <path d="M10,10 h10 v10 h-10 z" fill="#1D1C1A"/>
                         <path d="M70,0 h30 v30 h-10 v-20 h-20 z" fill="#1D1C1A"/>
@@ -2019,110 +2399,69 @@ import Footer from '../components/Footer.astro';
                         <path d="M65,45 h10 v5 h-10 z M30,55 h5 v15 h-5 z M45,85 h10 v5 h-10 z" fill="#1D1C1A"/>
                       </svg>
                     </div>
-
                     <span class="scan-instructions">${item.category === 'botteling' && item.delivery === 'shipping' ? 'VERZONDEN' : 'SCAN BIJ DE DEUR'}</span>
                     <span class="scan-res-hash">${displayCode}</span>
                   </div>
 
-                  <!-- Session & Holder details -->
+                  <!-- Clean Main Body -->
                   <div class="ticket-left-stub">
                     <div class="ticket-watermark">${watermark}</div>
                     
-                    <div class="ticket-stub-header">
-                      <div class="ticket-stub-date-badge">
-                        <span class="badge-month">${displayMonth}</span>
-                        <span class="badge-day">${displayDay}</span>
+                    <!-- 1. Header Row -->
+                    <div class="ticket-header-row">
+                      <div class="ticket-title-block">
+                        <h2 class="ticket-session-title">${item.title}</h2>
+                        <p class="ticket-schedule-text">${formattedSchedule}</p>
                       </div>
-                      <div class="ticket-stub-org">
-                        <span class="org-established">Est. 2004</span>
-                        <span class="org-name">${item.category === 'masterclass' ? 'Festival Masterclass' : item.category === 'tram' ? 'Gentse Whiskytram' : item.category === 'botteling' ? 'Festival Botteling' : 'Whisky Fest Gent'}</span>
-                        <span class="org-location">${item.category === 'masterclass' ? 'ICC Lounge, Gent' : 'ICC, Gent'}</span>
+                      <div class="ticket-badges-block">
+                        <span class="ticket-status-tag">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                          Geldig Toegangsbewijs
+                        </span>
+                        ${qty > 1 ? `<span class="ticket-qty-tag">Ticket ${t + 1} van ${qty}</span>` : ''}
                       </div>
-                      ${qty > 1 ? `<span class="ticket-unit-badge">Ticket ${t + 1} van ${qty}</span>` : ''}
                     </div>
 
-                    <div class="vintage-divider"></div>
-
-                    <div class="ticket-stub-body">
-                      <h2 class="ticket-session-title">${item.title}</h2>
-                      
-                      <div class="ticket-meta-grid">
-                        <div class="meta-item">
-                          <span class="meta-label">KAARTHOUDER:</span>
-                          <strong class="meta-value">${userName}</strong>
-                        </div>
-                        <div class="meta-item">
-                          <span class="meta-label">STATUS:</span>
-                          <strong class="meta-value" style="color: var(--success-green);">GELDIG TOEGANGSBEWIJS</strong>
-                        </div>
-                        <div class="meta-item">
-                          <span class="meta-label">TIJDSSLOT:</span>
-                          <strong class="meta-value">${displayTime.toUpperCase()}</strong>
-                        </div>
-                        <div class="meta-item">
-                          <span class="meta-label">TICKET CODE:</span>
-                          <strong class="meta-value" style="color: var(--brand-red, #E30613);">${displayCode}</strong>
-                        </div>
+                    <!-- 2. Middle Row: 3-Column Meta Grid -->
+                    <div class="ticket-meta-trio">
+                      <div class="meta-col">
+                        <span class="meta-col-label">Kaarthouder</span>
+                        <strong class="meta-col-val">${userName}</strong>
                       </div>
+                      <div class="meta-col">
+                        <span class="meta-col-label">Locatie</span>
+                        <strong class="meta-col-val">${item.category === 'masterclass' ? 'Nutshuis, Den Haag' : 'Grote Kerk, Den Haag'}</strong>
+                      </div>
+                      <div class="meta-col">
+                        <span class="meta-col-label">Ticket Code</span>
+                        <strong class="meta-col-val font-mono">${displayCode}</strong>
+                      </div>
+                    </div>
 
-                      <!-- Individual Ticket Actions: Download & Share -->
-                      <div class="ticket-action-buttons-row">
-                        <button type="button" class="btn-ticket-action btn-ticket-download" onclick="window.open('/ticket?id=${cleanCode}&title=${encodeURIComponent(item.title)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}', '_blank')">
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="7 10 12 15 17 10"/>
-                            <line x1="12" y1="15" x2="12" y2="3"/>
-                          </svg>
-                          Download E-Ticket (PDF)
+                    <!-- 3. Bottom Row: Action Buttons -->
+                    <div class="ticket-actions-row">
+                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('/ticket?id=${cleanCode}&title=${encodeURIComponent(item.title)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}', '_blank')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <span>Download E-Ticket (PDF)</span>
+                      </button>
+
+                      <div class="ticket-share-wrapper">
+                        <button type="button" class="btn-ticket-share-white btn-share-trigger">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                          <span>Deel Ticket</span>
                         </button>
-
-                        <div class="ticket-share-wrapper">
-                          <button type="button" class="btn-ticket-action btn-ticket-share btn-share-trigger">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                              <circle cx="18" cy="5" r="3"></circle>
-                              <circle cx="6" cy="12" r="3"></circle>
-                              <circle cx="18" cy="19" r="3"></circle>
-                              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                            </svg>
-                            Deel Ticket
+                        <div class="ticket-share-menu">
+                          <a href="https://api.whatsapp.com/send?text=${shareText}" target="_blank" rel="noopener noreferrer" class="share-option-link">
+                            <span>Deel via WhatsApp</span>
+                          </a>
+                          <a href="mailto:?subject=${mailSubject}&body=${mailBody}" class="share-option-link">
+                            <span>Deel via E-mail</span>
+                          </a>
+                          <button type="button" class="share-option-link" onclick="navigator.clipboard.writeText('${ticketLink}'); alert('✓ Directe ticket link gekopieerd!');">
+                            <span>Kopieer Ticket Link</span>
                           </button>
-                          <div class="ticket-share-menu">
-                            <a href="https://api.whatsapp.com/send?text=${shareText}" target="_blank" rel="noopener noreferrer" class="share-option-link whatsapp-opt">
-                              <span class="share-option-icon">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                                </svg>
-                              </span>
-                              <span>Deel via WhatsApp</span>
-                            </a>
-
-                            <a href="mailto:?subject=${mailSubject}&body=${mailBody}" class="share-option-link">
-                              <span class="share-option-icon">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                  <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                              </span>
-                              <span>Deel via E-mail</span>
-                            </a>
-
-                            <button type="button" class="share-option-link" onclick="navigator.clipboard.writeText('${ticketLink}'); alert('✓ Directe ticket link gekopieerd naar klembord!');">
-                              <span class="share-option-icon">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                              </span>
-                              <span>Kopieer Ticket Link</span>
-                            </button>
-                          </div>
                         </div>
                       </div>
-                    </div>
-
-                    <div class="ticket-stub-footer">
-                      <span class="stub-disclaimer">* Toegang uitsluitend voor personen van 18 jaar en ouder. Legitimatie verplicht bij de deur.</span>
                     </div>
                   </div>
                 </div>
@@ -2136,8 +2475,81 @@ import Footer from '../components/Footer.astro';
       }
     }
 
-    // Initial render
-    updatePortalUI(); window.addEventListener("load", updatePortalUI);
+    // Auth State Controller & Dynamic Render
+    const authArea = document.getElementById('portal-authenticated-area');
+    const loginArea = document.getElementById('portal-login-area');
+    const loginForm = document.getElementById('portal-login-form');
+    const loginEmailInput = document.getElementById('login-email') as HTMLInputElement;
+    const loginResInput = document.getElementById('login-res-no') as HTMLInputElement;
+    const demoLoginBtn = document.getElementById('btn-quick-demo-login');
+    const portalPageLogoutBtn = document.getElementById('portal-page-logout-btn');
+
+    function checkAuthAndRender() {
+      const isLoggedOut = localStorage.getItem('wf_user_logged_out') === 'true';
+
+      if (isLoggedOut) {
+        if (authArea) authArea.style.display = 'none';
+        if (loginArea) loginArea.style.display = 'flex';
+      } else {
+        if (authArea) authArea.style.display = 'block';
+        if (loginArea) loginArea.style.display = 'none';
+        updatePortalUI();
+      }
+    }
+
+    if (loginForm) {
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = loginEmailInput ? loginEmailInput.value.trim() : '';
+        const resNo = loginResInput ? loginResInput.value.trim() : '';
+        
+        localStorage.removeItem('wf_user_logged_out');
+        
+        const sessionData = {
+          email: email || 'deondraijer@gmail.com',
+          resNumber: resNo || '#WF-2026-84387',
+          name: email ? (email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1)) : 'Deon Draijer'
+        };
+        
+        localStorage.setItem('wf_auth_session', JSON.stringify(sessionData));
+        
+        if (orderData) {
+          orderData.email = sessionData.email;
+          if (resNo) orderData.resNumber = sessionData.resNumber;
+          localStorage.setItem('wf_last_order', JSON.stringify(orderData));
+        }
+        
+        checkAuthAndRender();
+        window.dispatchEvent(new Event('storage'));
+      });
+    }
+
+    if (demoLoginBtn) {
+      demoLoginBtn.addEventListener('click', () => {
+        localStorage.removeItem('wf_user_logged_out');
+        localStorage.setItem('wf_auth_session', JSON.stringify({
+          email: 'deondraijer@gmail.com',
+          resNumber: '#WF-2026-84387',
+          name: 'Deon Draijer'
+        }));
+        checkAuthAndRender();
+        window.dispatchEvent(new Event('storage'));
+      });
+    }
+
+    if (portalPageLogoutBtn) {
+      portalPageLogoutBtn.addEventListener('click', () => {
+        localStorage.setItem('wf_user_logged_out', 'true');
+        sessionStorage.removeItem('wf_auth_session');
+        localStorage.removeItem('wf_auth_session');
+        checkAuthAndRender();
+        window.dispatchEvent(new Event('storage'));
+      });
+    }
+
+    checkAuthAndRender();
+    window.addEventListener('load', checkAuthAndRender);
+    window.addEventListener('storage', checkAuthAndRender);
 
     // 3. Profile Save Form Submission
     const profileEditForm = document.getElementById('profile-edit-form');

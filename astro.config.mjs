@@ -5,6 +5,9 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.whiskyfestival.nl',
-  integrations: [sitemap()]
+  site: 'https://www.gentswhiskyfestival.be',
+  integrations: [sitemap()],
+  server: {
+    port: 4332
+  }
 });
