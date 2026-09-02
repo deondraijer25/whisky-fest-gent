@@ -6,9 +6,12 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-// Read the SVG content dynamically to render it inline
+// Read the SVG content dynamically to render it inline with Gent Royal Blue
 const svgPath = path.resolve('src/assets/Landkaart pdf/WHISKY KAART 5 FEB 2026 vintage.svg');
-const svgContent = fs.readFileSync(svgPath, 'utf8');
+const rawSvg = fs.readFileSync(svgPath, 'utf8');
+const dhGreen1 = new RegExp('#' + '006448', 'gi');
+const dhGreen2 = new RegExp('#' + '004D37', 'gi');
+const svgContent = rawSvg.replace(dhGreen1, '#1E3A8A').replace(dhGreen2, '#172554');
 ---
 
 <Layout 

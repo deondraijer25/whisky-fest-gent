@@ -1291,7 +1291,7 @@ const exhibitors = await getStandhouders('gent');
 
   @media (max-width: 768px) {
     .standhouders-page-wrapper {
-      padding: 7rem 1.5rem 4rem;
+      padding: 7.5rem 1rem 4rem;
     }
 
     .horizontal-bar-inner {
@@ -1309,8 +1309,24 @@ const exhibitors = await getStandhouders('gent');
     }
 
     .filter-buttons-row {
-      justify-content: center;
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      width: 100%;
+      justify-content: flex-start;
       gap: 6px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+
+    .filter-buttons-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-tab {
+      white-space: nowrap;
+      flex-shrink: 0;
     }
   }
 </style>

@@ -7,7 +7,6 @@ import TicketStub from '../components/TicketStub.astro';
 import { getTickets } from '../lib/ghl';
 import LogoSvg from '../assets/Logo/Logo.svg?raw';
 import GentStampWit from '../assets/LogosAll/logo-wit-gent.svg?raw';
-import GlasswareSvg15 from '../assets/LogosAll/logo-wit-gent.svg?raw';
 
 const tickets = await getTickets('gent');
 ---
@@ -37,6 +36,29 @@ const tickets = await getTickets('gent');
       </div>
     </div>
   </div>
+
+  <!-- Bulletproof Immediate Inline Preloader Dismiss (Never hangs) -->
+  <script is:inline>
+    (function() {
+      function dismissPreloader() {
+        var pl = document.getElementById('hp-preloader');
+        if (pl && !pl.classList.contains('fade-out')) {
+          pl.classList.add('fade-out');
+          setTimeout(function() {
+            if (pl) pl.style.display = 'none';
+          }, 400);
+        }
+      }
+      setTimeout(dismissPreloader, 1000);
+      if (document.readyState === 'complete') {
+        setTimeout(dismissPreloader, 400);
+      } else {
+        window.addEventListener('load', function() {
+          setTimeout(dismissPreloader, 400);
+        });
+      }
+    })();
+  </script>
 
   <!-- 1. Navigation Header -->
   <Header />
@@ -256,6 +278,112 @@ const tickets = await getTickets('gent');
             </div>
           </div>
 
+          <!-- Mobile 3-Stacked Custom Styled Dropdowns (< 990px) -->
+          <div class="mobile-filter-dropdowns" id="mobile-ticket-filters">
+            <!-- 1. Dag Filter -->
+            <div class="custom-dropdown" id="dd-filter-day">
+              <button type="button" class="custom-dd-btn" aria-haspopup="listbox" aria-expanded="false">
+                <span class="custom-dd-label-group">
+                  <span class="custom-dd-prefix">1. Dag:</span>
+                  <span class="custom-dd-selected-text" id="dd-day-text">Alle Dagen</span>
+                </span>
+                <svg class="custom-dd-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <div class="custom-dd-menu" role="listbox">
+                <div class="custom-dd-item active" data-value="all" role="option">
+                  <span>Alle Festivaldagen (Vr, Za, Zo)</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="vrijdag" role="option">
+                  <span>Vrijdag 2 Okt 2026</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="zaterdag" role="option">
+                  <span>Zaterdag 3 Okt 2026</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="zondag" role="option">
+                  <span>Zondag 4 Okt 2026</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Type Filter -->
+            <div class="custom-dropdown" id="dd-filter-cat">
+              <button type="button" class="custom-dd-btn" aria-haspopup="listbox" aria-expanded="false">
+                <span class="custom-dd-label-group">
+                  <span class="custom-dd-prefix">2. Type:</span>
+                  <span class="custom-dd-selected-text" id="dd-cat-text">Alle Tickets & Masterclasses</span>
+                </span>
+                <svg class="custom-dd-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <div class="custom-dd-menu" role="listbox">
+                <div class="custom-dd-item active" data-value="all" role="option">
+                  <span>Alle Types (Entree, Masterclasses, etc.)</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="entree" role="option">
+                  <span>Sessie Entree</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="warehouse" role="option">
+                  <span>Warehouse Tastings</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="masterclass" role="option">
+                  <span>Masterclasses</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="tram" role="option">
+                  <span>Whisky Bootjes</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="trail" role="option">
+                  <span>Whiskytrail</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="vatenmaken" role="option">
+                  <span>Workshops</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="botteling" role="option">
+                  <span>Botteling</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Tijd Filter -->
+            <div class="custom-dropdown" id="dd-filter-time">
+              <button type="button" class="custom-dd-btn" aria-haspopup="listbox" aria-expanded="false">
+                <span class="custom-dd-label-group">
+                  <span class="custom-dd-prefix">3. Tijd:</span>
+                  <span class="custom-dd-selected-text" id="dd-time-text">Alle Tijdsloten</span>
+                </span>
+                <svg class="custom-dd-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <div class="custom-dd-menu" role="listbox">
+                <div class="custom-dd-item active" data-value="all" role="option">
+                  <span>Alle Tijdsloten (Ochtend, Middag, Avond)</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="ochtend" role="option">
+                  <span>Ochtend (tot 13:00 uur)</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="middag" role="option">
+                  <span>Middag (13:00 – 18:00 uur)</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="avond" role="option">
+                  <span>Avond (vanaf 18:00 uur)</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="shop-grid">
             <!-- Left side: Organized Ticket List -->
             <div class="tickets-list fade-in-group" id="shop-tickets-list">
@@ -309,7 +437,7 @@ const tickets = await getTickets('gent');
     inset: 0 !important;
     top: 0 !important;
     left: 0 !important;
-    width: 100vw !important;
+    width: 100% !important;
     height: 100vh !important;
     background-color: rgba(15, 14, 12, 0.78) !important;
     backdrop-filter: blur(8px) !important;
@@ -2674,6 +2802,10 @@ const tickets = await getTickets('gent');
     display: none !important;
   }
 
+  .mobile-filter-dropdowns {
+    display: none;
+  }
+
   .shop-filters-container {
     background: transparent;
     border: none;
@@ -2958,11 +3090,460 @@ const tickets = await getTickets('gent');
       position: static;
     }
     .heritage-grid {
-      grid-template-columns: 1fr;
-      gap: 3rem;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 0.5rem !important;
     }
     .split-text {
       max-width: 100%;
+    }
+  }
+
+  /* Comprehensive Mobile Polish for Homepage (< 990px) */
+  @media (max-width: 990px) {
+    /* 1. HERO SECTION */
+    .tt-hero-section {
+      padding: 4.5rem 1.25rem 3.5rem !important;
+      min-height: 72vh !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      box-sizing: border-box !important;
+    }
+    .tt-hero-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+    }
+    .tt-hero-text {
+      margin: 0 auto !important;
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      text-align: center !important;
+      width: 100% !important;
+      max-width: 440px !important;
+    }
+    .tt-hero-title {
+      font-size: 2.35rem !important;
+      line-height: 1.08 !important;
+      text-align: center !important;
+      margin: 0 0 1.15rem !important;
+      letter-spacing: 0.02em !important;
+    }
+    .hero-date-line {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 0.45rem 0.75rem !important;
+      font-size: 0.98rem !important;
+      font-weight: 800 !important;
+      margin-bottom: 1.85rem !important;
+      text-align: center !important;
+    }
+    .hero-date-line .date-text,
+    .hero-date-line .loc-text {
+      font-size: 0.96rem !important;
+      font-weight: 800 !important;
+    }
+    .date-sep {
+      display: inline !important;
+      font-size: 0.65rem !important;
+      opacity: 0.7 !important;
+    }
+    .tt-hero-subtitle {
+      display: none !important;
+    }
+    .hero-actions {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      gap: 0.65rem !important;
+      align-items: stretch !important;
+      max-width: 360px !important;
+      margin: 0 auto !important;
+    }
+    .hero-actions .btn-beige {
+      width: 100% !important;
+      padding: 0.85rem 1.5rem !important;
+      font-size: 0.95rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.04em !important;
+      text-transform: uppercase !important;
+      text-align: center !important;
+      justify-content: center !important;
+      border-radius: 4px !important;
+      border: 2px solid var(--text-charcoal, #0F172A) !important;
+      box-shadow: 3px 3px 0px var(--text-charcoal, #0F172A) !important;
+    }
+    .hero-actions .tt-text-link {
+      width: 100% !important;
+      padding: 0.75rem 1.5rem !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.45) !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-radius: 4px !important;
+      color: #FFFFFF !important;
+      font-size: 0.88rem !important;
+      font-weight: 700 !important;
+      text-align: center !important;
+      margin-left: 0 !important;
+      text-decoration: none !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .tt-hero-reviews {
+      margin-top: 1.5rem !important;
+      text-align: center !important;
+      max-width: 100% !important;
+    }
+    .reviews-title {
+      font-size: 0.85rem !important;
+      margin-bottom: 0.35rem !important;
+    }
+    .reviews-grid {
+      display: flex !important;
+      justify-content: center !important;
+    }
+    .tt-hero-visual-right {
+      display: none !important;
+    }
+    .hero-barrel-art {
+      display: none !important;
+    }
+
+    /* 2. TICKETS & SHOP SECTION */
+    .tear-section {
+      overflow-x: hidden !important;
+      width: 100% !important;
+    }
+    .dark-gap {
+      overflow-x: hidden !important;
+      padding: 5.5rem 0 4rem !important;
+    }
+    .tear-header-area {
+      padding-top: 6.5rem !important;
+      padding-bottom: 3.5rem !important;
+      padding-left: 1.25rem !important;
+      padding-right: 1.25rem !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+    }
+    .tt-section-header {
+      margin: 0 auto !important;
+      max-width: 580px !important;
+      text-align: center !important;
+    }
+    .tt-section-title {
+      font-size: 2.15rem !important;
+      line-height: 1.15 !important;
+      text-align: center !important;
+      letter-spacing: 0.02em !important;
+      margin-top: 1rem !important;
+      margin-bottom: 0.75rem !important;
+    }
+    .tt-section-subtitle {
+      font-size: 0.95rem !important;
+      line-height: 1.5 !important;
+      max-width: 90% !important;
+      margin: 0 auto !important;
+      text-align: center !important;
+      color: rgba(23, 22, 20, 0.82) !important;
+    }
+    .shop-filters-container {
+      display: none !important;
+    }
+    .mobile-filter-dropdowns {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0.75rem !important;
+      margin-top: 0.5rem !important;
+      margin-bottom: 2rem !important;
+      padding: 1.15rem !important;
+      background: rgba(15, 23, 42, 0.75) !important;
+      border: 1.5px solid rgba(255, 101, 0, 0.4) !important;
+      border-radius: 8px !important;
+      box-sizing: border-box !important;
+      width: 100% !important;
+      position: relative !important;
+      z-index: 50 !important;
+    }
+    .custom-dropdown {
+      position: relative !important;
+      width: 100% !important;
+    }
+    .custom-dropdown.is-open {
+      z-index: 9999 !important;
+    }
+    .custom-dd-btn {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      width: 100% !important;
+      height: 48px !important;
+      padding: 0 1rem !important;
+      background-color: #FAF7F2 !important;
+      border: 2px solid #1D1C1A !important;
+      border-radius: 6px !important;
+      box-shadow: 2px 2px 0px #1D1C1A !important;
+      cursor: pointer !important;
+      text-align: left !important;
+      box-sizing: border-box !important;
+      transition: all 0.2s ease !important;
+    }
+    .custom-dd-label-group {
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.5rem !important;
+      font-family: var(--font-sans) !important;
+      font-size: 0.88rem !important;
+      min-width: 0 !important;
+    }
+    .custom-dd-prefix {
+      font-weight: 800 !important;
+      color: #8C7853 !important;
+      font-size: 0.8rem !important;
+      text-transform: uppercase !important;
+      flex-shrink: 0 !important;
+    }
+    .custom-dd-selected-text {
+      font-weight: 700 !important;
+      color: #171614 !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+    .custom-dd-chevron {
+      color: #171614 !important;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      flex-shrink: 0 !important;
+    }
+    .custom-dropdown.is-open .custom-dd-chevron {
+      transform: rotate(180deg) !important;
+    }
+    .custom-dropdown.is-open .custom-dd-btn {
+      border-color: #1E3A8A !important;
+      box-shadow: 3px 3px 0px #1E3A8A !important;
+    }
+    .custom-dd-menu {
+      display: none !important;
+      position: absolute !important;
+      top: calc(100% + 4px) !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      max-height: 280px !important;
+      overflow-y: auto !important;
+      background: #FAF7F2 !important;
+      border: 2px solid #1D1C1A !important;
+      border-radius: 6px !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4) !important;
+      z-index: 999999 !important;
+      box-sizing: border-box !important;
+      padding: 0.25rem 0 !important;
+    }
+    .custom-dropdown.is-open .custom-dd-menu {
+      display: block !important;
+    }
+    .custom-dd-item {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 0.75rem 1rem !important;
+      font-family: var(--font-sans) !important;
+      font-size: 0.88rem !important;
+      font-weight: 700 !important;
+      color: #171614 !important;
+      cursor: pointer !important;
+      transition: background 0.15s ease !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+    }
+    .custom-dd-item:last-child {
+      border-bottom: none !important;
+    }
+    .custom-dd-item:hover {
+      background-color: #F0E8DC !important;
+    }
+    .custom-dd-item.active {
+      background-color: #E2D5B8 !important;
+      color: #171614 !important;
+      font-weight: 800 !important;
+    }
+    .custom-dd-item .check-icon {
+      display: none !important;
+    }
+    .custom-dd-item.active .check-icon {
+      display: block !important;
+      stroke: #1E3A8A !important;
+    }
+
+    /* Vertical Ticket Stack on Mobile */
+    .shop-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+    }
+    .tickets-list {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 1.25rem !important;
+      width: 100% !important;
+      overflow: visible !important;
+      overflow-x: visible !important;
+      overflow-y: visible !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      scroll-snap-type: none !important;
+    }
+    .tickets-list::-webkit-scrollbar {
+      display: none !important;
+    }
+    .tickets-list > .ticket-stub {
+      flex: none !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 0 1.25rem 0 !important;
+    }
+    .checkout-sidebar-container {
+      display: none !important;
+    }
+
+    /* 3. PHOTO MARQUEE COMPACT FILMSTRIP */
+    .marquee-section {
+      padding: 3rem 0 !important;
+    }
+    .horizontal-marquee-container {
+      gap: 0.5rem !important;
+    }
+    .marquee-photo-card {
+      width: 190px !important;
+      height: 130px !important;
+      padding: 3px !important;
+    }
+    .photo-mask-frame {
+      border-radius: 4px !important;
+    }
+
+    /* 4. TIMELINE SECTION POLISH */
+    .timeline-scroll-section {
+      padding: 3.5rem 0 !important;
+    }
+    .timeline-title {
+      font-size: 2rem !important;
+      line-height: 1.15 !important;
+    }
+    .timeline-intro-text {
+      font-size: 0.9rem !important;
+      line-height: 1.5 !important;
+      margin-bottom: 1.5rem !important;
+    }
+    .timeline-track-viewport {
+      padding: 0 1rem 1.5rem !important;
+    }
+    .timeline-track {
+      gap: 1rem !important;
+    }
+    .timeline-card {
+      width: 82vw !important;
+      max-width: 310px !important;
+      height: auto !important;
+      min-height: 360px !important;
+      padding: 1.25rem 1rem !important;
+      border-radius: 8px !important;
+      border: 2px solid var(--text-charcoal) !important;
+      box-shadow: 4px 4px 0px var(--text-charcoal) !important;
+    }
+    .card-year {
+      font-size: 2.25rem !important;
+    }
+    .card-title {
+      font-size: 1.2rem !important;
+      margin: 0.35rem 0 0.5rem !important;
+    }
+    .card-desc {
+      font-size: 0.85rem !important;
+      line-height: 1.45 !important;
+    }
+    .card-media-frame {
+      height: 130px !important;
+      margin-top: 0.75rem !important;
+    }
+    .timeline-axis-wrap {
+      display: none !important;
+    }
+
+    /* 5. SPLIT FEATURES & PILLARS */
+    .split-features-section {
+      padding: 3rem 0 !important;
+    }
+    .split-layout {
+      gap: 1.75rem !important;
+      margin-bottom: 3.5rem !important;
+    }
+    .visual-placeholder img {
+      height: 220px !important;
+    }
+    .tt-split-title {
+      font-size: 1.5rem !important;
+    }
+
+    /* 6. HERITAGE STATS */
+    .heritage-bar {
+      padding: 2.25rem 0 !important;
+    }
+    .heritage-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 0.5rem !important;
+      align-items: start !important;
+      text-align: center !important;
+    }
+    .heritage-stat {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 0.25rem !important;
+    }
+    .stat-icon-wrapper {
+      width: 46px !important;
+      height: 46px !important;
+      margin-bottom: 0.15rem !important;
+    }
+    .stat-icon-wrapper svg {
+      width: 22px !important;
+      height: 22px !important;
+    }
+    .stat-val {
+      font-size: 1.35rem !important;
+      line-height: 1.1 !important;
+    }
+    .stat-label {
+      font-size: 0.62rem !important;
+      letter-spacing: 0.04em !important;
+      line-height: 1.25 !important;
+    }
+
+    /* 7. CHECKOUT BOTTOM SHEET */
+    .checkout-modal-overlay {
+      align-items: flex-end !important;
+      padding: 0 !important;
+    }
+    .checkout-modal-card {
+      max-width: 100% !important;
+      width: 100% !important;
+      border-radius: 16px 16px 0 0 !important;
+      max-height: 90vh !important;
+      overflow-y: auto !important;
+      padding: 1.5rem 1.25rem !important;
+      margin: 0 !important;
     }
   }
 
@@ -3125,7 +3706,7 @@ const tickets = await getTickets('gent');
   .success-title { font-size: 1.5rem; color: var(--text-charcoal); margin-bottom: 0.1rem; }
   .success-subtitle { font-size: 0.85rem; color: var(--text-muted); }
   .success-body { padding-top: 0.75rem; }
-  .ticket-summary-box { background-color: #FAF7F2; border: 1.5px solid #d5c28a; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01); }
+  .ticket-summary-box { background-color: #FCFAF7; border: 1.5px solid #d5c28a; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01); }
   .summary-item { display: flex; justify-content: space-between; font-family: var(--font-sans); font-size: 0.85rem; }
   .summary-item span { color: var(--text-muted); font-weight: 600; }
   .summary-item strong { color: var(--text-charcoal); font-weight: 700; }
@@ -3567,7 +4148,7 @@ const tickets = await getTickets('gent');
   .timetable-tab-btn.active {
     background-color: var(--success-green);
     border-color: var(--success-green);
-    color: #FAF7F2;
+    color: #FCFAF7;
   }
   .timetable-time-filter {
     display: inline-flex;
@@ -3608,7 +4189,7 @@ const tickets = await getTickets('gent');
   .tt-time-btn.active {
     background-color: var(--success-green);
     border-color: var(--success-green);
-    color: #FAF7F2;
+    color: #FCFAF7;
     box-shadow: 0 2px 8px rgba(30, 58, 138, 0.25);
   }
   .timetable-pane {
@@ -4072,6 +4653,113 @@ const tickets = await getTickets('gent');
     });
   });
 
+  // Custom Styled Mobile Dropdowns Logic
+  function setupCustomDropdown(dropdownId: string, onSelect: (val: string, label: string) => void) {
+    const dd = document.getElementById(dropdownId);
+    if (!dd) return;
+    const btn = dd.querySelector('.custom-dd-btn') as HTMLButtonElement | null;
+    const items = dd.querySelectorAll('.custom-dd-item');
+
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dd.classList.contains('is-open');
+        document.querySelectorAll('.custom-dropdown').forEach(d => d.classList.remove('is-open'));
+        if (!isOpen) {
+          dd.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        } else {
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    items.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const val = item.getAttribute('data-value') || 'all';
+        const span = item.querySelector('span');
+        const label = span ? span.textContent || '' : '';
+        
+        items.forEach(it => it.classList.remove('active'));
+        item.classList.add('active');
+        dd.classList.remove('is-open');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+
+        onSelect(val, label);
+      });
+    });
+  }
+
+  // Close custom dropdowns on click outside
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.custom-dropdown').forEach(d => {
+      d.classList.remove('is-open');
+      const b = d.querySelector('.custom-dd-btn');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  const ddDayText = document.getElementById('dd-day-text');
+  const ddCatText = document.getElementById('dd-cat-text');
+  const ddTimeText = document.getElementById('dd-time-text');
+
+  setupCustomDropdown('dd-filter-day', (val, label) => {
+    activeDay = val;
+    if (ddDayText) ddDayText.textContent = val === 'all' ? 'Alle Dagen' : label.split(' 2026')[0];
+    dayButtons.forEach(b => {
+      b.classList.toggle('active', (b.getAttribute('data-filter-day') || 'all') === activeDay);
+    });
+    visibleCount = 10;
+    applyFilters();
+  });
+
+  setupCustomDropdown('dd-filter-cat', (val, label) => {
+    activeCat = val;
+    if (ddCatText) ddCatText.textContent = val === 'all' ? 'Alle Tickets & Masterclasses' : label;
+    catButtons.forEach(b => {
+      b.classList.toggle('active', (b.getAttribute('data-filter-cat') || 'all') === activeCat);
+    });
+    visibleCount = 10;
+    applyFilters();
+  });
+
+  setupCustomDropdown('dd-filter-time', (val, label) => {
+    activeTime = val;
+    if (ddTimeText) ddTimeText.textContent = val === 'all' ? 'Alle Tijdsloten' : label.split(' (')[0];
+    timeButtons.forEach(b => {
+      b.classList.toggle('active', (b.getAttribute('data-filter-time') || 'all') === activeTime);
+    });
+    visibleCount = 10;
+    applyFilters();
+  });
+
+  function updateCustomDropdownLabels() {
+    const dayItem = document.querySelector(`#dd-filter-day .custom-dd-item[data-value="${activeDay}"]`);
+    if (dayItem && ddDayText) {
+      document.querySelectorAll('#dd-filter-day .custom-dd-item').forEach(i => i.classList.remove('active'));
+      dayItem.classList.add('active');
+      const s = dayItem.querySelector('span');
+      ddDayText.textContent = activeDay === 'all' ? 'Alle Dagen' : (s ? s.textContent?.split(' 2026')[0] || '' : '');
+    }
+
+    const catItem = document.querySelector(`#dd-filter-cat .custom-dd-item[data-value="${activeCat}"]`);
+    if (catItem && ddCatText) {
+      document.querySelectorAll('#dd-filter-cat .custom-dd-item').forEach(i => i.classList.remove('active'));
+      catItem.classList.add('active');
+      const s = catItem.querySelector('span');
+      ddCatText.textContent = activeCat === 'all' ? 'Alle Tickets & Masterclasses' : (s ? s.textContent || '' : '');
+    }
+
+    const timeItem = document.querySelector(`#dd-filter-time .custom-dd-item[data-value="${activeTime}"]`);
+    if (timeItem && ddTimeText) {
+      document.querySelectorAll('#dd-filter-time .custom-dd-item').forEach(i => i.classList.remove('active'));
+      timeItem.classList.add('active');
+      const s = timeItem.querySelector('span');
+      ddTimeText.textContent = activeTime === 'all' ? 'Alle Tijdsloten' : (s ? s.textContent?.split(' (')[0] || '' : '');
+    }
+  }
+
   // Handle URL Query Params for deep linked categories & days (e.g. /?cat=masterclass#sessies)
   function handleUrlFilters() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -4097,6 +4785,7 @@ const tickets = await getTickets('gent');
     }
 
     applyFilters();
+    updateCustomDropdownLabels();
 
     if (window.location.hash === '#sessies' || catParam || dayParam) {
       setTimeout(() => {

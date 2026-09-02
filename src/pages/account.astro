@@ -82,16 +82,6 @@ import Footer from '../components/Footer.astro';
         <div class="vintage-line"></div>
       </div>
 
-    <!-- Demonstration Banner (shown if demo account is active) -->
-    <div class="demo-banner animate-fade-in portal-authenticated-block" id="demo-banner" style="display: none;">
-      <div class="demo-banner-inner">
-        <div class="demo-text">
-          <strong>Demonstratie Account Actief</strong>
-          <span>U bekijkt een voorbeeld account. Bestel uw tickets op de homepage om uw eigen bestelling hier live te bekijken.</span>
-        </div>
-      </div>
-    </div>
-
     <!-- Vintage Portal Tab Menu (Restored Original Design Structure) -->
     <div class="portal-tabs-container animate-fade-in portal-authenticated-block">
       <div class="portal-tabs-inner">
@@ -102,7 +92,7 @@ import Footer from '../components/Footer.astro';
           Persoonsgegevens
         </button>
         <button class="portal-tab-trigger" data-tab="tab-info">
-          Event Informatie
+          Event Info
         </button>
       </div>
     </div>
@@ -307,7 +297,7 @@ import Footer from '../components/Footer.astro';
             <div class="vintage-line" style="margin: 0;"></div>
             
             <div class="receipt-table-wrapper">
-              <table class="receipt-table">
+              <table class="receipt-table desktop-only-table">
                 <thead>
                   <tr>
                     <th>Reservering</th>
@@ -320,16 +310,39 @@ import Footer from '../components/Footer.astro';
                   <tr>
                     <td><strong id="receipt-res-no">#WF-2026-84387</strong></td>
                     <td>26 Mei 2026</td>
-                    <td><strong id="receipt-total" style="color: var(--whisky-gold-dark);">€ 79,50</strong></td>
+                    <td><strong id="receipt-total" style="color: #1E3A8A;">€ 79,50</strong></td>
                     <td><span class="status-badge paid">Betaald</span></td>
                   </tr>
                 </tbody>
               </table>
+
+              <!-- Mobile Order Card View (Spacious, Uncramped, Clean) -->
+              <div class="receipt-mobile-card-view">
+                <div class="rc-mobile-card">
+                  <div class="rc-mobile-row rc-mobile-head">
+                    <div class="rc-mobile-col">
+                      <span class="rc-label">Reservering</span>
+                      <strong class="rc-res-val font-mono" id="receipt-res-no-mob">#WF-2026-84387</strong>
+                    </div>
+                    <span class="status-badge paid">Betaald</span>
+                  </div>
+                  <div class="rc-mobile-row rc-mobile-body">
+                    <div class="rc-mobile-col">
+                      <span class="rc-label">Datum</span>
+                      <span class="rc-date-val">26 Mei 2026</span>
+                    </div>
+                    <div class="rc-mobile-col rc-mobile-right">
+                      <span class="rc-label">Totaal</span>
+                      <strong class="rc-price-val" id="receipt-total-mob" style="color: #1E3A8A;">€ 79,50</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="receipt-billing-note" style="border-top: 1px dotted var(--border-color-dark); padding-top: 1.25rem;">
               <p class="sidebar-card-subtext">
-                Heeft u vragen over uw factuur of wilt u uw bestelling annuleren? Neem direct contact op via <a href="mailto:tickets@amsterdamwhiskyfestival.nl" class="text-gold" style="font-weight: 700;">tickets@amsterdamwhiskyfestival.nl</a>.
+                Heeft u vragen over uw factuur of wilt u uw bestelling annuleren? Neem direct contact op via <a href="mailto:info@whiskyfestival.be" class="text-gold" style="font-weight: 700;">info@whiskyfestival.be</a>.
               </p>
             </div>
           </div>
@@ -873,48 +886,53 @@ import Footer from '../components/Footer.astro';
     color: var(--text-muted);
   }
 
-  /* --- RESTORED VINTAGE TAB NAVIGATION DESIGN --- */
+  /* --- RESTORED VINTAGE FOLDER TAB NAVIGATION DESIGN --- */
   .portal-tabs-container {
     width: 100%;
-    border-bottom: 2px solid var(--text-charcoal);
+    border-bottom: 2px solid var(--text-charcoal, #0F172A);
+    margin-bottom: 2rem;
   }
 
   .portal-tabs-inner {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.5rem;
     width: 100%;
+    align-items: flex-end;
   }
 
   .portal-tab-trigger {
-    flex: 1;
-    background-color: var(--bg-sand);
-    border: 2px solid var(--text-charcoal);
+    flex: 1 1 0;
+    min-width: 0;
+    background-color: var(--bg-sand, #EAF2F8);
+    border: 2px solid var(--text-charcoal, #0F172A);
     border-bottom: none;
     border-radius: 8px 8px 0 0;
-    padding: 1rem 1.5rem;
-    font-family: var(--font-sans);
+    padding: 0.95rem 1rem;
+    font-family: var(--font-sans, system-ui, sans-serif);
     font-weight: 800;
     font-size: 0.9rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-charcoal);
+    letter-spacing: 0.04em;
+    color: var(--text-charcoal, #0F172A);
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: center;
+    box-sizing: border-box;
+    white-space: nowrap;
   }
 
   .portal-tab-trigger:hover {
-    background-color: #c9dbd5;
+    background-color: #DDE8F0;
   }
 
   .portal-tab-trigger.active {
-    background-color: var(--bg-paper-card);
-    border: 2px solid var(--text-charcoal);
-    border-bottom: 3px solid #FAF7F2; background-color: #FAF7F2;
+    background-color: #FCFAF7;
+    border: 2px solid var(--text-charcoal, #0F172A);
+    border-bottom: 3px solid #FCFAF7;
     margin-bottom: -2px;
     position: relative;
     z-index: 2;
-    color: var(--whisky-gold-dark);
+    color: #1E3A8A;
   }
 
   /* --- Tab Content Layout --- */
@@ -1606,8 +1624,79 @@ import Footer from '../components/Footer.astro';
 
   .status-badge.paid {
     background-color: rgba(30, 58, 138, 0.08);
-    color: var(--whisky-gold-dark);
+    color: #1E3A8A;
     border: 1px solid rgba(30, 58, 138, 0.25);
+  }
+
+  /* --- Receipt Mobile Card View Styles --- */
+  .receipt-mobile-card-view {
+    display: none;
+    width: 100%;
+  }
+
+  .rc-mobile-card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--border-color-dark, #CBD5E1);
+    border-radius: 8px;
+    padding: 1.25rem 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .rc-mobile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .rc-mobile-head {
+    border-bottom: 1px dashed rgba(30, 58, 138, 0.25);
+    padding-bottom: 0.75rem;
+  }
+
+  .rc-mobile-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .rc-mobile-right {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .rc-label {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted, #334155);
+  }
+
+  .rc-res-val {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-charcoal, #0F172A);
+    letter-spacing: 0.02em;
+  }
+
+  .rc-date-val {
+    font-family: var(--font-serif);
+    font-size: 0.92rem;
+    color: var(--text-charcoal, #0F172A);
+  }
+
+  .rc-price-val {
+    font-family: var(--font-sans);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #1E3A8A;
   }
 
   /* --- Event booklet layout --- */
@@ -1623,7 +1712,7 @@ import Footer from '../components/Footer.astro';
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--whisky-gold-dark);
+    color: #1E3A8A;
     margin: 0;
   }
 
@@ -1651,7 +1740,7 @@ import Footer from '../components/Footer.astro';
     left: 0;
     top: 0;
     font-size: 0.65rem;
-    color: var(--whisky-gold-dark);
+    color: #FF6500;
   }
 
   .rules-list {
@@ -1696,27 +1785,165 @@ import Footer from '../components/Footer.astro';
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 990px) {
     .account-page-wrapper {
-      padding-top: 8rem;
-    }
-
-    .ticket-stub-large {
-      grid-template-columns: 1fr;
-    }
-    
-    .ticket-right-stub {
-      border-right: none;
-      border-bottom: 2px dashed var(--border-color-dark);
-      padding: 1.5rem;
-    }
-
-    .ticket-left-stub {
-      padding: 1.5rem;
+      padding: 7.5rem 1rem 4rem !important;
+      gap: 1.5rem !important;
     }
 
     .portal-title {
-      font-size: 2.25rem;
+      font-size: clamp(1.75rem, 6vw, 2.35rem) !important;
+      line-height: 1.15 !important;
+    }
+
+    .portal-subtitle {
+      font-size: 0.85rem !important;
+      text-align: center !important;
+      word-break: break-all !important;
+      max-width: 100% !important;
+    }
+
+    .btn-clean-logout {
+      margin: 0.25rem auto 0 !important;
+      display: inline-flex !important;
+    }
+
+    .portal-tabs-container {
+      width: 100% !important;
+      border-bottom: 2px solid var(--text-charcoal, #0F172A) !important;
+      margin-bottom: 1.5rem !important;
+      box-sizing: border-box !important;
+    }
+
+    .portal-tabs-inner {
+      display: flex !important;
+      width: 100% !important;
+      gap: 0.25rem !important;
+      align-items: flex-end !important;
+      box-sizing: border-box !important;
+    }
+
+    .portal-tab-trigger {
+      flex: 1 1 0 !important;
+      min-width: 0 !important;
+      background-color: var(--bg-sand, #EAF2F8) !important;
+      border: 1.5px solid var(--text-charcoal, #0F172A) !important;
+      border-bottom: none !important;
+      border-radius: 6px 6px 0 0 !important;
+      padding: 0.75rem 0.2rem !important;
+      font-size: clamp(0.68rem, 2.7vw, 0.8rem) !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.01em !important;
+      text-align: center !important;
+      white-space: nowrap !important;
+      color: var(--text-charcoal, #0F172A) !important;
+      box-sizing: border-box !important;
+    }
+
+    .portal-tab-trigger:hover {
+      background-color: #DDE8F0 !important;
+    }
+
+    .portal-tab-trigger.active {
+      background-color: #FCFAF7 !important;
+      border: 1.5px solid var(--text-charcoal, #0F172A) !important;
+      border-bottom: 3px solid #FCFAF7 !important;
+      margin-bottom: -2px !important;
+      position: relative !important;
+      z-index: 2 !important;
+      color: #1E3A8A !important;
+    }
+
+    .desktop-only-table {
+      display: none !important;
+    }
+
+    .receipt-mobile-card-view {
+      display: block !important;
+    }
+
+    .portal-container {
+      grid-template-columns: 1fr !important;
+      gap: 1.5rem !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    .ticket-envelope {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      max-width: 100% !important;
+    }
+
+    .ticket-stub-large {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      border-radius: 8px !important;
+      border: 2px solid #0F172A !important;
+      box-shadow: 4px 4px 0px #0F172A !important;
+      overflow: hidden !important;
+    }
+    
+    .ticket-right-stub {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      border-right: none !important;
+      border-bottom: 2px dashed rgba(30, 58, 138, 0.3) !important;
+      padding: 1.35rem 1rem !important;
+      background: var(--bg-sand) !important;
+    }
+
+    .ticket-left-stub {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 1.35rem 1rem !important;
+      background: #FFFFFF !important;
+    }
+
+    .ticket-header-row {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 0.65rem !important;
+      width: 100% !important;
+    }
+
+    .ticket-session-title {
+      font-size: 1.35rem !important;
+      line-height: 1.2 !important;
+    }
+
+    .ticket-meta-trio {
+      grid-template-columns: 1fr !important;
+      gap: 0.65rem !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    .ticket-actions-row {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 0.65rem !important;
+      width: 100% !important;
+    }
+
+    .btn-ticket-action, .ticket-share-wrapper {
+      width: 100% !important;
+    }
+
+    .btn-ticket-download, .btn-ticket-share {
+      width: 100% !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
+    }
+
+    .ticket-share-menu {
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      min-width: unset !important;
+      box-sizing: border-box !important;
     }
   }
 
@@ -2202,7 +2429,6 @@ import Footer from '../components/Footer.astro';
     // 2. Data Population & Synchronization
     const portalWelcomeEmail = document.getElementById('portal-welcome-email');
     const portalTitleName = document.getElementById('portal-title-name');
-    const demoBanner = document.getElementById('demo-banner');
 
     // Profile inputs
     const profileInputName = document.getElementById('profile-input-name') as HTMLInputElement;
@@ -2212,7 +2438,9 @@ import Footer from '../components/Footer.astro';
     
     // Receipt elements
     const receiptResNo = document.getElementById('receipt-res-no');
+    const receiptResNoMob = document.getElementById('receipt-res-no-mob');
     const receiptTotal = document.getElementById('receipt-total');
+    const receiptTotalMob = document.getElementById('receipt-total-mob');
 
     // Retrieve order details from localStorage
     const stored = localStorage.getItem('wf_last_order');
@@ -2226,7 +2454,7 @@ import Footer from '../components/Footer.astro';
       }
     }
 
-    // Fallback default order data (Demo Mode)
+    // Fallback default order data
     if (!orderData) {
       orderData = {
         name: "Deon Draijer",
@@ -2244,12 +2472,8 @@ import Footer from '../components/Footer.astro';
         phone: "+31 6 12345678",
         whiskyStyle: "Single Malt Scotch",
         isMember: true,
-        isDemo: true,
         totalPrice: 79.50
       };
-      if (demoBanner) demoBanner.style.display = "block";
-    } else {
-      if (demoBanner) demoBanner.style.display = "none";
     }
 
     if (!orderData.items || orderData.items.length === 0) {
@@ -2281,10 +2505,13 @@ import Footer from '../components/Footer.astro';
         }
       }
 
-      if (receiptResNo) receiptResNo.textContent = orderData.resNumber || "#WF-2026-84387";
-      if (receiptTotal) {
-        receiptTotal.textContent = `€ ${(orderData.totalPrice || 79.50).toFixed(2).replace('.', ',')}`;
-      }
+      const resNum = orderData.resNumber || "#WF-2026-84387";
+      const formattedTotal = `€ ${(orderData.totalPrice || 79.50).toFixed(2).replace('.', ',')}`;
+
+      if (receiptResNo) receiptResNo.textContent = resNum;
+      if (receiptResNoMob) receiptResNoMob.textContent = resNum;
+      if (receiptTotal) receiptTotal.textContent = formattedTotal;
+      if (receiptTotalMob) receiptTotalMob.textContent = formattedTotal;
 
       // Populate form inputs
       if (profileInputName) profileInputName.value = userName;
