@@ -193,25 +193,25 @@ const exhibitors = await getStandhouders('gent');
               <!-- ============================================== -->
               <g class="map-entrance-flow">
                 <!-- Directional dashed line from margin -->
-                <path d="M 15 375 L 70 375" stroke="#FF6500" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3" fill="none" />
-                <polygon points="70,375 60,370 60,380" fill="#FF6500" />
+                <path d="M 15 375 L 70 375" stroke="#caac8e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3" fill="none" />
+                <polygon points="70,375 60,370 60,380" fill="#caac8e" />
                 
                 <!-- INKOM & VESTIAIRE Badge placed cleanly inside Gatehouse -->
-                <rect x="75" y="360" width="76" height="30" rx="3" fill="#FF6500" />
+                <rect x="75" y="360" width="76" height="30" rx="3" fill="#caac8e" />
                 <text x="113" y="373" font-family="var(--font-sans)" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">INKOM &amp;</text>
                 <text x="113" y="384" font-family="var(--font-sans)" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">VESTIAIRE</text>
 
                 <!-- Connection arrow into Binnenkoer -->
-                <path d="M 151 375 L 175 375" stroke="#FF6500" stroke-width="2" stroke-dasharray="4 3" fill="none" />
-                <polygon points="175,375 167,371 167,379" fill="#FF6500" />
+                <path d="M 151 375 L 175 375" stroke="#caac8e" stroke-width="2" stroke-dasharray="4 3" fill="none" />
+                <polygon points="175,375 167,371 167,379" fill="#caac8e" />
               </g>
 
               <!-- ============================================== -->
               <!-- BUITENTERREIN: FOODTRUCKS (Binnenkoer) -->
               <!-- ============================================== -->
               <!-- Clean Header Banner for Foodtrucks -->
-              <rect x="180" y="352" width="220" height="20" rx="3" fill="rgba(255, 101, 0, 0.1)" stroke="#FF6500" stroke-width="1.2" />
-              <text x="290" y="366" font-family="var(--font-sans)" font-size="9" font-weight="900" fill="#FF6500" text-anchor="middle" letter-spacing="0.08em">FOODTRUCKS BUITENTERREIN</text>
+              <rect x="180" y="352" width="220" height="20" rx="3" fill="rgba(202, 172, 142, 0.1)" stroke="#caac8e" stroke-width="1.2" />
+              <text x="290" y="366" font-family="var(--font-sans)" font-size="9" font-weight="900" fill="#caac8e" text-anchor="middle" letter-spacing="0.08em">FOODTRUCKS BUITENTERREIN</text>
 
               <!-- Foodtruck 1: Meat the grill -->
               <g class="svg-stand" data-stand="F1" title="Meat the grill">
@@ -261,7 +261,7 @@ const exhibitors = await getStandhouders('gent');
                 <circle cx="185" cy="258" r="10" class="tasting-circle" />
                 <circle cx="185" cy="294" r="10" class="tasting-circle" />
                 
-                <rect x="202" y="250" width="40" height="17" rx="2" fill="rgba(255, 101, 0, 0.12)" stroke="#FF6500" stroke-width="1" />
+                <rect x="202" y="250" width="40" height="17" rx="2" fill="rgba(202, 172, 142, 0.12)" stroke="#caac8e" stroke-width="1" />
                 <text x="222" y="262" class="food-banner-text">FOOD</text>
               </g>
 
@@ -577,7 +577,7 @@ const exhibitors = await getStandhouders('gent');
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--accent-color, #FF6500);
+    color: var(--whisky-gold, #caac8e);
   }
 
   .page-title {
@@ -868,19 +868,19 @@ const exhibitors = await getStandhouders('gent');
 
   .svg-stand:hover .stand-box {
     fill: #FFF3EB;
-    stroke: #FF6500;
-    filter: drop-shadow(0 2px 5px rgba(255, 101, 0, 0.35));
+    stroke: #caac8e;
+    filter: drop-shadow(0 2px 5px rgba(202, 172, 142, 0.35));
     stroke-width: 2.2;
   }
 
   .svg-stand:hover .stand-num {
-    fill: #FF6500;
+    fill: #caac8e;
   }
 
   /* Selected stand active state */
   .svg-stand.selected-stand .stand-box {
     fill: var(--primary-color);
-    stroke: #FF6500;
+    stroke: #caac8e;
     stroke-width: 2.5;
     filter: drop-shadow(0 3px 8px rgba(30, 58, 138, 0.45));
   }
@@ -915,14 +915,14 @@ const exhibitors = await getStandhouders('gent');
 
   /* Functional Areas Styling */
   .stand-box.catering {
-    fill: rgba(255, 101, 0, 0.08);
-    stroke: #FF6500;
+    fill: rgba(202, 172, 142, 0.08);
+    stroke: #caac8e;
   }
 
   .svg-stand[data-stand="F1"]:hover .stand-box,
   .svg-stand[data-stand="F2"]:hover .stand-box {
-    fill: #FF6500;
-    stroke: #FF8A00;
+    fill: #caac8e;
+    stroke: #1E3A8A;
   }
 
   .svg-stand[data-stand="F1"]:hover text,
@@ -963,8 +963,8 @@ const exhibitors = await getStandhouders('gent');
 
   /* Brasserie Food Tasting Circles */
   .tasting-circle {
-    fill: rgba(255, 101, 0, 0.08);
-    stroke: #FF6500;
+    fill: rgba(202, 172, 142, 0.08);
+    stroke: #caac8e;
     stroke-width: 1.5;
     stroke-dasharray: 3 2;
   }
@@ -973,7 +973,7 @@ const exhibitors = await getStandhouders('gent');
     font-family: var(--font-sans);
     font-size: 9px;
     font-weight: 900;
-    fill: #FF6500;
+    fill: #caac8e;
     letter-spacing: 0.1em;
     pointer-events: none;
   }
@@ -985,15 +985,15 @@ const exhibitors = await getStandhouders('gent');
   }
 
   .svg-stand.highlighted-search-stand .stand-box {
-    stroke: #FF6500;
+    stroke: #caac8e;
     stroke-width: 2.8;
     animation: gentPulse 1.6s infinite;
   }
 
   @keyframes gentPulse {
-    0% { filter: drop-shadow(0 0 0 rgba(255, 101, 0, 0.7)); }
-    70% { filter: drop-shadow(0 0 10px rgba(255, 101, 0, 0)); }
-    100% { filter: drop-shadow(0 0 0 rgba(255, 101, 0, 0)); }
+    0% { filter: drop-shadow(0 0 0 rgba(202, 172, 142, 0.7)); }
+    70% { filter: drop-shadow(0 0 10px rgba(202, 172, 142, 0)); }
+    100% { filter: drop-shadow(0 0 0 rgba(202, 172, 142, 0)); }
   }
 
   /* --- Sidebar Panels --- */
@@ -1093,9 +1093,9 @@ const exhibitors = await getStandhouders('gent');
   }
 
   .tag-scotch {
-    background-color: rgba(255, 101, 0, 0.12);
+    background-color: rgba(202, 172, 142, 0.12);
     color: #C04D00;
-    border: 1px solid #FF6500;
+    border: 1px solid #caac8e;
   }
 
   .tag-independent {
@@ -1210,8 +1210,8 @@ const exhibitors = await getStandhouders('gent');
   }
 
   .directory-item-card.selected-card {
-    border-color: #FF6500;
-    outline: 2px solid #FF6500;
+    border-color: #caac8e;
+    outline: 2px solid #caac8e;
     background-color: #FFFDF9;
   }
 
@@ -1278,7 +1278,7 @@ const exhibitors = await getStandhouders('gent');
   }
 
   .btn-locate-stand:hover {
-    color: #FF6500;
+    color: #caac8e;
     transform: translateX(3px);
   }
 

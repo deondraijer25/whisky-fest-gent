@@ -66,14 +66,14 @@ export const BRAND: BrandConfig = {
   colors: {
     primary: '#1E3A8A',         // Gent Royal Blue
     primaryHover: '#172554',
-    accent: '#FF6500',          // Gent Orange
-    accentLight: '#FF8A00',
+    accent: '#caac8e',          // Gent Vintage Beige/Gold from logo
+    accentLight: '#e4d5c4',
     bgParchment: '#FAF7F2',     // Warm vintage cotton paper
     bgSand: '#EAF2F8',          // Light blue-tinted paper
     bgPaperCard: '#FCFAF7',
     textCharcoal: '#0F172A',    // Gent Deep Dark Blue
     textMuted: '#334155',       // Muted blue-grey
-    border: '#CBD5E1',
+    border: '#caac8e',
     borderDark: '#1E3A8A',
     heroGradient: 'linear-gradient(135deg, #091326 0%, #1E3A8A 35%, #172554 65%, #0B1528 100%)',
     heroTintRadial: 'radial-gradient(circle at 70% 50%, rgba(30, 58, 138, 0.15) 0%, rgba(9, 19, 38, 0.45) 100%)'

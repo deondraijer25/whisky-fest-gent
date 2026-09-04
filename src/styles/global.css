@@ -11,16 +11,16 @@
   --text-muted: #4c5752;       /* Soft dark sage for secondary text */
   
   /* Whisky Gold & Cooper Tones */
-  --whisky-gold: #FF6500;      /* Champagne gold from logo (#d5c28a) */
-  --whisky-gold-light: #e9dfb7;  /* Lighter gold tint for hovers */
-  --whisky-gold-dark: #1E3A8A;   /* Brand dark green from logo (#1E3A8A) */
-  --whisky-gold-trans: rgba(30, 58, 138, 0.08); /* Translucent dark green */
+  --whisky-gold: #caac8e;      /* Vintage beige from logo (#caac8e) */
+  --whisky-gold-light: #e4d5c4;  /* Lighter beige tint for hovers */
+  --whisky-gold-dark: #1E3A8A;   /* Brand royal blue from logo (#1E3A8A) */
+  --whisky-gold-trans: rgba(30, 58, 138, 0.08); /* Translucent royal blue */
   
   /* Accents & Borders */
-  --success-green: #1E3A8A;    /* Brand dark green */
-  --success-green-light: #d8e7e2; /* Brand light green */
-  --border-color: #c1d4ce;     /* Soft sage border line */
-  --border-color-dark: #8ba198; /* High contrast sage line */
+  --success-green: #1E3A8A;    /* Brand royal blue */
+  --success-green-light: #dbeafe; /* Brand light blue */
+  --border-color: #ded6c9;     /* Soft beige border line */
+  --border-color-dark: #1E3A8A; /* High contrast brand line */
   
   /* Elevation & Shadows */
   --shadow-paper: 0 10px 35px rgba(29, 28, 26, 0.05), 0 2px 8px rgba(29, 28, 26, 0.02);
@@ -896,7 +896,7 @@ strong {
   color: #FFFFFF !important;
 }
 .site-footer .footer-gold-link {
-  color: #FF6500 !important;
+  color: #caac8e !important;
 }
 
 /* ====================================================
@@ -1614,7 +1614,7 @@ strong {
   border-radius: 4px;
   border: 2px solid #0F172A;
   box-shadow: 2px 2px 0px #0F172A;
-  background-color: #FF6500;
+  background-color: #caac8e;
   color: #0F172A;
   cursor: pointer;
   display: inline-flex;
@@ -1624,7 +1624,7 @@ strong {
 }
 
 .btn-mscb-checkout:hover {
-  background-color: #FF8A00;
+  background-color: #172554;
   transform: translate(-1px, -1px);
   box-shadow: 3px 3px 0px #0F172A;
 }
