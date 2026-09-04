@@ -32,6 +32,9 @@ export interface BrandConfig {
     heroTintRadial: string;
   };
 
+  address?: string;
+  email?: string;
+
   copy: {
     heroTitleLine1: string;
     heroTitleLine2: string;
@@ -62,6 +65,8 @@ export const BRAND: BrandConfig = {
   datesShort: '2-4 Okt 2026',
   domain: 'https://whisky-fest-gent.vercel.app',
   localPort: 4332,
+  address: 'Rekelingestraat 5, 9000 Gent, België',
+  email: 'info@whiskyfestival.be',
 
   colors: {
     primary: '#1E3A8A',         // Gent Royal Blue
@@ -87,8 +92,8 @@ export const BRAND: BrandConfig = {
     preloaderTitle: 'GENTS WHISKY FESTIVAL',
     preloaderSubtitle: 'EST. 2004 • GENT',
     announcementBar: 'Sluit je aan bij duizenden whiskyliefhebbers in Gent – Bestel vandaag nog je tickets!',
-    tramTitle: 'Gentse Whiskytram',
-    tramDesc: 'Rondrit door historisch Gent in een klassieke tram inclusief deskundig geleide proeverij van 4 topdrams.',
+    tramTitle: 'Gentse Whisky Bootjes',
+    tramDesc: 'Varende proeverij over de historische Gentse grachten inclusief deskundig geleide proeverij.',
     floorplanTitle: 'Plattegrond De Oude Vismijn Gent',
     metaTitle: 'Gents Whisky Festival | De Oude Vismijn Gent',
     metaDescription: 'Bezoek het meest toonaangevende whiskyfestival van België in De Oude Vismijn Gent. Bestel nu direct uw entreekaarten.'
