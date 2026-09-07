@@ -252,16 +252,16 @@ const exhibitors = await getStandhouders('gent');
 
               <!-- FESTIVAL BAR (Drinks & Food) -->
               <g class="svg-stand" data-stand="BAR" title="Festival Bar (Food and drinks)">
-                <rect x="192" y="208" width="90" height="38" rx="3" class="stand-box bar-box" />
-                <text x="237" y="224" class="stand-num text-bold text-small">BAR</text>
-                <text x="237" y="238" class="stand-sub text-nano">Drinks &amp; Food</text>
+                <rect x="188" y="206" width="94" height="38" rx="4" class="stand-box bar-box" />
+                <text x="235" y="222" class="stand-num text-bold text-small">BAR</text>
+                <text x="235" y="236" class="stand-sub text-nano">Drinks &amp; Food</text>
               </g>
 
-              <!-- Hier melden voor Masterclasses -->
+              <!-- Hier melden voor Masterclasses (Exact same dimensions as BAR) -->
               <g class="svg-stand" data-stand="MC" title="Hier melden voor Masterclasses">
-                <rect x="192" y="254" width="80" height="32" rx="3" class="stand-box" style="fill: #FAF7F2; stroke-width: 1.5;" />
-                <text x="232" y="267" class="stand-num text-bold text-nano">Hier melden voor</text>
-                <text x="232" y="279" class="stand-num text-bold text-nano" style="fill: #1E3A8A;">Masterclasses</text>
+                <rect x="188" y="252" width="94" height="38" rx="4" class="stand-box mc-box" />
+                <text x="235" y="267" class="stand-num text-bold text-nano">Hier melden voor</text>
+                <text x="235" y="279" class="stand-num text-bold text-nano" style="fill: #1E3A8A;">Masterclasses</text>
               </g>
 
               <!-- ============================================== -->
@@ -869,52 +869,72 @@ const exhibitors = await getStandhouders('gent');
     pointer-events: none;
   }
 
-  /* Functional Areas Styling */
+  /* Functional Areas Styling - 100% Opaque & High-Contrast */
+  .stand-box {
+    fill: #FFFFFF !important;
+    stroke: var(--text-charcoal) !important;
+    stroke-width: 1.8 !important;
+  }
+
   .stand-box.catering {
-    fill: rgba(202, 172, 142, 0.08);
-    stroke: #caac8e;
+    fill: #FFFBF5 !important;
+    stroke: #caac8e !important;
+    stroke-width: 2 !important;
   }
 
   .svg-stand[data-stand="F1"]:hover .stand-box,
   .svg-stand[data-stand="F2"]:hover .stand-box {
-    fill: #caac8e;
-    stroke: #1E3A8A;
+    fill: #caac8e !important;
+    stroke: #1E3A8A !important;
   }
 
   .svg-stand[data-stand="F1"]:hover text,
   .svg-stand[data-stand="F2"]:hover text {
-    fill: #FFFFFF;
+    fill: #FFFFFF !important;
   }
 
   .stand-box.bar-box {
-    fill: rgba(30, 58, 138, 0.08);
-    stroke: var(--primary-color);
+    fill: #F0F4FF !important;
+    stroke: #1E3A8A !important;
+    stroke-width: 2 !important;
   }
 
-  .svg-stand[data-stand="BAR"]:hover .stand-box {
-    fill: var(--primary-color);
+  .stand-box.mc-box {
+    fill: #FAF7F2 !important;
+    stroke: #1E3A8A !important;
+    stroke-width: 2 !important;
   }
 
-  .svg-stand[data-stand="BAR"]:hover text {
-    fill: #FFFFFF;
+  .svg-stand[data-stand="BAR"]:hover .stand-box,
+  .svg-stand[data-stand="MC"]:hover .stand-box {
+    fill: #1E3A8A !important;
+    stroke: #caac8e !important;
+  }
+
+  .svg-stand[data-stand="BAR"]:hover text,
+  .svg-stand[data-stand="MC"]:hover text {
+    fill: #FFFFFF !important;
   }
 
   .stand-box.organisation {
-    fill: rgba(30, 58, 138, 0.08);
-    stroke: var(--primary-color);
+    fill: #F0F4FF !important;
+    stroke: #1E3A8A !important;
+    stroke-width: 2 !important;
   }
 
   .svg-stand[data-stand="O"]:hover .stand-box {
-    fill: var(--primary-color);
+    fill: #1E3A8A !important;
+    stroke: #caac8e !important;
   }
 
   .svg-stand[data-stand="O"]:hover text {
-    fill: #FFFFFF;
+    fill: #FFFFFF !important;
   }
 
   .stand-box.buffet-stand {
-    fill: rgba(79, 70, 229, 0.06);
-    stroke: #4F46E5;
+    fill: #F5F3FF !important;
+    stroke: #4F46E5 !important;
+    stroke-width: 2 !important;
   }
 
   /* Brasserie Food Tasting Circles */
