@@ -191,44 +191,44 @@ const exhibitors = await getStandhouders('gent');
               <text x="925" y="320" class="map-street-label vertical-text">Rekelingestraat ➔</text>
 
               <!-- ============================================== -->
-              <!-- ENTRANCE FLOW: SINT-VEERLEPLEIN -> INKOM -->
+              <!-- ENTRANCE FLOW: SINT-VEERLEPLEIN -> BINNENKOER -> INKOM & VESTIAIRE -->
               <!-- ============================================== -->
               <g class="map-entrance-flow">
-                <!-- Directional dashed line from margin to Poortgebouw -->
-                <path d="M 15 375 L 70 375" stroke="#caac8e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3" fill="none" />
-                <polygon points="70,375 60,370 60,380" fill="#caac8e" />
+                <!-- Directional dashed line from Sint-Veerleplein to Poortgebouw -->
+                <path d="M 15 375 L 70 375" stroke="#1E3A8A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3" fill="none" />
+                <polygon points="70,375 60,370 60,380" fill="#1E3A8A" />
                 
-                <!-- Poortgebouw badge: Entree & Toegang -->
-                <rect x="75" y="360" width="76" height="30" rx="3" fill="#caac8e" />
-                <text x="113" y="373" font-family="var(--font-sans)" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">ENTREE</text>
-                <text x="113" y="384" font-family="var(--font-sans)" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">TOEGANG</text>
+                <!-- Poortgebouw badge: Hoofdentree / Poort -->
+                <rect x="74" y="360" width="78" height="32" rx="4" fill="#1E3A8A" stroke="#1D1C1A" stroke-width="1.8" />
+                <text x="113" y="373" font-family="var(--font-sans)" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">HOOFDENTREE</text>
+                <text x="113" y="385" font-family="var(--font-sans)" font-size="7.5" font-weight="800" fill="#caac8e" text-anchor="middle" letter-spacing="0.06em">POORTGEBOUW</text>
 
                 <!-- Red Pointer Arrow from south pointing into Inkom & Vestiaire block -->
                 <line x1="315" y1="465" x2="315" y2="400" stroke="#DC2626" stroke-width="2.5" />
                 <polygon points="315,392 309,404 321,404" fill="#DC2626" />
 
-                <!-- Inkom & Vestiaire Main Block (East of Binnenkoer) -->
+                <!-- Inkom & Vestiaire Main Block (East of Binnenkoer) - Solid Opaque -->
                 <g class="svg-facility">
-                  <rect x="330" y="340" width="45" height="125" rx="3" fill="#caac8e" stroke="#1D1C1A" stroke-width="1.8" />
-                  <text x="352" y="402" font-family="var(--font-sans)" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.1em" class="vertical-text">INKOM &amp; VESTIAIRE</text>
+                  <rect x="330" y="340" width="46" height="125" rx="4" fill="#caac8e" stroke="#1D1C1A" stroke-width="2" />
+                  <text x="353" y="402" font-family="var(--font-sans)" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.12em" class="vertical-text">INKOM &amp; VESTIAIRE</text>
                 </g>
               </g>
 
               <!-- ============================================== -->
-              <!-- BUITENTERREIN: FOODTRUCKS (Binnenkoer) -->
+              <!-- BUITENTERREIN: FOODTRUCKS (Binnenkoer) - 100% Solid & Opaque -->
               <!-- ============================================== -->
               <!-- Foodtruck 1 (Top-Left of Binnenkoer: Meat the grill) -->
               <g class="svg-stand" data-stand="F1" title="Foodtruck Meat the grill">
-                <rect x="180" y="352" width="75" height="32" rx="3" class="stand-box catering" />
-                <text x="217" y="366" class="stand-num text-bold text-nano">Foodtruck F1</text>
-                <text x="217" y="377" class="stand-sub text-nano" style="font-size: 7.5px; fill: #6B7280;">Meat the Grill</text>
+                <rect x="175" y="350" width="84" height="34" rx="4" class="stand-box catering" style="fill: #FFFFFF !important; stroke: #caac8e !important; stroke-width: 2 !important;" />
+                <text x="217" y="364" class="stand-num text-bold" style="font-size: 8.5px; fill: #1D1C1A;">Foodtruck F1</text>
+                <text x="217" y="377" class="stand-sub" style="font-size: 7.5px; fill: #856404; font-weight: 700;">Meat the Grill</text>
               </g>
 
               <!-- Foodtruck 2 (Bottom-Left of Binnenkoer: Mixed Worlds) -->
               <g class="svg-stand" data-stand="F2" title="Foodtruck Mixed Worlds">
-                <rect x="158" y="392" width="75" height="32" rx="3" class="stand-box catering" />
-                <text x="195" y="406" class="stand-num text-bold text-nano">Foodtruck F2</text>
-                <text x="195" y="417" class="stand-sub text-nano" style="font-size: 7.5px; fill: #6B7280;">Mixed Worlds</text>
+                <rect x="152" y="392" width="84" height="34" rx="4" class="stand-box catering" style="fill: #FFFFFF !important; stroke: #caac8e !important; stroke-width: 2 !important;" />
+                <text x="194" y="406" class="stand-num text-bold" style="font-size: 8.5px; fill: #1D1C1A;">Foodtruck F2</text>
+                <text x="194" y="419" class="stand-sub" style="font-size: 7.5px; fill: #856404; font-weight: 700;">Mixed Worlds</text>
               </g>
 
               <!-- ============================================== -->
