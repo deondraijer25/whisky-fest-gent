@@ -3,6 +3,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { EXHIBITORS_GENT } from '../data/standhoudersGent';
 ---
 
 <Layout title="Mijn Account Portaal" description="Beheer uw tickets, bestellingen en gegevens voor International Whisky Festival.">
@@ -376,271 +377,271 @@ import Footer from '../components/Footer.astro';
               
               <!-- SVG Church Map Container -->
               <div class="official-map-container">
-                <svg viewBox="0 0 980 500" class="church-svg-map" id="account-church-map" style="width: 100%; height: auto; display: block;">
-                  <!-- Church Outer Walls Silhouette -->
-                  <path d="M 140 150 
-                           L 140 80 Q 140 70 150 70 L 640 70 L 640 20 Q 640 10 650 10 L 760 10 Q 770 10 770 20 L 770 70 L 820 70 
-                           L 860 90 L 900 130 L 920 180 L 930 250 L 920 320 L 900 370 L 860 410 L 820 430 L 770 430 L 770 480 Q 770 490 760 490 L 650 490 Q 640 490 640 480 L 640 430 L 250 430 L 250 480 Q 250 490 240 490 L 150 490 Q 140 490 140 480 L 140 430 L 140 350
-                           L 90 350 L 50 310 L 30 250 L 50 190 L 90 150 Z" 
-                        fill="var(--bg-sand)" stroke="var(--text-charcoal)" stroke-width="2.5" stroke-linejoin="round" class="church-outline" />
+                <svg viewBox="0 0 980 500" class="vismijn-svg-map" id="account-church-map" style="width: 100%; height: auto; display: block;">
+                  <defs>
+                    <pattern id="account-pillar-pattern" width="10" height="10" patternUnits="userSpaceOnUse">
+                      <circle cx="5" cy="5" r="3" fill="var(--border-color)" />
+                    </pattern>
+                    
+                    <pattern id="account-water-pattern" width="20" height="10" patternUnits="userSpaceOnUse">
+                      <path d="M 0 5 Q 5 2 10 5 T 20 5" fill="none" stroke="rgba(30, 58, 138, 0.12)" stroke-width="1.2" />
+                    </pattern>
 
-                  <!-- Interior Architecture Zones -->
-                  <rect x="670" y="150" width="180" height="200" fill="#EBE4D5" stroke="var(--border-color-dark)" stroke-width="1.5" stroke-dasharray="4 4" />
-                  <text x="760" y="255" class="map-zone-label" style="font-family: var(--font-sans); font-size: 11px; fill: var(--text-muted); text-anchor: middle;">Kade Zaal</text>
+                    <pattern id="account-cobble-pattern" width="12" height="12" patternUnits="userSpaceOnUse">
+                      <path d="M 0 6 L 6 0 L 12 6 L 6 12 Z" fill="none" stroke="rgba(15, 23, 42, 0.04)" stroke-width="0.8" />
+                    </pattern>
+                  </defs>
+
+                  <!-- Blueprint grid / transparent canvas -->
+                  <rect width="980" height="500" fill="transparent" />
+
+                  <!-- River De Leie & Canal De Lieve -->
+                  <path d="M 50 140 Q 110 50 240 50 L 240 78 Q 130 78 78 160 Z" fill="url(#account-water-pattern)" />
+                  <path d="M 60 130 Q 120 40 250 40" fill="none" stroke="var(--primary-color)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.45" />
+                  <text x="145" y="36" class="map-water-label">Rivier De Leie ↗</text>
+
+                  <rect x="250" y="32" width="600" height="42" fill="url(#account-water-pattern)" />
+                  <line x1="250" y1="32" x2="850" y2="32" stroke="var(--primary-color)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.45" />
+                  <text x="550" y="26" class="map-water-label text-center" text-anchor="middle">Kanaal De Lieve ➔</text>
+
+                  <!-- Outer walls -->
+                  <path d="M 70 435 
+                           L 70 345 L 110 345 L 110 195 
+                           L 110 160 Q 120 78 240 78 
+                           L 850 78 L 850 215 
+                           L 905 215 L 905 425 L 830 425 
+                           L 830 465 L 745 465 L 745 425 
+                           L 425 425 L 425 465 L 155 465 
+                           L 155 435 Z" 
+                        fill="var(--bg-sand)" stroke="var(--text-charcoal)" stroke-width="2.5" stroke-linejoin="round" class="venue-outline" />
+
+                  <!-- Interior Zones -->
+                  <path d="M 110 170 Q 120 80 240 80 L 240 195 L 110 195 Z" fill="#F6F1E7" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
+                  <text x="210" y="165" class="map-zone-label" text-anchor="middle">De Leie</text>
+
+                  <rect x="110" y="195" width="145" height="145" fill="#EFE8DC" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
+                  <text x="145" y="322" class="map-zone-label">Brasserie</text>
+
+                  <rect x="255" y="195" width="85" height="85" fill="#E9E2D4" stroke="var(--border-color)" stroke-width="1.2" />
+
+                  <rect x="240" y="80" width="610" height="115" fill="#EFE8DC" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
+                  <text x="545" y="102" class="map-zone-label">De Lieve</text>
                   
-                  <path d="M 670 80 A 170 170 0 0 1 890 250 A 170 170 0 0 1 670 420" fill="none" stroke="var(--border-color-dark)" stroke-width="1" stroke-dasharray="6 6" />
+                  <line x1="365" y1="80" x2="365" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
+                  <line x1="440" y1="80" x2="440" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
+                  <line x1="525" y1="80" x2="525" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
+                  <line x1="695" y1="80" x2="695" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
+
+                  <rect x="340" y="195" width="490" height="145" fill="#FAF7F0" stroke="var(--border-color-dark)" stroke-width="1.8" />
+                  <rect x="425" y="340" width="405" height="85" fill="#FAF7F0" stroke="var(--border-color-dark)" stroke-width="1.8" />
+                  <text x="610" y="275" class="map-zone-label big-zone-label" text-anchor="middle">De Markt</text>
+
+                  <rect x="830" y="215" width="75" height="210" fill="#E8E0D0" stroke="var(--text-charcoal)" stroke-width="2" />
+                  <text x="868" y="320" class="map-zone-label vertical-text">Balkon</text>
+
+                  <rect x="70" y="345" width="85" height="90" fill="#EAE2D2" stroke="var(--text-charcoal)" stroke-width="2" />
+                  <text x="112" y="422" class="map-zone-label small-label" text-anchor="middle">Poortgebouw</text>
+
+                  <rect x="155" y="340" width="270" height="125" fill="#F8F5EE" stroke="var(--border-color)" stroke-width="1.5" />
+                  <rect x="155" y="340" width="270" height="125" fill="url(#account-cobble-pattern)" pointer-events="none" />
+                  <text x="290" y="452" class="map-zone-label" text-anchor="middle">Binnenkoer</text>
 
                   <!-- Pillars -->
                   <g class="pillars">
-                    <circle cx="200" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="280" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="360" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="440" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="520" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="600" cy="140" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <circle cx="450" cy="204" r="6" class="pillar" />
+                    <circle cx="575" cy="204" r="6" class="pillar" />
+                    <circle cx="635" cy="204" r="6" class="pillar" />
+                    <circle cx="700" cy="204" r="6" class="pillar" />
+                    <circle cx="770" cy="204" r="6" class="pillar" />
+
+                    <circle cx="450" cy="335" r="6" class="pillar" />
+                    <circle cx="510" cy="335" r="6" class="pillar" />
+                    <circle cx="570" cy="335" r="6" class="pillar" />
+                    <circle cx="630" cy="335" r="6" class="pillar" />
+                    <circle cx="700" cy="335" r="6" class="pillar" />
+                    <circle cx="770" cy="335" r="6" class="pillar" />
+
+                    <circle cx="510" cy="415" r="6" class="pillar" />
+                    <circle cx="570" cy="415" r="6" class="pillar" />
+                    <circle cx="630" cy="415" r="6" class="pillar" />
+                    <circle cx="700" cy="415" r="6" class="pillar" />
+                    <circle cx="770" cy="415" r="6" class="pillar" />
+                  </g>
+
+                  <!-- Street annotations -->
+                  <text x="10" y="335" class="map-street-label">Sint-Veerleplein ➔</text>
+                  <text x="925" y="320" class="map-street-label vertical-text">Rekelingestraat ➔</text>
+
+                  <!-- Entrance Flow -->
+                  <g class="map-entrance-flow">
+                    <path d="M 15 375 L 70 375" stroke="#caac8e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3" fill="none" />
+                    <polygon points="70,375 60,370 60,380" fill="#caac8e" />
                     
-                    <circle cx="200" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="280" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="360" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="440" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="520" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="600" cy="360" r="10" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <rect x="75" y="360" width="76" height="30" rx="3" fill="#caac8e" />
+                    <text x="113" y="373" font-family="var(--font-sans)" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">INKOM &amp;</text>
+                    <text x="113" y="384" font-family="var(--font-sans)" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">VESTIAIRE</text>
 
-                    <circle cx="670" cy="150" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="720" cy="115" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="780" cy="100" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="840" cy="115" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="890" cy="150" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    
-                    <circle cx="670" cy="350" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="720" cy="385" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="780" cy="400" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="840" cy="385" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
-                    <circle cx="890" cy="350" r="8" class="pillar" fill="var(--border-color-dark)" stroke="var(--text-charcoal)" />
+                    <line x1="315" y1="465" x2="315" y2="400" stroke="#DC2626" stroke-width="2.5" />
+                    <polygon points="315,392 309,404 321,404" fill="#DC2626" />
+
+                    <g class="svg-facility">
+                      <rect x="330" y="340" width="45" height="125" rx="3" fill="#caac8e" stroke="#1D1C1A" stroke-width="1.8" />
+                      <text x="352" y="402" font-family="var(--font-sans)" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.1em" class="vertical-text">INKOM &amp; VESTIAIRE</text>
+                    </g>
                   </g>
 
-                  <!-- 1-to-1 Interactive Stands -->
-                  <g class="svg-stand" data-stand="U">
-                    <rect x="50" y="210" width="60" height="80" rx="4" class="stand-box" />
-                    <text x="80" y="255" class="stand-num">U</text>
+                  <!-- Foodtrucks -->
+                  <g class="svg-stand" data-stand="F1" title="Foodtruck Meat the grill">
+                    <rect x="190" y="355" width="52" height="28" rx="3" class="stand-box catering" />
+                    <text x="216" y="373" class="stand-num text-bold text-nano">Foodtruck</text>
+                  </g>
+                  <g class="svg-stand" data-stand="F2" title="Foodtruck Mixed Worlds">
+                    <rect x="162" y="395" width="40" height="28" rx="3" class="stand-box catering" />
+                    <text x="182" y="413" class="stand-num text-bold text-nano">Foodtruck</text>
                   </g>
 
-                  <g class="svg-stand" data-stand="C">
-                    <rect x="145" y="300" width="45" height="45" rx="4" class="stand-box catering" />
-                    <text x="167" y="327" class="stand-num text-small">C</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="3">
-                    <rect x="155" y="85" width="85" height="45" rx="3" class="stand-box" />
-                    <text x="197" y="112" class="stand-num">3</text>
-                  </g>
-                  <g class="svg-stand" data-stand="4">
-                    <rect x="250" y="85" width="130" height="35" rx="3" class="stand-box" />
-                    <text x="315" y="107" class="stand-num">4</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="5">
-                    <rect x="410" y="85" width="50" height="35" rx="3" class="stand-box" />
-                    <text x="435" y="107" class="stand-num">5</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="6">
-                    <rect x="525" y="85" width="22" height="35" rx="2" class="stand-box" />
-                    <text x="536" y="107" class="stand-num text-small">6</text>
-                  </g>
-                  <g class="svg-stand" data-stand="6">
-                    <rect x="552" y="85" width="22" height="35" rx="2" class="stand-box" />
-                    <text x="563" y="107" class="stand-num text-small">6</text>
-                  </g>
-                  <g class="svg-stand" data-stand="6">
-                    <rect x="579" y="85" width="22" height="35" rx="2" class="stand-box" />
-                    <text x="590" y="107" class="stand-num text-small">6</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="12">
-                    <rect x="250" y="170" width="130" height="60" rx="3" class="stand-box" />
-                    <text x="315" y="205" class="stand-num">12</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="14">
-                    <rect x="250" y="285" width="65" height="35" rx="3" class="stand-box" />
-                    <text x="282" y="307" class="stand-num">14</text>
-                  </g>
-                  <g class="svg-stand" data-stand="15">
-                    <rect x="315" y="285" width="65" height="35" rx="3" class="stand-box" />
-                    <text x="347" y="307" class="stand-num">15</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="22">
-                    <rect x="250" y="325" width="40" height="30" rx="3" class="stand-box" />
-                    <text x="270" y="345" class="stand-num text-small">22</text>
-                  </g>
-                  <g class="svg-stand" data-stand="21">
-                    <rect x="290" y="325" width="40" height="30" rx="3" class="stand-box" />
-                    <text x="310" y="345" class="stand-num text-small">21</text>
-                  </g>
-                  <g class="svg-stand" data-stand="20">
-                    <rect x="330" y="325" width="50" height="30" rx="3" class="stand-box" />
-                    <text x="355" y="345" class="stand-num text-small">20</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="11">
-                    <rect x="440" y="170" width="80" height="70" rx="3" class="stand-box" />
-                    <text x="480" y="210" class="stand-num">11</text>
-                  </g>
-                  <g class="svg-stand" data-stand="8">
-                    <rect x="525" y="170" width="35" height="33" rx="3" class="stand-box" />
-                    <text x="542" y="191" class="stand-num text-small">8</text>
-                  </g>
-                  <g class="svg-stand" data-stand="9">
-                    <rect x="565" y="170" width="35" height="33" rx="3" class="stand-box" />
-                    <text x="582" y="191" class="stand-num text-small">9</text>
-                  </g>
-                  <g class="svg-stand" data-stand="10">
-                    <rect x="525" y="208" width="75" height="32" rx="3" class="stand-box" />
-                    <text x="562" y="229" class="stand-num text-small">10</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="O">
-                    <rect x="395" y="285" width="45" height="34" rx="3" class="stand-box organisation" />
-                    <text x="417" y="307" class="stand-num text-small">O</text>
-                  </g>
-                  <g class="svg-stand" data-stand="16">
-                    <rect x="395" y="322" width="45" height="34" rx="3" class="stand-box" />
-                    <text x="417" y="343" class="stand-num text-small">16</text>
-                  </g>
-                  <g class="svg-stand" data-stand="17">
-                    <rect x="443" y="285" width="45" height="34" rx="3" class="stand-box organisation" />
-                    <text x="465" y="307" class="stand-num text-small">17</text>
-                  </g>
-                  <g class="svg-stand" data-stand="18">
-                    <rect x="443" y="322" width="45" height="34" rx="3" class="stand-box" />
-                    <text x="465" y="343" class="stand-num text-small">18</text>
-                  </g>
-                  
-                  <g class="svg-stand" data-stand="15">
-                    <rect x="500" y="285" width="60" height="71" rx="3" class="stand-box" />
-                    <text x="530" y="325" class="stand-num">15</text>
-                  </g>
-                  <g class="svg-stand" data-stand="19">
-                    <rect x="570" y="285" width="60" height="71" rx="3" class="stand-box" />
-                    <text x="600" y="325" class="stand-num">19</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="20">
-                    <rect x="250" y="375" width="85" height="35" rx="3" class="stand-box" />
-                    <text x="292" y="397" class="stand-num">20</text>
-                  </g>
-                  <g class="svg-stand" data-stand="21">
-                    <rect x="335" y="375" width="45" height="35" rx="3" class="stand-box" />
-                    <text x="357" y="397" class="stand-num text-small">21</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="S">
-                    <rect x="260" y="420" width="110" height="60" rx="4" class="stand-box shop" />
-                    <text x="315" y="455" class="stand-num">S</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="22">
-                    <rect x="400" y="375" width="45" height="35" rx="3" class="stand-box" />
-                    <text x="422" y="397" class="stand-num text-small">22</text>
-                  </g>
-                  <g class="svg-stand" data-stand="23">
-                    <rect x="450" y="375" width="65" height="35" rx="3" class="stand-box" />
-                    <text x="482" y="397" class="stand-num">23</text>
-                  </g>
-                  <g class="svg-stand" data-stand="25">
-                    <rect x="525" y="375" width="45" height="35" rx="3" class="stand-box" />
-                    <text x="547" y="397" class="stand-num text-small">25</text>
-                  </g>
-                  <g class="svg-stand" data-stand="28">
-                    <rect x="575" y="375" width="45" height="35" rx="3" class="stand-box" />
-                    <text x="597" y="397" class="stand-num text-small">28</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="42">
-                    <rect x="645" y="20" width="90" height="60" rx="4" class="stand-box chapel" />
-                    <text x="690" y="55" class="stand-num">42</text>
-                  </g>
-                  <g class="svg-stand" data-stand="29">
-                    <rect x="645" y="420" width="90" height="60" rx="4" class="stand-box chapel" />
-                    <text x="690" y="455" class="stand-num">29</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="44">
-                    <rect x="700" y="190" width="120" height="120" rx="6" class="stand-box choir" />
-                    <text x="760" y="255" class="stand-num">44</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="43">
-                    <rect x="795" y="150" width="30" height="30" rx="3" class="stand-box" />
-                    <text x="810" y="170" class="stand-num text-small">43</text>
-                  </g>
-                  <g class="svg-stand" data-stand="45">
-                    <rect x="830" y="170" width="30" height="30" rx="3" class="stand-box" />
-                    <text x="845" y="190" class="stand-num text-small">45</text>
-                  </g>
-                  <g class="svg-stand" data-stand="46">
-                    <rect x="845" y="210" width="30" height="80" rx="3" class="stand-box" />
-                    <text x="860" y="255" class="stand-num text-small">46</text>
-                  </g>
-                  <g class="svg-stand" data-stand="47">
-                    <rect x="830" y="300" width="30" height="30" rx="3" class="stand-box" />
-                    <text x="845" y="320" class="stand-num text-small">47</text>
-                  </g>
-                  <g class="svg-stand" data-stand="48">
-                    <rect x="795" y="320" width="30" height="30" rx="3" class="stand-box" />
-                    <text x="810" y="340" class="stand-num text-small">48</text>
-                  </g>
-
-                  <g class="svg-stand" data-stand="41">
-                    <rect x="680" y="85" width="35" height="28" rx="2" class="stand-box" />
-                    <text x="697" y="103" class="stand-num text-small">41</text>
-                  </g>
-                  <g class="svg-stand" data-stand="40">
-                    <rect x="720" y="85" width="35" height="28" rx="2" class="stand-box" />
-                    <text x="737" y="103" class="stand-num text-small">40</text>
-                  </g>
-                  <g class="svg-stand" data-stand="39">
-                    <rect x="760" y="85" width="35" height="28" rx="2" class="stand-box catering" />
-                    <text x="777" y="103" class="stand-num text-small">39</text>
-                  </g>
-                  <g class="svg-stand" data-stand="38">
-                    <rect x="800" y="85" width="35" height="28" rx="2" class="stand-box" />
-                    <text x="817" y="103" class="stand-num text-small">38</text>
-                  </g>
-
+                  <!-- Brasserie & Bar & Masterclasses -->
                   <g class="svg-stand" data-stand="37">
-                    <rect x="838" y="105" width="35" height="28" rx="2" class="stand-box" />
-                    <text x="855" y="123" class="stand-num text-small">37</text>
+                    <rect x="115" y="208" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="134" y="226" class="stand-num text-small">37</text>
                   </g>
                   <g class="svg-stand" data-stand="36">
-                    <rect x="865" y="145" width="35" height="28" rx="2" class="stand-box" />
-                    <text x="882" y="163" class="stand-num text-small">36</text>
+                    <rect x="115" y="244" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="134" y="262" class="stand-num text-small">36</text>
                   </g>
                   <g class="svg-stand" data-stand="35">
-                    <rect x="880" y="190" width="28" height="38" rx="2" class="stand-box" />
-                    <text x="894" y="214" class="stand-num text-small">35</text>
+                    <rect x="115" y="280" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="134" y="298" class="stand-num text-small">35</text>
                   </g>
-                  <g class="svg-stand" data-stand="34">
-                    <rect x="880" y="265" width="28" height="38" rx="2" class="stand-box" />
-                    <text x="894" y="289" class="stand-num text-small">34</text>
+
+                  <g class="svg-stand" data-stand="BAR" title="Festival Bar (Food and drinks)">
+                    <rect x="192" y="208" width="90" height="38" rx="3" class="stand-box bar-box" />
+                    <text x="237" y="224" class="stand-num text-bold text-small">BAR</text>
+                    <text x="237" y="238" class="stand-sub text-nano">Drinks &amp; Food</text>
                   </g>
-                  <g class="svg-stand" data-stand="33">
-                    <rect x="865" y="325" width="35" height="28" rx="2" class="stand-box" />
-                    <text x="882" y="343" class="stand-num text-small">33</text>
+
+                  <g class="svg-stand" data-stand="MC" title="Hier melden voor Masterclasses">
+                    <rect x="192" y="254" width="80" height="32" rx="3" class="stand-box" style="fill: #FAF7F2; stroke-width: 1.5;" />
+                    <text x="232" y="267" class="stand-num text-bold text-nano">Hier melden voor</text>
+                    <text x="232" y="279" class="stand-num text-bold text-nano" style="fill: #1E3A8A;">Masterclasses</text>
                   </g>
-                  <g class="svg-stand" data-stand="32">
-                    <rect x="838" y="365" width="35" height="28" rx="2" class="stand-box" />
-                    <text x="855" y="383" class="stand-num text-small">32</text>
+
+                  <!-- De Leie -->
+                  <g class="svg-stand" data-stand="2">
+                    <rect x="220" y="95" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="239" y="113" class="stand-num">2</text>
+                  </g>
+                  <g class="svg-stand" data-stand="3">
+                    <rect x="275" y="95" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="294" y="113" class="stand-num">3</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="1">
+                    <rect x="165" y="110" width="36" height="28" rx="3" class="stand-box" />
+                    <text x="183" y="128" class="stand-num">1</text>
+                  </g>
+                  <g class="svg-stand" data-stand="4">
+                    <rect x="165" y="145" width="36" height="28" rx="3" class="stand-box" />
+                    <text x="183" y="163" class="stand-num">4</text>
+                  </g>
+                  <g class="svg-stand" data-stand="5">
+                    <rect x="220" y="145" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="239" y="163" class="stand-num">5</text>
+                  </g>
+                  <g class="svg-stand" data-stand="6">
+                    <rect x="275" y="145" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="294" y="163" class="stand-num">6</text>
+                  </g>
+
+                  <!-- De Lieve -->
+                  <g class="svg-stand" data-stand="11">
+                    <rect x="405" y="100" width="55" height="28" rx="3" class="stand-box" />
+                    <text x="432" y="118" class="stand-num text-small">11</text>
+                  </g>
+                  <g class="svg-stand" data-stand="12">
+                    <rect x="488" y="100" width="50" height="28" rx="3" class="stand-box" />
+                    <text x="513" y="118" class="stand-num text-small">12</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="9">
+                    <rect x="405" y="140" width="36" height="28" rx="3" class="stand-box" />
+                    <text x="423" y="158" class="stand-num text-small">9</text>
+                  </g>
+                  <g class="svg-stand" data-stand="10">
+                    <rect x="448" y="140" width="36" height="28" rx="3" class="stand-box" />
+                    <text x="466" y="158" class="stand-num text-small">10</text>
+                  </g>
+                  <g class="svg-stand" data-stand="15">
+                    <rect x="492" y="140" width="38" height="28" rx="3" class="stand-box catering" />
+                    <text x="511" y="158" class="stand-num text-small">15</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="13">
+                    <rect x="565" y="102" width="90" height="35" rx="3" class="stand-box" />
+                    <text x="610" y="124" class="stand-num text-small">13</text>
+                  </g>
+                  <g class="svg-stand" data-stand="14">
+                    <rect x="565" y="145" width="90" height="35" rx="3" class="stand-box buffet-stand" />
+                    <text x="610" y="167" class="stand-num text-small">14</text>
+                  </g>
+
+                  <!-- De Markt -->
+                  <g class="svg-stand" data-stand="O" title="Organisatie">
+                    <rect x="320" y="210" width="35" height="105" rx="3" class="stand-box organisation" />
+                    <text x="338" y="262" class="stand-num text-bold text-small vertical-text">Organisatie</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="21">
+                    <rect x="375" y="210" width="42" height="28" rx="3" class="stand-box" />
+                    <text x="396" y="228" class="stand-num text-small">21</text>
+                  </g>
+                  <g class="svg-stand" data-stand="20">
+                    <rect x="445" y="210" width="140" height="28" rx="3" class="stand-box" />
+                    <text x="515" y="228" class="stand-num text-small">20</text>
+                  </g>
+                  <g class="svg-stand" data-stand="18">
+                    <rect x="612" y="210" width="58" height="28" rx="3" class="stand-box" />
+                    <text x="641" y="228" class="stand-num text-small">18</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="29">
+                    <rect x="430" y="255" width="58" height="22" rx="2" class="stand-box" />
+                    <text x="459" y="271" class="stand-num text-small">29</text>
                   </g>
                   <g class="svg-stand" data-stand="31">
-                    <rect x="800" y="385" width="40" height="28" rx="2" class="stand-box" />
-                    <text x="820" y="403" class="stand-num text-small">31</text>
+                    <rect x="542" y="255" width="60" height="22" rx="2" class="stand-box" />
+                    <text x="572" y="271" class="stand-num text-small">31</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="28">
+                    <rect x="430" y="280" width="58" height="22" rx="2" class="stand-box" />
+                    <text x="459" y="296" class="stand-num text-small">28</text>
                   </g>
                   <g class="svg-stand" data-stand="30">
-                    <rect x="755" y="385" width="40" height="28" rx="2" class="stand-box" />
-                    <text x="775" y="403" class="stand-num text-small">30</text>
+                    <rect x="542" y="280" width="60" height="22" rx="2" class="stand-box" />
+                    <text x="572" y="296" class="stand-num text-small">30</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="23">
+                    <rect x="452" y="325" width="40" height="28" rx="3" class="stand-box" />
+                    <text x="472" y="343" class="stand-num text-small">23</text>
+                  </g>
+                  <g class="svg-stand" data-stand="24">
+                    <rect x="498" y="325" width="40" height="28" rx="3" class="stand-box" />
+                    <text x="518" y="343" class="stand-num text-small">24</text>
+                  </g>
+                  <g class="svg-stand" data-stand="25">
+                    <rect x="552" y="325" width="118" height="28" rx="3" class="stand-box" />
+                    <text x="611" y="343" class="stand-num text-small">25</text>
+                  </g>
+
+                  <g class="svg-stand" data-stand="27">
+                    <rect x="696" y="230" width="40" height="30" rx="3" class="stand-box" />
+                    <text x="716" y="250" class="stand-num text-small">27</text>
+                  </g>
+                  <g class="svg-stand" data-stand="26">
+                    <rect x="696" y="270" width="40" height="30" rx="3" class="stand-box" />
+                    <text x="716" y="290" class="stand-num text-small">26</text>
                   </g>
                 </svg>
               </div>
@@ -2809,56 +2810,7 @@ import Footer from '../components/Footer.astro';
     }
 
     // 4. Interactive Stand Map Click Logic on Account Page (1-to-1 match with standhouders page)
-    const exhibitorsData = [
-      { id: "1", name: "Distilleerderij de Bronckhorst", category: "dutch", brands: ["Nederlandse Whisky"], description: "Ambachtelijke Nederlandse single malt whisky, ter plaatse gedistilleerd in de Achterhoek." },
-      { id: "2", name: "Mitra", category: "world", brands: ["Merken volgen later"], description: "Mitra slijterijen presenteert een gevarieerde selectie van bekende en zeldzame whisky's." },
-      { id: "3", name: "Bresser en Timmer", category: "scotch", brands: ["Craft Spirits"], description: "Toonaangevende importeur van craft spirits. Stand 3 & 4." },
-      { id: "4", name: "Bresser en Timmer", category: "scotch", brands: ["Craft Spirits"], description: "Toonaangevende importeur van craft spirits. Stand 3 & 4." },
-      { id: "5", name: "Cley Whisky", category: "dutch", brands: ["Nederlandse Whisky (Rotterdam)"], description: "Rotterdamse craft distilleerderij die eigentijdse single malt en rye whisky's maakt met lokaal graan." },
-      { id: "6", name: "SMWS (Scotch Malt Whisky Society)", category: "world", brands: ["Whisky Club"], description: "De Schotse Malt Whisky Society biedt exclusieve single cask bottelingen voor clubleden." },
-      { id: "7", name: "De Monnik Dranken", category: "scotch", brands: ["Merken volgen later"], description: "Familiebedrijf en importeur met een prachtig portfolio aan Schotse single malts." },
-      { id: "8", name: "Whisky Import Nederland (WIN)", category: "independent", brands: ["Merken volgen later"], description: "Importeur van exclusieve onafhankelijke bottelingen." },
-      { id: "9", name: "Cane & Grain", category: "independent", brands: ["Merken volgen later"], description: "Onafhankelijke bottelingen en unieke single casks." },
-      { id: "10", name: "Anker Amsterdam Spirits", category: "world", brands: ["Merken volgen later"], description: "Groothandel en importeur van diverse dranken en spirits." },
-      { id: "11", name: "Diageo", category: "scotch", brands: ["Singleton", "Talisker", "Lagavulin"], description: "Klassieke Schotse single malts, van de zachte Singleton tot de intens rokerige Lagavulin." },
-      { id: "12", name: "Van Wees Holland", category: "independent", brands: ["Merken volgen later"], description: "Bekende importeur uit Amersfoort met een rijk aanbod aan onafhankelijke bottelingen." },
-      { id: "13", name: "Maltstock", category: "world", brands: ["Whisky Club", "Trail begeleiders"], description: "Het gezelligste whisky-weekend ter wereld, met proeverijen en trail-begeleiding." },
-      { id: "14", name: "Brouwers2Import", category: "world", brands: ["Merken volgen later"], description: "Importeur van diverse internationale whisky's en gedistilleerd." },
-      { id: "15", name: "Moët Hennessy", category: "scotch", brands: ["Ardbeg", "Glenmorangie"], description: "De ultieme Islay malts Ardbeg en de verfijnde Glenmorangie uit de hoogste ketels van Schotland." },
-      { id: "16", name: "Trade in Spirits", category: "world", brands: ["Merken volgen later"], description: "Importeur van diverse premium spirits." },
-      { id: "17", name: "International Whisky Society (IWS)", category: "world", brands: ["Whisky Club", "Festival Bottelings", "Glazen"], description: "De International Whisky Society viert het 25-jarig jubileum met exclusieve festivalbottelingen door de jaren heen!" },
-      { id: "18", name: "BUS Whisky", category: "dutch", brands: ["Nederlandse Whisky"], description: "Duurzame Nederlandse single malt whisky, lokaal verbouwd op de BUS boerderij." },
-      { id: "19", name: "Helvetia Spirits", category: "world", brands: ["Zwitserse Whisky"], description: "Ambachtelijke single malt whisky uit Zwitserland." },
-      { id: "20", name: "Helvetia Spirits", category: "world", brands: ["Zwitserse Whisky"], description: "Ambachtelijke single malt whisky uit Zwitserland." },
-      { id: "21", name: "The Chamberick", category: "dutch", brands: ["Nederlandse Whisky"], description: "Lokale Nederlandse whisky uit Kamerik." },
-      { id: "22", name: "Ben Becula Distillery", category: "scotch", brands: ["Ben Becula"], description: "Nieuwe distilleerderij van de Schotse Outer Hebrides." },
-      { id: "23", name: "Willem’s Whisky", category: "dutch", brands: ["Merken volgen later"], description: "Ambachtelijke Nederlandse whisky." },
-      { id: "24", name: "Het Anker België", category: "world", brands: ["Merken volgen later"], description: "Belgische whisky en bieren van stokerij Het Anker." },
-      { id: "25", name: "Bresser en Timmer (Proeftafel)", category: "scotch", brands: ["Merken volgen later"], description: "Extra proeftafel van Bresser en Timmer." },
-      { id: "27", name: "Kapel Zuid", category: "organisation", brands: ["Standruimte"], description: "Kapelruimte aan de zuidzijde van het kerkgebouw." },
-      { id: "28", name: "Bacardi", category: "world", brands: ["Teeling"], description: "Importeur van Teeling Irish Whiskey en andere premium merken." },
-      { id: "29", name: "Remy Cointreau", category: "scotch", brands: ["Bruichladdich"], description: "Progressieve Islay distilleerderij, producent van Bruichladdich, Port Charlotte en Octomore." },
-      { id: "31", name: "La Martiniquaise Benelux", category: "scotch", brands: ["Merken volgen later"], description: "Toegankelijke Speyside single malts met rijping op diverse vaten." },
-      { id: "32", name: "Dutch Whisky Teers", category: "independent", brands: ["Merken volgen later"], description: "Onafhankelijke bottelaars van bijzondere en zeldzame whisky's." },
-      { id: "34", name: "Barrel Tea", category: "catering", brands: ["Thee", "Gifts"], description: "Thee met de smaak van whisky, en diverse whisky-gerelateerde gifts." },
-      { id: "35", name: "Brugse Whisky Company", category: "world", brands: ["Belgische Whisky"], description: "Belgische single malt en rye whisky uit Brugge." },
-      { id: "36", name: "Perfect Dram", category: "independent", brands: ["Merken volgen later"], description: "Standruimte voor Perfect Dram." },
-      { id: "38", name: "Kapel Noord Stand", category: "organisation", brands: ["Standruimte"], description: "Standruimte in de kapel." },
-      { id: "39", name: "Worsten-stand", category: "catering", brands: ["Food"], description: "Uitgifte van worstenplateaus en hapjes." },
-      { id: "40", name: "Barrel Atelier", category: "catering", brands: ["Gifts"], description: "Meubels en accessoires gemaakt van gebruikte eikenhouten whiskyvaten." },
-      { id: "41", name: "Whisky Passion", category: "catering", brands: ["Boeken"], description: "Het bekende tijdschrift Whisky Passion en diverse whiskyboeken." },
-      { id: "42", name: "Kapel Noord (Tasting Room)", category: "organisation", brands: ["Tasting Room"], description: "Exclusieve tasting room in Kapel Noord." },
-      { id: "43", name: "Stokerij Sculte", category: "dutch", brands: ["Nederlandse Whisky"], description: "Bekroonde Nederlandse single malt whisky, gerijpt op Twents eiken." },
-      { id: "44", name: "De Monnik Dranken (Tafel B)", category: "scotch", brands: ["Merken volgen later"], description: "Extra tasting proeftafel van De Monnik Dranken." },
-      { id: "45", name: "Disaronno International", category: "world", brands: ["The Irishman", "Cotswolds"], description: "Importeur van The Irishman Irish Whiskey en Cotswolds single malt." },
-      { id: "46", name: "Maple & More", category: "world", brands: ["Whisky Likeur"], description: "Canadian Whisky Liqueur." },
-      { id: "47", name: "Koninklijke De Kuyper", category: "world", brands: ["Bowmore", "Laphroaig"], description: "De Kuyper Royal Distillers toont legendarische turfwhisky's." },
-      { id: "48", name: "Festivalslijterij (Stand 48)", category: "independent", brands: ["Festivalslijterij", "Bottelings"], description: "De officiële festivalslijterij waar u flessen kunt aanschaffen." },
-      { id: "O", name: "Organisatie & Infobalie", category: "organisation", brands: ["Infobalie", "Muntinname"], description: "Centrale organisatiebalie voor vragen, muntinname en programma." },
-      { id: "S", name: "Slijterij", category: "organisation", brands: ["Festivalslijterij"], description: "De officiële festivalslijterij." },
-      { id: "C", name: "Catering & Food Court", category: "catering", brands: ["Food", "Buitenruimte"], description: "Food court en uitgifte van warme maaltijden en snacks." },
-      { id: "U", name: "Uitgifte Glazen & Entree", category: "organisation", brands: ["Entree", "Glazen"], description: "Entree en uitgifte van festival proefglazen." }
-    ];
+    const exhibitorsData = JSON.parse('{JSON.stringify(EXHIBITORS_GENT)}');
 
     const accountStands = document.querySelectorAll('#account-church-map .svg-stand');
     const defaultState = document.getElementById('account-default-info-state');

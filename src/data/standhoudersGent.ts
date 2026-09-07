@@ -42,8 +42,8 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
     name: "SMWS / Spirituoos GCV",
     category: "independent",
     brands: ["The Scotch Malt Whisky Society", "Single Cask Cask Strength Expressies"],
-    description: "Drievoudige stand van The Scotch Malt Whisky Society: proef unieke, onafhankelijke single cask bottelingen rechtstreeks uit het vat.",
-    hall: "De Markt"
+    description: "The Scotch Malt Whisky Society: proef unieke, onafhankelijke single cask bottelingen rechtstreeks uit het vat.",
+    hall: "De Leie"
   },
   {
     id: "5",
@@ -211,7 +211,7 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
     category: "scotch",
     brands: ["Benromach Speyside Single Malt", "Gordon & MacPhail", "Compass Box Whisky"],
     description: "Exclusieve Belgische verdeler van traditioneel handgestookte Speyside whisky van Benromach en baanbrekende blends van Compass Box.",
-    hall: "De Leie"
+    hall: "De Markt"
   },
   {
     id: "26",
@@ -320,6 +320,14 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
     hall: "De Markt"
   },
   {
+    id: "MC",
+    name: "Meldpunt Masterclasses",
+    category: "organisation",
+    brands: ["Aanmelden Masterclasses", "Ticketcontrole Sessies", "Verzamelen Proeverijen"],
+    description: "Meldpunt voor alle geregistreerde deelnemers aan de masterclasses en proeverijen.",
+    hall: "Brasserie"
+  },
+  {
     id: "BAR",
     name: "Centrale Festivalbar",
     category: "organisation",
@@ -332,7 +340,7 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
     name: "Foodtruck Meat the Grill",
     category: "catering",
     brands: ["Dry Aged Angus Burgers", "Slow Smoked Pulled Pork", "Artisan BBQ Bites"],
-    description: "Buiten op het sfeervolle binnenkoer bereidt Meat the Grill stoere, rokerige vleesspecialiteiten die perfect samengaan met whisky.",
+    description: "Buiten op de sfeervolle binnenkoer bereidt Meat the Grill stoere, rokerige vleesspecialiteiten die perfect samengaan met whisky.",
     hall: "Binnenkoer"
   },
   {
