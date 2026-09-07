@@ -503,6 +503,7 @@ const exhibitors = await getStandhouders('gent');
 <style>
   /* --- Page layout and structure --- */
   .standhouders-page-wrapper {
+    --primary-color: #1E3A8A;
     background-color: var(--bg-parchment);
     min-height: 100vh;
     padding: 9rem 3rem 6rem;
@@ -587,28 +588,29 @@ const exhibitors = await getStandhouders('gent');
   }
 
   .filter-tab {
-    background-color: var(--bg-sand);
-    border: 1.5px solid var(--text-charcoal);
+    background-color: var(--bg-sand, #d8e7e2);
+    border: 1.5px solid var(--text-charcoal, #1D1C1A);
     font-family: var(--font-sans);
     font-weight: 700;
     font-size: 0.85rem;
     padding: 0.5rem 1rem;
-    border-radius: 3px;
-    color: var(--text-charcoal);
+    border-radius: 4px;
+    color: var(--text-charcoal, #1D1C1A);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .filter-tab:hover {
-    background-color: rgba(30, 58, 138, 0.1);
-    border-color: var(--primary-color);
+    background-color: rgba(30, 58, 138, 0.12);
+    border-color: #1E3A8A;
+    color: #1E3A8A;
   }
 
   .filter-tab.active {
-    background-color: var(--primary-color);
-    color: #FFFFFF;
-    border-color: var(--primary-color);
-    box-shadow: 2px 2px 0px var(--text-charcoal);
+    background-color: #1E3A8A !important;
+    color: #FFFFFF !important;
+    border-color: #1E3A8A !important;
+    box-shadow: 2px 2px 0px var(--text-charcoal, #1D1C1A) !important;
   }
 
   .search-input-wrapper {
@@ -932,22 +934,28 @@ const exhibitors = await getStandhouders('gent');
     pointer-events: none;
   }
 
-  /* Dimmed & Highlighted States for Search */
+  /* Dimmed & Highlighted States for Search & Filtering */
   .svg-stand.dimmed-stand {
-    opacity: 0.15;
+    opacity: 0.18;
     transition: opacity 0.25s ease;
   }
 
   .svg-stand.highlighted-search-stand .stand-box {
-    stroke: #caac8e;
-    stroke-width: 2.8;
+    fill: #FFF3EB !important;
+    stroke: #1E3A8A !important;
+    stroke-width: 2.8 !important;
     animation: gentPulse 1.6s infinite;
   }
 
+  .svg-stand.highlighted-search-stand .stand-num {
+    fill: #1E3A8A !important;
+    font-weight: 900;
+  }
+
   @keyframes gentPulse {
-    0% { filter: drop-shadow(0 0 0 rgba(202, 172, 142, 0.7)); }
-    70% { filter: drop-shadow(0 0 10px rgba(202, 172, 142, 0)); }
-    100% { filter: drop-shadow(0 0 0 rgba(202, 172, 142, 0)); }
+    0% { filter: drop-shadow(0 0 0 rgba(30, 58, 138, 0.7)); }
+    70% { filter: drop-shadow(0 0 10px rgba(30, 58, 138, 0)); }
+    100% { filter: drop-shadow(0 0 0 rgba(30, 58, 138, 0)); }
   }
 
   /* --- Sidebar Panels --- */
