@@ -153,6 +153,13 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
   window.GLOBAL_TICKETS = rawTickets || [];
   window.GLOBAL_ADDONS = rawAddons || [];
 
+  function getServiceFee(qty) {
+    if (qty <= 0) return 0;
+    if (qty === 1) return 1.75;
+    if (qty <= 5) return 3.50;
+    return 4.50;
+  }
+
   (function initMobileDrawer() {
     const overlay = document.getElementById('mobile-cart-sheet-overlay');
     if (!overlay) return;
@@ -202,7 +209,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       });
 
       if (totalQty > 0) {
-        const fee = 1.50;
+        const fee = getServiceFee(totalQty);
         const shipping = shippingActive ? 12.50 : 0;
         const grandTotal = subtotal + fee + shipping;
 
@@ -290,7 +297,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
           }
         });
 
-        const fee = totalItems > 0 ? 1.50 : 0;
+        const fee = getServiceFee(totalItems);
         const finalObj = {
           items: itemsArr,
           cartRaw: cartRaw,
@@ -383,7 +390,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         `;
       }).join('');
 
-      const fee = totalQty > 0 ? 1.50 : 0;
+      const fee = getServiceFee(totalQty);
       const shipping = shippingActive ? 12.50 : 0;
       const finalTotal = subtotal + fee + shipping;
 
@@ -427,7 +434,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
           }
         }
       });
-      const fee = totalItems > 0 ? 1.50 : 0;
+      const fee = getServiceFee(totalItems);
       const shipping = shippingActive ? 12.50 : 0;
       const grandTotal = subtotal + fee + shipping;
 
