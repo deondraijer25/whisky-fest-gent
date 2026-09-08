@@ -49,7 +49,7 @@ import Layout from '../layouts/Layout.astro';
               </svg>
             </div>
 
-            <span class="scan-instructions">SCAN BIJ DE DEUR</span>
+            <span class="scan-instructions" id="tv-scan-inst">SCAN BIJ DE DEUR</span>
             <span class="scan-res-hash" id="tv-code">#GWF-2026-84387-1</span>
           </div>
 
@@ -59,11 +59,11 @@ import Layout from '../layouts/Layout.astro';
             
             <div class="ticket-stub-header">
               <div class="ticket-stub-date-badge">
-                <span class="badge-month" id="tv-month">OKT</span>
-                <span class="badge-day" id="tv-day">02</span>
+                <span class="badge-month" id="tv-month">NOV</span>
+                <span class="badge-day" id="tv-day">13</span>
               </div>
               <div class="ticket-stub-org">
-                <span class="org-established">Est. 2014</span>
+                <span class="org-established">Est. 2004</span>
                 <span class="org-name" id="tv-org">Gents Whisky Festival</span>
                 <span class="org-location" id="tv-loc">De Oude Vismijn, Gent</span>
               </div>
@@ -81,10 +81,10 @@ import Layout from '../layouts/Layout.astro';
                 </div>
                 <div class="meta-item">
                   <span class="meta-label">STATUS:</span>
-                  <strong class="meta-value" style="color: var(--success-green);">GELDIG TOEGANGSBEWIJS</strong>
+                  <strong class="meta-value" style="color: var(--success-green);" id="tv-status">GELDIG TOEGANGSBEWIJS</strong>
                 </div>
                 <div class="meta-item">
-                  <span class="meta-label">TIJDSSLOT:</span>
+                  <span class="meta-label" id="tv-time-label">TIJDSSLOT:</span>
                   <strong class="meta-value" id="tv-time">19:00 - 23:00 UUR</strong>
                 </div>
                 <div class="meta-item">
@@ -94,7 +94,7 @@ import Layout from '../layouts/Layout.astro';
               </div>
 
               <div class="ticket-stub-footer">
-                <p class="stub-disclaimer">* Toegang uitsluitend voor personen van 18 jaar en ouder. Legitimatie verplicht bij de deur.</p>
+                <p class="stub-disclaimer" id="tv-disclaimer">* Toegang uitsluitend voor personen van 18 jaar en ouder. Legitimatie verplicht bij de deur.</p>
               </div>
             </div>
           </div>
@@ -445,13 +445,23 @@ import Layout from '../layouts/Layout.astro';
   const title = params.get('title') || 'VIP Sessie - Vrijdag';
   const name = params.get('name') || 'Deon Draijer';
   const time = params.get('time') || '13:00 - 17:00 UUR';
+  const category = params.get('category') || '';
+  const delivery = params.get('delivery') || '';
+  const autoDownload = params.get('download') === '1' || params.get('download') === 'true';
 
   const tvSessionTitle = document.getElementById('tv-session-title');
   const tvName = document.getElementById('tv-name');
   const tvTime = document.getElementById('tv-time');
+  const tvTimeLabel = document.getElementById('tv-time-label');
   const tvCode = document.getElementById('tv-code');
   const tvTicketCode = document.getElementById('tv-ticket-code');
   const tvDay = document.getElementById('tv-day');
+  const tvMonth = document.getElementById('tv-month');
+  const tvStatus = document.getElementById('tv-status');
+  const tvScanInst = document.getElementById('tv-scan-inst');
+  const tvLoc = document.getElementById('tv-loc');
+  const tvWatermark = document.getElementById('tv-watermark');
+  const tvDisclaimer = document.getElementById('tv-disclaimer');
 
   if (tvSessionTitle) tvSessionTitle.textContent = title.toUpperCase();
   if (tvName) tvName.textContent = name;
@@ -460,11 +470,69 @@ import Layout from '../layouts/Layout.astro';
   if (tvTicketCode) tvTicketCode.textContent = code;
 
   const titleLower = title.toLowerCase();
-  if (titleLower.includes('vrijdag')) {
-    if (tvDay) tvDay.textContent = '13';
-  } else if (titleLower.includes('zondag')) {
-    if (tvDay) tvDay.textContent = '15';
-  } else {
+  const isBotteling = category === 'botteling' || titleLower.includes('botteling') || titleLower.includes('fles');
+  const isMasterclass = category === 'masterclass' || titleLower.includes('masterclass');
+  const isBoottocht = category === 'tram' || category === 'bootjes' || titleLower.includes('boot');
+  const isWarehouse = category === 'warehouse' || category === 'dada' || titleLower.includes('dada');
+
+  if (isBotteling) {
+    if (tvWatermark) tvWatermark.textContent = 'FB';
+    if (tvMonth) tvMonth.textContent = 'NOV';
+    if (tvDay) tvDay.textContent = '13-15';
+    if (tvTimeLabel) tvTimeLabel.textContent = 'LEVERING:';
+    
+    if (delivery === 'shipping' || time.toUpperCase().includes('VERZENDING')) {
+      if (tvStatus) {
+        tvStatus.textContent = 'VERZENDING BEVESTIGD';
+        tvStatus.style.color = '#1E3A8A';
+      }
+      if (tvScanInst) tvScanInst.textContent = 'PAKKETPOST (BE & NL)';
+      if (tvLoc) tvLoc.textContent = 'Verzending per post na festival';
+      if (tvDisclaimer) tvDisclaimer.textContent = '* Uw exclusieve festival botteling wordt verzekerd verzonden na afloop van het festival.';
+    } else {
+      if (tvStatus) {
+        tvStatus.textContent = 'GELDIG OPHAALBEWIJS';
+        tvStatus.style.color = 'var(--success-green)';
+      }
+      if (tvScanInst) tvScanInst.textContent = 'TOON BIJ INFODESK (STAND O)';
+      if (tvLoc) tvLoc.textContent = 'De Oude Vismijn (Infodesk Stand O)';
+      if (tvDisclaimer) tvDisclaimer.textContent = '* Toon dit ophaalbewijs bij de Infodesk (Stand O) in De Oude Vismijn om uw fles in ontvangst te nemen.';
+    }
+  } else if (isMasterclass) {
+    if (tvWatermark) tvWatermark.textContent = 'MC';
+    if (tvMonth) tvMonth.textContent = 'NOV';
     if (tvDay) tvDay.textContent = '14';
+    if (tvLoc) tvLoc.textContent = 'De Oude Vismijn (MC-Ruimte)';
+    if (tvStatus) tvStatus.textContent = 'GELDIG PROEFTICKET';
+    if (tvScanInst) tvScanInst.textContent = 'TOON BIJ DE MASTERCLASS ZAAL';
+  } else if (isBoottocht) {
+    if (tvWatermark) tvWatermark.textContent = 'GWF';
+    if (tvMonth) tvMonth.textContent = 'NOV';
+    if (tvDay) tvDay.textContent = '13-15';
+    if (tvLoc) tvLoc.textContent = 'Steiger De Oude Vismijn';
+    if (tvStatus) tvStatus.textContent = 'GELDIG AFVAARTBEWIJS';
+    if (tvScanInst) tvScanInst.textContent = 'TOON BIJ INSCHEPEN';
+  } else {
+    // Entree tickets
+    if (tvWatermark) tvWatermark.textContent = 'GWF';
+    if (tvMonth) tvMonth.textContent = 'NOV';
+    if (titleLower.includes('vrijdag')) {
+      if (tvDay) tvDay.textContent = '13';
+    } else if (titleLower.includes('zondag')) {
+      if (tvDay) tvDay.textContent = '15';
+    } else {
+      if (tvDay) tvDay.textContent = '14';
+    }
+    if (tvStatus) tvStatus.textContent = 'GELDIG TOEGANGSBEWIJS';
+    if (tvScanInst) tvScanInst.textContent = 'SCAN BIJ DE DEUR';
+  }
+
+  // If download parameter is provided, trigger PDF print dialog automatically after render
+  if (autoDownload) {
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        window.print();
+      }, 400);
+    });
   }
 </script>

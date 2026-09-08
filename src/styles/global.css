@@ -5,14 +5,14 @@
 :root {
   /* HSL Tailored Brand Palette (Logo-infused) */
   --bg-parchment: #FAF7F2;     /* Warm vintage cotton paper */
-  --bg-sand: #d8e7e2;          /* Light green from logo (#d8e7e2) */
+  --bg-sand: #EAE4D9;          /* Warm linen sandstone */
   --bg-paper-card: #FCFAF7;    /* Pure thick cotton paper for cards */
   --text-charcoal: #1D1C1A;    /* Charred oak cask black */
   --text-muted: #4c5752;       /* Soft dark sage for secondary text */
   
   /* Whisky Gold & Cooper Tones */
   --whisky-gold: #caac8e;      /* Vintage beige from logo (#caac8e) */
-  --whisky-gold-light: #e4d5c4;  /* Lighter beige tint for hovers */
+  --whisky-gold-light: #F3E8DB;  /* Lighter warm champagne tint for hovers */
   --whisky-gold-dark: #1E3A8A;   /* Brand royal blue from logo (#1E3A8A) */
   --whisky-gold-trans: rgba(30, 58, 138, 0.08); /* Translucent royal blue */
   

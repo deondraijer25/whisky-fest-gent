@@ -1815,12 +1815,20 @@ function formatSpeaker(host: string) {
     }, 3200);
   }
 
+  const CART_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours TTL
+
   function getProgrammaCart() {
     try {
       const stored = localStorage.getItem('whiskyfest_cart');
       if (!stored) return {};
       const parsed = JSON.parse(stored);
       if (!parsed || typeof parsed !== 'object') return {};
+
+      // Security check: expire cart if older than 24 hours
+      if (parsed.updatedAt && (Date.now() - parsed.updatedAt > CART_MAX_AGE_MS)) {
+        localStorage.removeItem('whiskyfest_cart');
+        return {};
+      }
 
       const result = {};
       if (parsed.cartRaw && typeof parsed.cartRaw === 'object') {
@@ -1899,7 +1907,8 @@ function formatSpeaker(host: string) {
         subtotal: subtotal,
         totalItems: totalQty,
         items: itemsArr,
-        cartRaw: cleaned
+        cartRaw: cleaned,
+        updatedAt: Date.now()
       }));
 
       window.dispatchEvent(new Event('storage'));

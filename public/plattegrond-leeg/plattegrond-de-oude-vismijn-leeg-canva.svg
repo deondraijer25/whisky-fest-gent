@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 500" width="1960" height="1000" style="background-color: #FAF7F2; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;">
+  <defs>
+    <pattern id="water-pattern" width="20" height="10" patternUnits="userSpaceOnUse">
+      <path d="M 0 5 Q 5 2 10 5 T 20 5" fill="none" stroke="rgba(30, 58, 138, 0.08)" stroke-width="1" />
+    </pattern>
+
+    <pattern id="cobble-pattern" width="12" height="12" patternUnits="userSpaceOnUse">
+      <path d="M 0 6 L 6 0 L 12 6 L 6 12 Z" fill="none" stroke="rgba(29, 28, 26, 0.03)" stroke-width="0.8" />
+    </pattern>
+
+    <style>
+      .venue-outline {
+        fill: #F7F3EB;
+        stroke: #4c5752;
+        stroke-width: 1.8px;
+        opacity: 0.65;
+      }
+      .pillar {
+        fill: #1E3A8A;
+        stroke: #1D1C1A;
+        stroke-width: 0.8px;
+        opacity: 0.45;
+      }
+      .map-zone-label {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-style: italic;
+        font-size: 19px;
+        fill: #4c5752;
+        opacity: 0.22;
+        text-anchor: middle;
+        font-weight: 700;
+      }
+      .big-zone-label {
+        font-size: 26px;
+        opacity: 0.18;
+      }
+      .small-label {
+        font-size: 13px;
+        opacity: 0.28;
+      }
+      .map-street-label {
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        fill: #4c5752;
+        letter-spacing: 0.05em;
+        opacity: 0.45;
+      }
+      .map-water-label {
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        fill: #1E3A8A;
+        letter-spacing: 0.05em;
+        opacity: 0.45;
+      }
+      .vertical-text {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+      }
+    </style>
+  </defs>
+
+  <!-- Parchment Canvas Background -->
+  <rect width="980" height="500" fill="#FAF7F2" />
+
+  <!-- ============================================== -->
+  <!-- EXTERIOR WATERWAYS: DE LEIE & DE LIEVE -->
+  <!-- ============================================== -->
+  <!-- River De Leie (Top-Left Water Area) -->
+  <path d="M 50 140 Q 110 50 240 50 L 240 78 Q 130 78 78 160 Z" fill="url(#water-pattern)" />
+  <path d="M 60 130 Q 120 40 250 40" fill="none" stroke="#1E3A8A" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.25" />
+  <text x="145" y="36" class="map-water-label">Rivier De Leie ↗</text>
+
+  <!-- Canal De Lieve (Top Water Area) -->
+  <rect x="250" y="32" width="600" height="42" fill="url(#water-pattern)" />
+  <line x1="250" y1="32" x2="850" y2="32" stroke="#1E3A8A" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.25" />
+  <text x="550" y="26" class="map-water-label" text-anchor="middle">Kanaal De Lieve ➔</text>
+
+  <!-- ============================================== -->
+  <!-- VENUE OUTER WALLS (Historical Contour of Vismijn) -->
+  <!-- ============================================== -->
+  <path d="M 70 435 
+           L 70 345 L 110 345 L 110 195 
+           L 110 160 Q 120 78 240 78 
+           L 850 78 L 850 215 
+           L 905 215 L 905 425 L 830 425 
+           L 830 465 L 745 465 L 745 425 
+           L 425 425 L 425 465 L 155 465 
+           L 155 435 Z" 
+        class="venue-outline" stroke-linejoin="round" />
+
+  <!-- ============================================== -->
+  <!-- HISTORIC INTERIOR ROOM ZONES -->
+  <!-- ============================================== -->
+
+  <!-- 1. De Leie (Curved Gallery, Top-Left) -->
+  <path d="M 110 170 Q 120 80 240 80 L 240 195 L 110 195 Z" fill="#F6F1E7" stroke="#ded6c9" stroke-width="1" stroke-dasharray="4 4" opacity="0.7" />
+  <text x="210" y="165" class="map-zone-label" text-anchor="middle">De Leie</text>
+
+  <!-- 2. Brasserie (Middle-Left) -->
+  <rect x="110" y="195" width="145" height="145" fill="#EFE8DC" stroke="#ded6c9" stroke-width="1" stroke-dasharray="4 4" opacity="0.7" />
+  <text x="145" y="322" class="map-zone-label" text-anchor="start">Brasserie</text>
+
+  <!-- 3. Passage Area -->
+  <rect x="255" y="195" width="85" height="85" fill="#E9E2D4" stroke="#ded6c9" stroke-width="1" opacity="0.6" />
+
+  <!-- 4. De Lieve (Top Horizontal Canal Gallery) -->
+  <rect x="240" y="80" width="610" height="115" fill="#EFE8DC" stroke="#ded6c9" stroke-width="1" stroke-dasharray="4 4" opacity="0.7" />
+  <text x="545" y="102" class="map-zone-label" text-anchor="middle">De Lieve</text>
+  
+  <!-- Bay dividers in De Lieve -->
+  <line x1="365" y1="80" x2="365" y2="195" stroke="#ded6c9" stroke-width="1" stroke-dasharray="3 3" opacity="0.6" />
+  <line x1="440" y1="80" x2="440" y2="195" stroke="#ded6c9" stroke-width="1" stroke-dasharray="3 3" opacity="0.6" />
+  <line x1="525" y1="80" x2="525" y2="195" stroke="#ded6c9" stroke-width="1" stroke-dasharray="3 3" opacity="0.6" />
+  <line x1="695" y1="80" x2="695" y2="195" stroke="#ded6c9" stroke-width="1" stroke-dasharray="3 3" opacity="0.6" />
+
+  <!-- 5. De Markt (Grand Central Hall) -->
+  <rect x="340" y="195" width="490" height="145" fill="#FAF7F0" stroke="#1E3A8A" stroke-width="1.2" opacity="0.6" />
+  <rect x="425" y="340" width="405" height="85" fill="#FAF7F0" stroke="#1E3A8A" stroke-width="1.2" opacity="0.6" />
+  <text x="610" y="275" class="map-zone-label big-zone-label" text-anchor="middle">De Markt</text>
+
+  <!-- 6. Balkon (South-East Terrace overlooking Rekelingestraat) -->
+  <rect x="830" y="215" width="75" height="210" fill="#E8E0D0" stroke="#4c5752" stroke-width="1.5" opacity="0.6" />
+  <text x="868" y="320" class="map-zone-label vertical-text">Balkon</text>
+
+  <!-- 7. Poortgebouw (West Entrance Gatehouse) -->
+  <rect x="70" y="345" width="85" height="90" fill="#EAE2D2" stroke="#4c5752" stroke-width="1.5" opacity="0.6" />
+  <text x="112" y="422" class="map-zone-label small-label" text-anchor="middle">Poortgebouw</text>
+
+  <!-- 8. Binnenkoer (Spacious Central Courtyard) -->
+  <rect x="155" y="340" width="270" height="125" fill="#F8F5EE" stroke="#ded6c9" stroke-width="1" opacity="0.7" />
+  <rect x="155" y="340" width="270" height="125" fill="url(#cobble-pattern)" pointer-events="none" />
+  <text x="290" y="452" class="map-zone-label" text-anchor="middle">Binnenkoer</text>
+
+  <!-- ============================================== -->
+  <!-- HISTORIC STONE PILLARS (Colonnade in Aisles) -->
+  <!-- ============================================== -->
+  <g class="pillars">
+    <!-- Colonnade Top Row -->
+    <circle cx="450" cy="204" r="5" class="pillar" />
+    <circle cx="575" cy="204" r="5" class="pillar" />
+    <circle cx="635" cy="204" r="5" class="pillar" />
+    <circle cx="700" cy="204" r="5" class="pillar" />
+    <circle cx="770" cy="204" r="5" class="pillar" />
+
+    <!-- Colonnade Middle Row -->
+    <circle cx="450" cy="335" r="5" class="pillar" />
+    <circle cx="510" cy="335" r="5" class="pillar" />
+    <circle cx="570" cy="335" r="5" class="pillar" />
+    <circle cx="630" cy="335" r="5" class="pillar" />
+    <circle cx="700" cy="335" r="5" class="pillar" />
+    <circle cx="770" cy="335" r="5" class="pillar" />
+
+    <!-- Colonnade Bottom Row -->
+    <circle cx="510" cy="415" r="5" class="pillar" />
+    <circle cx="570" cy="415" r="5" class="pillar" />
+    <circle cx="630" cy="415" r="5" class="pillar" />
+    <circle cx="700" cy="415" r="6" class="pillar" />
+    <circle cx="770" cy="415" r="5" class="pillar" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- STREET LABELS & ANNOTATIONS -->
+  <!-- ============================================== -->
+  <text x="10" y="335" class="map-street-label">Sint-Veerleplein ➔</text>
+  <text x="925" y="320" class="map-street-label vertical-text">Rekelingestraat ➔</text>
+
+  <!-- ============================================== -->
+  <!-- ENTRANCE FLOW: SINT-VEERLEPLEIN -> INKOM -->
+  <!-- ============================================== -->
+  <g class="map-entrance-flow" opacity="0.6">
+    <path d="M 15 375 L 70 375" stroke="#caac8e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3" fill="none" />
+    <polygon points="70,375 62,371 62,379" fill="#caac8e" />
+    
+    <rect x="75" y="360" width="76" height="30" rx="3" fill="#caac8e" />
+    <text x="113" y="373" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">INKOM &amp;</text>
+    <text x="113" y="384" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">VESTIAIRE</text>
+
+    <path d="M 151 375 L 175 375" stroke="#caac8e" stroke-width="1.8" stroke-dasharray="4 3" fill="none" />
+    <polygon points="175,375 168,372 168,378" fill="#caac8e" />
+  </g>
+</svg>

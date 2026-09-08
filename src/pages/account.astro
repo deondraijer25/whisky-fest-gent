@@ -406,7 +406,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                   <line x1="250" y1="42" x2="850" y2="42" stroke="var(--primary-color)" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.35" />
                   <text x="550" y="22" class="map-water-label text-center" text-anchor="middle">Kanaal De Lieve ➔</text>
 
-                  <!-- Outer walls -->
+                  <!-- Venue Outer Walls -->
                   <path d="M 70 435 
                            L 70 345 L 110 345 L 110 195 
                            L 110 160 Q 120 78 240 78 
@@ -415,55 +415,57 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                            L 830 465 L 745 465 L 745 425 
                            L 425 425 L 425 465 L 155 465 
                            L 155 435 Z" 
-                        fill="var(--bg-sand)" stroke="var(--text-charcoal)" stroke-width="2.5" stroke-linejoin="round" class="venue-outline" />
+                        fill="var(--bg-sand)" stroke="var(--border-color-dark)" stroke-width="2" stroke-linejoin="round" class="venue-outline" />
 
                   <!-- Interior Zones -->
-                  <path d="M 110 170 Q 120 80 240 80 L 240 195 L 110 195 Z" fill="#F6F1E7" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
-                  <text x="145" y="105" class="map-zone-label" text-anchor="middle">De Leie</text>
+                  <!-- 1. De Leie -->
+                  <path d="M 110 170 Q 120 80 240 80 L 240 195 L 110 195 Z" fill="#EBE4D5" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
 
-                  <rect x="110" y="195" width="145" height="145" fill="#EFE8DC" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
-                  <text x="175" y="325" class="map-zone-label">Brasserie</text>
+                  <!-- 2. Brasserie -->
+                  <rect x="110" y="195" width="145" height="145" fill="#EBE4D5" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
 
-                  <rect x="255" y="195" width="85" height="85" fill="#E9E2D4" stroke="var(--border-color)" stroke-width="1.2" />
+                  <!-- 3. Passage & Festival Bar Area -->
+                  <rect x="255" y="195" width="85" height="85" fill="#E5DEC9" stroke="var(--border-color)" stroke-width="1.2" />
 
-                  <rect x="240" y="80" width="610" height="115" fill="#EFE8DC" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
-                  <text x="365" y="100" class="map-zone-label">De Lieve</text>
-                  
+                  <!-- 4. De Lieve -->
+                  <rect x="240" y="80" width="610" height="115" fill="#EBE4D5" stroke="var(--border-color)" stroke-width="1.5" stroke-dasharray="4 4" />
                   <line x1="365" y1="80" x2="365" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
                   <line x1="440" y1="80" x2="440" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
                   <line x1="525" y1="80" x2="525" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
                   <line x1="695" y1="80" x2="695" y2="195" stroke="var(--border-color)" stroke-width="1" stroke-dasharray="3 3" />
 
+                  <!-- 5. De Markt -->
                   <rect x="340" y="195" width="490" height="145" fill="#FAF7F0" stroke="var(--border-color-dark)" stroke-width="1.8" />
                   <rect x="425" y="340" width="405" height="85" fill="#FAF7F0" stroke="var(--border-color-dark)" stroke-width="1.8" />
-                  <text x="750" y="375" class="map-zone-label big-zone-label" text-anchor="middle">De Markt</text>
+                  <text x="735" y="380" class="map-zone-label">De Markt</text>
 
-                  <rect x="830" y="215" width="75" height="210" fill="#E8E0D0" stroke="var(--text-charcoal)" stroke-width="2" />
-                  <text x="868" y="320" class="map-zone-label vertical-text">Balkon</text>
+                  <!-- 6. Balkon -->
+                  <rect x="830" y="215" width="75" height="210" fill="#E5DEC9" stroke="var(--border-color-dark)" stroke-width="1.8" />
+                  <text x="868" y="325" class="map-zone-label vertical-text">Balkon</text>
 
-                  <rect x="70" y="345" width="85" height="90" fill="#EAE2D2" stroke="var(--text-charcoal)" stroke-width="2" />
-                  <text x="112" y="426" class="map-zone-label small-label" text-anchor="middle">Poortgebouw</text>
+                  <!-- 7. Poortgebouw -->
+                  <rect x="70" y="345" width="85" height="90" fill="#EAE2D2" stroke="var(--border-color-dark)" stroke-width="1.8" />
 
+                  <!-- 8. Binnenkoer -->
                   <rect x="155" y="340" width="270" height="125" fill="#F8F5EE" stroke="var(--border-color)" stroke-width="1.5" />
-                  <rect x="155" y="340" width="270" height="125" fill="url(#account-cobble-pattern)" pointer-events="none" />
-                  <text x="240" y="452" class="map-zone-label" text-anchor="middle">Binnenkoer</text>
+                  <rect x="155" y="340" width="270" height="125" fill="url(#account-cobble-pattern)" pointer-events="none" opacity="0.6" />
 
                   <!-- Pillars -->
                   <g class="pillars">
-                    <circle cx="450" cy="204" r="4.5" class="pillar" />
-                    <circle cx="575" cy="204" r="4.5" class="pillar" />
-                    <circle cx="635" cy="204" r="4.5" class="pillar" />
-                    <circle cx="700" cy="204" r="4.5" class="pillar" />
-                    <circle cx="770" cy="204" r="4.5" class="pillar" />
+                    <circle cx="450" cy="204" r="5" class="pillar" />
+                    <circle cx="575" cy="204" r="5" class="pillar" />
+                    <circle cx="635" cy="204" r="5" class="pillar" />
+                    <circle cx="700" cy="204" r="5" class="pillar" />
+                    <circle cx="770" cy="204" r="5" class="pillar" />
 
-                    <circle cx="450" cy="335" r="4.5" class="pillar" />
-                    <circle cx="510" cy="335" r="4.5" class="pillar" />
-                    <circle cx="570" cy="335" r="4.5" class="pillar" />
-                    <circle cx="630" cy="335" r="4.5" class="pillar" />
-                    <circle cx="700" cy="335" r="4.5" class="pillar" />
-                    <circle cx="770" cy="335" r="4.5" class="pillar" />
+                    <circle cx="450" cy="335" r="5" class="pillar" />
+                    <circle cx="510" cy="335" r="5" class="pillar" />
+                    <circle cx="570" cy="335" r="5" class="pillar" />
+                    <circle cx="630" cy="335" r="5" class="pillar" />
+                    <circle cx="700" cy="335" r="5" class="pillar" />
+                    <circle cx="770" cy="335" r="5" class="pillar" />
 
-                    <circle cx="510" cy="415" r="4.5" class="pillar" />
+                    <circle cx="510" cy="415" r="5" class="pillar" />
                     <circle cx="570" cy="415" r="4.5" class="pillar" />
                     <circle cx="630" cy="415" r="4.5" class="pillar" />
                     <circle cx="700" cy="415" r="4.5" class="pillar" />
@@ -471,64 +473,67 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                   </g>
 
                   <!-- Street annotations -->
-                  <text x="10" y="335" class="map-street-label">Sint-Veerleplein ➔</text>
-                  <text x="925" y="320" class="map-street-label vertical-text">Rekelingestraat ➔</text>
+                  <g class="map-annotation-zone">
+                    <text x="10" y="335" font-family="var(--font-sans)" font-size="12" font-weight="800" fill="var(--text-charcoal)">Sint-Veerleplein ➔</text>
+                    <text x="930" y="320" font-family="var(--font-sans)" font-size="12" font-weight="800" fill="var(--text-charcoal)" class="vertical-text">Rekelingestraat ➔</text>
+                  </g>
 
-                  <!-- Entrance Flow -->
-                  <g class="map-entrance-flow">
-                    <path d="M 15 375 L 70 375" stroke="#1E3A8A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3" fill="none" />
-                    <polygon points="70,375 60,370 60,380" fill="#1E3A8A" />
-                    
-                    <rect x="74" y="360" width="78" height="32" rx="4" fill="#1E3A8A" stroke="#1D1C1A" stroke-width="1.8" />
-                    <text x="113" y="373" font-family="var(--font-sans)" font-size="8.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.08em">HOOFDENTREE</text>
-                    <text x="113" y="385" font-family="var(--font-sans)" font-size="7.5" font-weight="800" fill="#caac8e" text-anchor="middle" letter-spacing="0.06em">POORTGEBOUW</text>
+                  <!-- Entrance Arrow from Sint-Veerleplein -->
+                  <g class="entrance-arrow">
+                    <path d="M 15 375 L 70 375 M 62 368 L 70 375 L 62 382" stroke="#1E3A8A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                  </g>
 
-                    <line x1="315" y1="465" x2="315" y2="400" stroke="#DC2626" stroke-width="2.5" />
-                    <polygon points="315,392 309,404 321,404" fill="#DC2626" />
+                  <!-- Poortgebouw: Hoofdentree -->
+                  <g class="svg-facility">
+                    <rect x="74" y="360" width="78" height="32" rx="3" class="stand-box organisation" />
+                    <text x="113" y="375" font-family="var(--font-sans)" font-size="9" font-weight="900" fill="#1E3A8A" text-anchor="middle" letter-spacing="0.05em">HOOFDENTREE</text>
+                    <text x="113" y="386" font-family="var(--font-sans)" font-size="7.5" font-weight="700" fill="var(--text-muted)" text-anchor="middle">Poortgebouw</text>
+                  </g>
 
-                    <g class="svg-facility">
-                      <rect x="330" y="340" width="46" height="125" rx="4" fill="#caac8e" stroke="#1D1C1A" stroke-width="2" />
-                      <text x="353" y="402" font-family="var(--font-sans)" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.12em" class="vertical-text">INKOM &amp; VESTIAIRE</text>
-                    </g>
+                  <!-- Inkom & Vestiaire Block -->
+                  <g class="svg-facility">
+                    <rect x="330" y="340" width="46" height="125" rx="3" class="stand-box organisation" />
+                    <text x="353" y="402" font-family="var(--font-sans)" font-size="9.5" font-weight="900" fill="#1E3A8A" text-anchor="middle" letter-spacing="0.1em" class="vertical-text">INKOM &amp; VESTIAIRE</text>
                   </g>
 
                   <!-- Foodtrucks -->
                   <g class="svg-stand" data-stand="F1" title="Foodtruck Meat the grill">
-                    <rect x="175" y="350" width="84" height="34" rx="4" class="stand-box catering" style="fill: #FFFFFF !important; stroke: #caac8e !important; stroke-width: 2 !important;" />
-                    <text x="217" y="364" class="stand-num text-bold" style="font-size: 8.5px; fill: #1D1C1A;">Foodtruck F1</text>
-                    <text x="217" y="377" class="stand-sub" style="font-size: 7.5px; fill: #856404; font-weight: 700;">Meat the Grill</text>
+                    <rect x="175" y="350" width="86" height="34" rx="3" class="stand-box catering" />
+                    <text x="218" y="364" class="stand-num text-bold" style="font-size: 9px; fill: #856404;">Foodtruck F1</text>
+                    <text x="218" y="377" class="stand-sub" style="font-size: 7.5px; fill: #856404; font-weight: 700;">Meat the Grill</text>
                   </g>
                   <g class="svg-stand" data-stand="F2" title="Foodtruck Mixed Worlds">
-                    <rect x="152" y="392" width="84" height="34" rx="4" class="stand-box catering" style="fill: #FFFFFF !important; stroke: #caac8e !important; stroke-width: 2 !important;" />
-                    <text x="194" y="406" class="stand-num text-bold" style="font-size: 8.5px; fill: #1D1C1A;">Foodtruck F2</text>
-                    <text x="194" y="419" class="stand-sub" style="font-size: 7.5px; fill: #856404; font-weight: 700;">Mixed Worlds</text>
+                    <rect x="152" y="392" width="86" height="34" rx="3" class="stand-box catering" />
+                    <text x="195" y="406" class="stand-num text-bold" style="font-size: 9px; fill: #856404;">Foodtruck F2</text>
+                    <text x="195" y="419" class="stand-sub" style="font-size: 7.5px; fill: #856404; font-weight: 700;">Mixed Worlds</text>
                   </g>
 
                   <!-- Brasserie & Bar & Masterclasses -->
                   <g class="svg-stand" data-stand="37">
                     <rect x="115" y="208" width="38" height="28" rx="3" class="stand-box" />
-                    <text x="134" y="226" class="stand-num text-small">37</text>
+                    <text x="134" y="226" class="stand-num">37</text>
                   </g>
                   <g class="svg-stand" data-stand="36">
                     <rect x="115" y="244" width="38" height="28" rx="3" class="stand-box" />
-                    <text x="134" y="262" class="stand-num text-small">36</text>
+                    <text x="134" y="262" class="stand-num">36</text>
                   </g>
                   <g class="svg-stand" data-stand="35">
                     <rect x="115" y="280" width="38" height="28" rx="3" class="stand-box" />
-                    <text x="134" y="298" class="stand-num text-small">35</text>
+                    <text x="134" y="298" class="stand-num">35</text>
                   </g>
-                  <!-- FESTIVAL BAR (Drinks & Food) -->
+                  
+                  <!-- Festival Bar (Drinks & Food) -->
                   <g class="svg-stand" data-stand="BAR" title="Festival Bar (Food and drinks)">
-                    <rect x="188" y="206" width="94" height="38" rx="4" class="stand-box bar-box" />
-                    <text x="235" y="222" class="stand-num text-bold text-small">BAR</text>
-                    <text x="235" y="236" class="stand-sub text-nano">Drinks &amp; Food</text>
+                    <rect x="188" y="206" width="94" height="38" rx="3" class="stand-box bar-box" />
+                    <text x="235" y="222" class="stand-num text-bold" style="font-size: 10px; fill: #1E3A8A;">BAR</text>
+                    <text x="235" y="236" class="stand-sub" style="font-size: 7.5px; fill: #1E3A8A;">Drinks &amp; Food</text>
                   </g>
 
-                  <!-- Hier melden voor Masterclasses (Exact same dimensions as BAR) -->
+                  <!-- Hier melden voor Masterclasses -->
                   <g class="svg-stand" data-stand="MC" title="Hier melden voor Masterclasses">
-                    <rect x="188" y="252" width="94" height="38" rx="4" class="stand-box mc-box" />
-                    <text x="235" y="267" class="stand-num text-bold text-nano">Hier melden voor</text>
-                    <text x="235" y="279" class="stand-num text-bold text-nano" style="fill: #1E3A8A;">Masterclasses</text>
+                    <rect x="188" y="252" width="94" height="38" rx="3" class="stand-box mc-box" />
+                    <text x="235" y="267" class="stand-num text-bold" style="font-size: 8px; fill: var(--text-charcoal);">Hier melden voor</text>
+                    <text x="235" y="280" class="stand-num text-bold" style="font-size: 8.5px; fill: #1E3A8A;">Masterclasses</text>
                   </g>
 
                   <!-- De Leie -->
@@ -561,92 +566,94 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                   <!-- De Lieve -->
                   <g class="svg-stand" data-stand="11">
                     <rect x="405" y="100" width="55" height="28" rx="3" class="stand-box" />
-                    <text x="432" y="118" class="stand-num text-small">11</text>
+                    <text x="432" y="118" class="stand-num">11</text>
                   </g>
                   <g class="svg-stand" data-stand="12">
                     <rect x="488" y="100" width="50" height="28" rx="3" class="stand-box" />
-                    <text x="513" y="118" class="stand-num text-small">12</text>
+                    <text x="513" y="118" class="stand-num">12</text>
                   </g>
 
                   <g class="svg-stand" data-stand="9">
                     <rect x="405" y="140" width="36" height="28" rx="3" class="stand-box" />
-                    <text x="423" y="158" class="stand-num text-small">9</text>
+                    <text x="423" y="158" class="stand-num">9</text>
                   </g>
                   <g class="svg-stand" data-stand="10">
                     <rect x="448" y="140" width="36" height="28" rx="3" class="stand-box" />
-                    <text x="466" y="158" class="stand-num text-small">10</text>
+                    <text x="466" y="158" class="stand-num">10</text>
                   </g>
                   <g class="svg-stand" data-stand="15">
                     <rect x="492" y="140" width="38" height="28" rx="3" class="stand-box catering" />
-                    <text x="511" y="158" class="stand-num text-small">15</text>
+                    <text x="511" y="158" class="stand-num" style="fill: #856404;">15</text>
                   </g>
 
                   <g class="svg-stand" data-stand="13">
                     <rect x="565" y="102" width="90" height="35" rx="3" class="stand-box" />
-                    <text x="610" y="124" class="stand-num text-small">13</text>
+                    <text x="610" y="124" class="stand-num">13</text>
                   </g>
                   <g class="svg-stand" data-stand="14">
-                    <rect x="565" y="145" width="90" height="35" rx="3" class="stand-box buffet-stand" />
-                    <text x="610" y="167" class="stand-num text-small">14</text>
+                    <rect x="565" y="145" width="90" height="35" rx="3" class="stand-box" />
+                    <text x="610" y="167" class="stand-num">14</text>
                   </g>
 
                   <!-- De Markt -->
-                  <g class="svg-stand" data-stand="O" title="Organisatie">
-                    <rect x="320" y="210" width="35" height="105" rx="3" class="stand-box organisation" />
-                    <text x="338" y="262" class="stand-num text-bold text-small vertical-text">Organisatie</text>
+                  <g class="svg-stand" data-stand="O" title="Organisatie & Infodesk">
+                    <rect x="320" y="206" width="36" height="114" rx="3" class="stand-box organisation" />
+                    <circle cx="338" cy="222" r="7" fill="#1E3A8A" />
+                    <text x="338" y="225" font-family="var(--font-sans)" font-size="9" font-weight="900" fill="#FFFFFF" text-anchor="middle">i</text>
+                    <text x="338" y="272" class="stand-num text-bold vertical-text" style="font-size: 8.5px; fill: #1E3A8A; letter-spacing: 0.12em;">ORGANISATIE</text>
                   </g>
 
                   <g class="svg-stand" data-stand="21">
                     <rect x="375" y="210" width="42" height="28" rx="3" class="stand-box" />
-                    <text x="396" y="228" class="stand-num text-small">21</text>
+                    <text x="396" y="228" class="stand-num">21</text>
                   </g>
                   <g class="svg-stand" data-stand="20">
                     <rect x="445" y="210" width="140" height="28" rx="3" class="stand-box" />
-                    <text x="515" y="228" class="stand-num text-small">20</text>
+                    <text x="515" y="228" class="stand-num">20</text>
                   </g>
                   <g class="svg-stand" data-stand="18">
                     <rect x="612" y="210" width="58" height="28" rx="3" class="stand-box" />
-                    <text x="641" y="228" class="stand-num text-small">18</text>
+                    <text x="641" y="228" class="stand-num">18</text>
                   </g>
 
                   <g class="svg-stand" data-stand="29">
                     <rect x="430" y="255" width="58" height="22" rx="2" class="stand-box" />
-                    <text x="459" y="271" class="stand-num text-small">29</text>
+                    <text x="459" y="271" class="stand-num">29</text>
                   </g>
                   <g class="svg-stand" data-stand="31">
                     <rect x="542" y="255" width="60" height="22" rx="2" class="stand-box" />
-                    <text x="572" y="271" class="stand-num text-small">31</text>
+                    <text x="572" y="271" class="stand-num">31</text>
                   </g>
 
                   <g class="svg-stand" data-stand="28">
                     <rect x="430" y="280" width="58" height="22" rx="2" class="stand-box" />
-                    <text x="459" y="296" class="stand-num text-small">28</text>
+                    <text x="459" y="296" class="stand-num">28</text>
                   </g>
                   <g class="svg-stand" data-stand="30">
                     <rect x="542" y="280" width="60" height="22" rx="2" class="stand-box" />
-                    <text x="572" y="296" class="stand-num text-small">30</text>
+                    <text x="572" y="296" class="stand-num">30</text>
                   </g>
 
                   <g class="svg-stand" data-stand="23">
                     <rect x="452" y="325" width="40" height="28" rx="3" class="stand-box" />
-                    <text x="472" y="343" class="stand-num text-small">23</text>
+                    <text x="472" y="343" class="stand-num">23</text>
                   </g>
                   <g class="svg-stand" data-stand="24">
                     <rect x="498" y="325" width="40" height="28" rx="3" class="stand-box" />
-                    <text x="518" y="343" class="stand-num text-small">24</text>
+                    <text x="518" y="343" class="stand-num">24</text>
                   </g>
                   <g class="svg-stand" data-stand="25">
                     <rect x="552" y="325" width="118" height="28" rx="3" class="stand-box" />
-                    <text x="611" y="343" class="stand-num text-small">25</text>
+                    <text x="611" y="343" class="stand-num">25</text>
                   </g>
 
                   <g class="svg-stand" data-stand="27">
                     <rect x="696" y="230" width="40" height="30" rx="3" class="stand-box" />
-                    <text x="716" y="250" class="stand-num text-small">27</text>
+                    <text x="716" y="250" class="stand-num">27</text>
                   </g>
                   <g class="svg-stand" data-stand="26">
                     <rect x="696" y="270" width="40" height="30" rx="3" class="stand-box" />
-                    <text x="716" y="290" class="stand-num text-small">26</text>
+                    <text x="716" y="290" class="stand-num">26</text>
                   </g>
                 </svg>
               </div>
@@ -1017,6 +1024,28 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
     pointer-events: none;
   }
 
+  .map-zone-header {
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 800;
+    fill: #64748B;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .big-zone-header {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    fill: #475569;
+  }
+
+  .small-header {
+    font-size: 7.5px;
+    letter-spacing: 0.1em;
+  }
+
   .map-zone-label {
     font-family: var(--font-serif);
     font-style: italic;
@@ -1027,11 +1056,16 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
     pointer-events: none;
   }
 
-  /* --- SVG Stand Boxes (Exact match with standhouders page) --- */
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  /* --- SVG Stand Boxes (Matching Den Haag System Exactly) --- */
   .stand-box {
-    fill: var(--bg-paper-card) !important;
-    stroke: var(--text-charcoal) !important;
-    stroke-width: 1.8 !important;
+    fill: var(--bg-paper-card);
+    stroke: var(--text-charcoal);
+    stroke-width: 1.8;
     cursor: pointer;
     transition: all 0.2s ease;
   }
@@ -1040,7 +1074,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
     font-family: var(--font-sans);
     font-weight: 800;
     font-size: 0.85rem;
-    fill: var(--text-charcoal) !important;
+    fill: var(--text-charcoal);
     text-anchor: middle;
     pointer-events: none;
     user-select: none;
@@ -1050,50 +1084,87 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
     font-size: 0.75rem;
   }
 
+  .stand-sub {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 7.5px;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Hover states for SVG stands */
   .svg-stand {
     cursor: pointer;
   }
 
   .svg-stand:hover .stand-box {
-    fill: var(--whisky-gold-light) !important;
-    stroke: var(--whisky-gold-dark) !important;
-    filter: drop-shadow(0 2px 5px rgba(197, 139, 57, 0.2));
+    fill: var(--whisky-gold-light);
+    stroke: var(--whisky-gold-dark);
+    filter: drop-shadow(0 2px 5px rgba(30, 58, 138, 0.2));
   }
 
-  .stand-box.shop {
-    fill: rgba(44, 94, 67, 0.05) !important;
-    stroke: var(--success-green) !important;
-  }
-  .svg-stand[data-stand="S"] .stand-num {
-    fill: var(--success-green) !important;
-  }
-
+  /* Functional Areas Styling (Den Haag Design System) */
   .stand-box.organisation {
-    fill: rgba(143, 91, 25, 0.05) !important;
-    stroke: var(--whisky-gold-dark) !important;
+    fill: rgba(30, 58, 138, 0.05);
+    stroke: var(--whisky-gold-dark);
   }
-  .svg-stand[data-stand="O"] .stand-num,
-  .svg-stand[data-stand="17"] .stand-num {
-    fill: var(--whisky-gold-dark) !important;
+  .svg-stand[data-stand="O"]:hover .stand-box {
+    fill: var(--whisky-gold-light);
+    stroke: var(--whisky-gold-dark);
+  }
+  .svg-stand[data-stand="O"] .stand-num {
+    fill: var(--whisky-gold-dark);
   }
 
   .stand-box.catering {
-    fill: #FFF3CD !important;
-    stroke: #856404 !important;
+    fill: #FFF3CD;
+    stroke: #856404;
   }
-  .svg-stand[data-stand="C"] .stand-num {
-    fill: #856404 !important;
+  .svg-stand[data-stand="C"]:hover .stand-box,
+  .svg-stand[data-stand="F1"]:hover .stand-box,
+  .svg-stand[data-stand="F2"]:hover .stand-box {
+    fill: #FFEBAA;
+  }
+  .svg-stand[data-stand="C"] .stand-num,
+  .svg-stand[data-stand="F1"] .stand-num,
+  .svg-stand[data-stand="F2"] .stand-num {
+    fill: #856404;
   }
 
+  .stand-box.bar-box {
+    fill: rgba(30, 58, 138, 0.05);
+    stroke: var(--whisky-gold-dark);
+  }
+  .svg-stand[data-stand="BAR"]:hover .stand-box {
+    fill: var(--whisky-gold-light);
+    stroke: var(--whisky-gold-dark);
+  }
+
+  .stand-box.mc-box {
+    fill: var(--bg-paper-card);
+    stroke: var(--whisky-gold-dark);
+  }
+  .svg-stand[data-stand="MC"]:hover .stand-box {
+    fill: var(--whisky-gold-light);
+    stroke: var(--whisky-gold-dark);
+  }
+
+  /* Interactive active selection state in SVG */
   .svg-stand.selected-stand .stand-box {
-    fill: var(--whisky-gold-dark) !important;
-    stroke: var(--text-charcoal) !important;
-    stroke-width: 2.5px !important;
+    fill: var(--whisky-gold-dark);
+    stroke: var(--text-charcoal);
+    stroke-width: 2.5px;
+    animation: pulseGlow 1.5s infinite;
   }
 
   .svg-stand.selected-stand .stand-num {
-    fill: #ffffff !important;
+    fill: var(--bg-parchment) !important;
     font-weight: 900;
+  }
+
+  .svg-stand.selected-stand .stand-sub {
+    fill: var(--bg-parchment) !important;
   }
 
   .sidebar-exhibitors-panel {
@@ -2552,17 +2623,17 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
               displayDay = "14";
               displayTime = "13:00 - 17:00 UUR";
             }
-          } else if (item.category === "tram") {
-            watermark = "WT";
-            displayDay = "14";
-            displayTime = item.timeslot || "14:00 UUR";
+          } else if (item.category === "bootjes" || item.category === "dada") {
+            watermark = "GWF";
+            displayDay = "02-04";
+            displayTime = item.timeslot || "TIJDSSLOT VOLGENS PROGRAMMA";
           } else if (item.category === "botteling") {
             watermark = "FB";
-            displayDay = "13-15";
-            displayTime = item.delivery === "shipping" ? "VERZENDING PER POST" : "AFHALEN (STAND 48)";
+            displayDay = "02-04";
+            displayTime = item.delivery === "shipping" ? "VERZENDING PER POST" : "AFHALEN BIJ INFODESK (STAND O)";
           } else if (item.category === "masterclass") {
             watermark = "MC";
-            displayDay = "14";
+            displayDay = "03";
             displayTime = item.timeslot || "14:00 - 14:45 UUR";
           }
 
@@ -2576,7 +2647,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
             // Clean public HTTPS URL that WhatsApp always recognizes as a blue clickable link
             const baseUrl = window.location.origin;
             
-            const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(item.title)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}`;
+            const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(item.title)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}&category=${encodeURIComponent(item.category || '')}&delivery=${encodeURIComponent(item.delivery || '')}`;
             
             const shareText = encodeURIComponent(
               `*${'International Whisky Festival 2026'}*\n` +
@@ -2650,7 +2721,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                       <div class="ticket-badges-block">
                         <span class="ticket-status-tag">
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                          Geldig Toegangsbewijs
+                          ${item.category === 'botteling' ? (item.delivery === 'shipping' ? 'Verzending Bevestigd' : 'Geldig Ophaalbewijs') : 'Geldig Toegangsbewijs'}
                         </span>
                         ${qty > 1 ? `<span class="ticket-qty-tag">Ticket ${t + 1} van ${qty}</span>` : ''}
                       </div>
@@ -2664,7 +2735,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                       </div>
                       <div class="meta-col">
                         <span class="meta-col-label">Locatie</span>
-                        <strong class="meta-col-val">${item.category === 'masterclass' ? 'De Oude Vismijn (MC-Ruimte)' : 'De Oude Vismijn, Gent'}</strong>
+                        <strong class="meta-col-val">${item.category === 'masterclass' ? 'De Oude Vismijn (MC-Ruimte)' : item.category === 'botteling' ? (item.delivery === 'shipping' ? 'Verzending per Post (BE & NL)' : 'De Oude Vismijn (Infodesk Stand O)') : 'De Oude Vismijn, Gent'}</strong>
                       </div>
                       <div class="meta-col">
                         <span class="meta-col-label">Ticket Code</span>
@@ -2674,7 +2745,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
 
                     <!-- 3. Bottom Row: Action Buttons -->
                     <div class="ticket-actions-row">
-                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('/ticket?id=${cleanCode}&title=${encodeURIComponent(item.title)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}', '_blank')">
+                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('/ticket?id=${cleanCode}&title=${encodeURIComponent(item.title)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}&category=${encodeURIComponent(item.category || '')}&delivery=${encodeURIComponent(item.delivery || '')}&download=1', '_blank')">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span>Download E-Ticket (PDF)</span>
                       </button>
@@ -2718,8 +2789,24 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
     const demoLoginBtn = document.getElementById('btn-quick-demo-login');
     const portalPageLogoutBtn = document.getElementById('portal-page-logout-btn');
 
+    const AUTH_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours session TTL
+
     function checkAuthAndRender() {
-      const isLoggedOut = localStorage.getItem('wf_user_logged_out') === 'true';
+      let isLoggedOut = localStorage.getItem('wf_user_logged_out') === 'true';
+      const storedAuthRaw = sessionStorage.getItem('wf_auth_session') || localStorage.getItem('wf_auth_session');
+
+      // Security check: expire authentication session after 24 hours
+      if (storedAuthRaw) {
+        try {
+          const authData = JSON.parse(storedAuthRaw);
+          if (authData.createdAt && (Date.now() - authData.createdAt > AUTH_MAX_AGE_MS)) {
+            localStorage.removeItem('wf_auth_session');
+            sessionStorage.removeItem('wf_auth_session');
+            localStorage.setItem('wf_user_logged_out', 'true');
+            isLoggedOut = true;
+          }
+        } catch(e) {}
+      }
 
       if (isLoggedOut) {
         if (authArea) authArea.style.display = 'none';
@@ -2742,7 +2829,8 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
         const sessionData = {
           email: email || 'deondraijer@gmail.com',
           resNumber: resNo || '#WF-2026-84387',
-          name: email ? (email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1)) : 'Deon Draijer'
+          name: email ? (email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1)) : 'Deon Draijer',
+          createdAt: Date.now()
         };
         
         localStorage.setItem('wf_auth_session', JSON.stringify(sessionData));
@@ -2764,7 +2852,8 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
         localStorage.setItem('wf_auth_session', JSON.stringify({
           email: 'deondraijer@gmail.com',
           resNumber: '#WF-2026-84387',
-          name: 'Deon Draijer'
+          name: 'Deon Draijer',
+          createdAt: Date.now()
         }));
         checkAuthAndRender();
         window.dispatchEvent(new Event('storage'));

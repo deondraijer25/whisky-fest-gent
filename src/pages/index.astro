@@ -1833,28 +1833,63 @@ const tickets = await getTickets('gent');
                 <span id="promo-status-msg" style="display: none; font-size: 0.75rem; margin-top: 4px; font-weight: 600;"></span>
               </div>
 
-              <div class="payment-method-section" style="margin-top: 0.5rem; padding-top: 0.5rem;">
-                <span class="payment-method-title">Betaalmethode</span>
-                <div class="payment-grids">
-                  <label class="pay-method-card active">
-                    <input type="radio" name="payment-method" value="ideal" checked />
-                    <span class="pay-logo">iDEAL</span>
+              <!-- Botteling Delivery Method Selector (Shown only when a festival bottling is in the cart) -->
+              <div id="modal-bottling-delivery-section" style="display: none; margin-top: 0.75rem; padding: 0.85rem; background: rgba(30, 58, 138, 0.04); border: 1.5px solid rgba(30, 58, 138, 0.2); border-radius: 8px;">
+                <span class="payment-method-title" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; color: #1E3A8A; font-weight: 800;">
+                  <span>Levering Festival Botteling</span>
+                  <span style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; background: #1E3A8A; color: #FFF; padding: 0.15rem 0.45rem; border-radius: 3px;">Gentse Special</span>
+                </span>
+                
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <label class="modal-delivery-option" id="opt-delivery-pickup" style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.8rem; background: #FFFFFF; border: 1.5px solid #1E3A8A; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+                    <div style="display: flex; align-items: center; gap: 0.6rem;">
+                      <input type="radio" name="modal-bottling-delivery" value="pickup" checked style="accent-color: #1E3A8A; width: 16px; height: 16px;" />
+                      <div>
+                        <strong style="display: block; font-size: 0.85rem; color: #171614;">Lokaal afhalen op festival</strong>
+                        <span style="font-size: 0.72rem; color: #665C54;">Afhalen bij de Infodesk (Stand O) • Digitaal ophaalbewijs</span>
+                      </div>
+                    </div>
+                    <span style="font-size: 0.75rem; font-weight: 800; color: #166534; background: rgba(22, 101, 52, 0.1); padding: 0.2rem 0.5rem; border-radius: 4px;">GRATIS</span>
                   </label>
-                  <label class="pay-method-card">
-                    <input type="radio" name="payment-method" value="bancontact" />
-                    <span class="pay-logo">Bancontact</span>
+
+                  <label class="modal-delivery-option" id="opt-delivery-shipping" style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.8rem; background: #FFFFFF; border: 1.5px solid #E6DDD0; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+                    <div style="display: flex; align-items: center; gap: 0.6rem;">
+                      <input type="radio" name="modal-bottling-delivery" value="shipping" style="accent-color: #1E3A8A; width: 16px; height: 16px;" />
+                      <div>
+                        <strong style="display: block; font-size: 0.85rem; color: #171614;">Verzending per post (BE & NL)</strong>
+                        <span style="font-size: 0.72rem; color: #665C54;">Verzekerde pakketpost direct na het festival</span>
+                      </div>
+                    </div>
+                    <span style="font-size: 0.78rem; font-weight: 800; color: #1E3A8A; font-family: var(--font-sans); background: rgba(30, 58, 138, 0.08); padding: 0.2rem 0.5rem; border-radius: 4px;">+ €12,50</span>
                   </label>
                 </div>
 
-                <div class="form-group bank-select-group" id="bank-group" style="margin-bottom: 0;">
-                  <label for="bank-select" class="form-label">Selecteer uw bank</label>
-                  <select id="bank-select" class="form-control">
-                    <option value="rabobank">Rabobank</option>
-                    <option value="ing">ING</option>
-                    <option value="abnamro">ABN AMRO</option>
-                    <option value="sns">SNS Bank</option>
-                    <option value="bunq">bunq</option>
-                  </select>
+                <!-- Collapsible Shipping Address Fields -->
+                <div id="modal-shipping-address-fields" style="display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed rgba(30, 58, 138, 0.2); animation: fadeIn 0.2s ease;">
+                  <span style="display: block; font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #1E3A8A; margin-bottom: 0.5rem;">
+                    Bezorgadres voor Fles
+                  </span>
+                  <div class="form-group" style="margin-bottom: 0.45rem;">
+                    <label for="ship-street" class="form-label" style="font-size: 0.7rem;">Straatnaam en Huisnummer</label>
+                    <input type="text" id="ship-street" placeholder="Bijv. Veldstraat 42" class="form-control" style="padding: 0.5rem 0.75rem; font-size: 0.85rem;" />
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 0.5rem; margin-bottom: 0.45rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label for="ship-zip" class="form-label" style="font-size: 0.7rem;">Postcode</label>
+                      <input type="text" id="ship-zip" placeholder="9000" class="form-control" style="padding: 0.5rem 0.75rem; font-size: 0.85rem;" />
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label for="ship-city" class="form-label" style="font-size: 0.7rem;">Woonplaats</label>
+                      <input type="text" id="ship-city" placeholder="Gent" class="form-control" style="padding: 0.5rem 0.75rem; font-size: 0.85rem;" />
+                    </div>
+                  </div>
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label for="ship-country" class="form-label" style="font-size: 0.7rem;">Land</label>
+                    <select id="ship-country" class="form-control" style="padding: 0.5rem 0.75rem; font-size: 0.85rem;">
+                      <option value="BE" selected>België</option>
+                      <option value="NL">Nederland</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1867,19 +1902,19 @@ const tickets = await getTickets('gent');
                   <!-- Dynamic items populated by JS -->
                 </div>
                 <div class="modal-summary-calc">
-                  <div class="modal-summary-item-row" id="modal-summary-subtotal-row">
+                  <div class="modal-calc-row" id="modal-summary-subtotal-row">
                     <span>Subtotaal:</span>
                     <span id="modal-summary-subtotal">€0,00</span>
                   </div>
-                  <div class="modal-summary-item-row" id="modal-summary-fee-row">
+                  <div class="modal-calc-row" id="modal-summary-fee-row">
                     <span>Administratiekosten:</span>
                     <span id="modal-summary-fee">€0,00</span>
                   </div>
-                  <div class="modal-summary-item-row" id="modal-summary-shipping-row" style="display: none;">
+                  <div class="modal-calc-row" id="modal-summary-shipping-row" style="display: none;">
                     <span>Verzendkosten:</span>
                     <span id="modal-summary-shipping">€0,00</span>
                   </div>
-                  <div class="modal-summary-item-row" id="modal-summary-discount-row" style="display: none; color: #dc3545; font-weight: 600;">
+                  <div class="modal-calc-row" id="modal-summary-discount-row" style="display: none; color: #dc3545; font-weight: 600;">
                     <span>Korting:</span>
                     <span id="modal-summary-discount">€0,00</span>
                   </div>
@@ -1924,39 +1959,39 @@ const tickets = await getTickets('gent');
             <div class="ticket-summary-box">
               <div class="summary-item">
                 <span>Reserveringsnummer:</span>
-                <strong>#WF-2026-98741</strong>
+                <strong id="receipt-res-number" style="color: #1E3A8A; font-family: var(--font-sans); font-weight: 800;">#WF-2026-98741</strong>
               </div>
               <div class="summary-item">
                 <span>E-mailadres:</span>
                 <strong id="receipt-sent-email">jan@devries.nl</strong>
               </div>
               <div class="summary-divider"></div>
-              <div class="summary-items-header">Bestelde Kaarten & Producten</div>
+              <div class="summary-items-header">Bestelde Kaarten &amp; Producten</div>
               <div id="receipt-tickets-list" class="receipt-tickets-ul">
-                <!-- Dynamically populated by JS as list items -->
+                <!-- Dynamically populated by JS as clean rows with right-aligned quantity/price -->
               </div>
             </div>
             <p class="ticket-delivery-notice">
-              De officiële E-tickets zijn naar uw e-mailadres verzonden. Neem uw geprinte ticket of mobiele barcode mee naar de ingang van de De Oude Vismijn.
+              De officiële E-tickets zijn naar uw e-mailadres verzonden. Neem uw geprinte ticket of mobiele barcode mee naar de ingang van De Oude Vismijn.
             </p>
- 
-            <!-- Mijn Account Banner -->
-            <a href="/account" class="account-banner" id="my-account-link">
-              <div class="account-banner-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--success-green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;">
+
+            <!-- Mijn Account Banner with Clean Plus Jakarta Sans font and Gent branding -->
+            <a href="/account" class="account-banner" id="my-account-link" style="font-family: var(--font-sans); background: #FFFFFF; border: 1.5px solid #1E3A8A; box-shadow: 0 4px 14px rgba(30, 58, 138, 0.08); border-radius: 8px; padding: 1rem 1.25rem;">
+              <div class="account-banner-icon" style="background: rgba(30, 58, 138, 0.08); border: 1px solid rgba(30, 58, 138, 0.2); border-radius: 6px; color: #1E3A8A;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
                 </svg>
               </div>
               <div class="account-banner-text">
-                <strong>Bekijk in Mijn Account</strong>
-                <span>Beheer uw tickets, download e-tickets en bekijk uw bestelgeschiedenis.</span>
+                <strong style="font-family: var(--font-sans, sans-serif); font-weight: 800; font-size: 0.98rem; text-transform: none; letter-spacing: normal; color: #171614;">Bekijk in Mijn Account</strong>
+                <span style="font-size: 0.8rem; color: #665C54;">Beheer uw tickets, download e-tickets en bekijk uw bestelgeschiedenis.</span>
               </div>
-              <span class="account-banner-arrow">→</span>
+              <span class="account-banner-arrow" style="color: #1E3A8A; font-size: 1.25rem;">&rarr;</span>
             </a>
- 
-            <button type="button" class="btn btn-charcoal btn-block" id="modal-success-close">
-              Sluiten & Terug naar Website
+
+            <button type="button" class="btn btn-charcoal btn-block" id="modal-success-close" style="margin-top: 0.75rem; background: #171614; color: #FFFFFF; border-radius: 6px; font-family: var(--font-sans); font-weight: 700;">
+              Sluiten &amp; Terug naar Website
             </button>
           </div>
         </div>
@@ -3576,14 +3611,15 @@ const tickets = await getTickets('gent');
   }
   .modal-summary-items-list {
     font-family: var(--font-sans);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-charcoal);
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    max-height: 120px;
+    gap: 0.5rem;
+    max-height: 220px;
     overflow-y: auto;
     margin-bottom: 0.75rem;
+    padding-right: 4px;
     scrollbar-width: thin;
     scrollbar-color: rgba(30, 58, 138, 0.2) transparent;
   }
@@ -3598,28 +3634,65 @@ const tickets = await getTickets('gent');
     border-radius: 2px;
   }
   .modal-summary-item-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.5rem;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding: 0.65rem 0.85rem !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(140, 110, 70, 0.22) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+  }
+  .modal-summary-item-info {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.2rem !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+  .modal-summary-item-title {
+    font-weight: 700 !important;
+    color: #171614 !important;
+    font-size: 0.85rem !important;
+    line-height: 1.25 !important;
+  }
+  .modal-summary-item-spec {
+    font-size: 0.74rem !important;
+    color: #665C54 !important;
+    line-height: 1.2 !important;
+  }
+  .modal-summary-item-price {
+    font-weight: 800 !important;
+    color: #1E3A8A !important;
+    font-size: 0.95rem !important;
+    font-family: var(--font-sans) !important;
+    white-space: nowrap !important;
+    text-align: right !important;
   }
   .modal-summary-calc {
     border-top: 1px solid rgba(140, 110, 70, 0.2);
-    padding-top: 0.5rem;
+    padding-top: 0.65rem;
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.35rem;
     font-family: var(--font-sans);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
+  }
+  .modal-calc-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
   }
   .modal-summary-total-row {
     display: flex;
     justify-content: space-between;
     font-weight: 800;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: var(--text-charcoal);
     border-top: 1px dashed rgba(140, 110, 70, 0.25);
-    padding-top: 0.5rem;
-    margin-top: 0.25rem;
+    padding-top: 0.65rem;
+    margin-top: 0.35rem;
     margin-bottom: 1rem;
   }
   .modal-summary-total-row span {
@@ -3661,21 +3734,19 @@ const tickets = await getTickets('gent');
   .processing-title { font-size: 1.35rem; color: var(--text-charcoal); margin-bottom: 0.5rem; }
   .processing-desc { font-size: 0.95rem; color: var(--text-muted); }
   .success-ticket-stub { display: flex; flex-direction: column; }
-  .success-header { text-align: center; padding: 0.5rem 0 0.5rem; }
-  .success-icon { display: inline-flex; width: 48px; height: 48px; border-radius: 50%; background-color: rgba(30, 58, 138, 0.08); color: var(--success-green); align-items: center; justify-content: center; margin-bottom: 0.75rem; border: 2px solid var(--success-green); }
-  .success-title { font-size: 1.5rem; color: var(--text-charcoal); margin-bottom: 0.1rem; }
-  .success-subtitle { font-size: 0.85rem; color: var(--text-muted); }
+  .success-header { text-align: center; padding: 0.5rem 0 0.75rem; }
+  .success-icon { display: inline-flex; width: 48px; height: 48px; border-radius: 50%; background-color: rgba(30, 58, 138, 0.08); color: #1E3A8A; align-items: center; justify-content: center; margin-bottom: 0.75rem; border: 2px solid #1E3A8A; }
+  .success-title { font-size: 1.5rem; color: var(--text-charcoal); margin-bottom: 0.2rem; font-family: var(--font-display); }
+  .success-subtitle { font-family: var(--font-sans); font-size: 0.85rem; color: var(--text-muted); }
   .success-body { padding-top: 0.75rem; }
-  .ticket-summary-box { background-color: #FCFAF7; border: 1.5px solid #d5c28a; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01); }
+  .ticket-summary-box { background-color: #FAF7F2; border: 1.5px solid rgba(140, 110, 70, 0.25); border-radius: 8px; padding: 1rem 1.15rem; margin-bottom: 0.85rem; display: flex; flex-direction: column; gap: 0.45rem; box-shadow: inset 0 1px 3px rgba(0,0,0,0.02); }
   .summary-item { display: flex; justify-content: space-between; font-family: var(--font-sans); font-size: 0.85rem; }
   .summary-item span { color: var(--text-muted); font-weight: 600; }
   .summary-item strong { color: var(--text-charcoal); font-weight: 700; }
-  .summary-divider { border-top: 1px dashed rgba(140, 110, 70, 0.25); margin: 0.4rem 0; }
-  .summary-items-header { font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--success-green); margin-bottom: 0.25rem; text-align: left; }
-  .receipt-tickets-ul { font-family: var(--font-sans); font-size: 0.82rem; color: var(--text-charcoal); display: flex; flex-direction: column; gap: 0.35rem; text-align: left; }
-  .receipt-ticket-li { display: flex; justify-content: space-between; padding-left: 0.75rem; position: relative; }
-  .receipt-ticket-li::before { content: "•"; color: var(--whisky-gold-dark); position: absolute; left: 0; font-weight: bold; }
-  .ticket-delivery-notice { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; text-align: center; margin-bottom: 1rem; }
+  .summary-divider { border-top: 1px dashed rgba(140, 110, 70, 0.25); margin: 0.35rem 0; }
+  .summary-items-header { font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #1E3A8A; margin-bottom: 0.35rem; text-align: left; }
+  .receipt-tickets-ul { font-family: var(--font-sans); font-size: 0.84rem; color: var(--text-charcoal); display: flex; flex-direction: column; gap: 0.35rem; text-align: left; }
+  .ticket-delivery-notice { font-family: var(--font-sans); font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; text-align: center; margin-bottom: 1rem; }
 
   /* ====================================================
      VINTAGE HORIZONTAL TIMELINE STYLING
@@ -4457,7 +4528,8 @@ const tickets = await getTickets('gent');
         subtotal: subtotalVal,
         totalItems: totalItemsVal,
         items: activeItems,
-        cartRaw: cart
+        cartRaw: cart,
+        updatedAt: Date.now()
       }));
 
       // Notify Header Cart and other components immediately
@@ -4465,11 +4537,18 @@ const tickets = await getTickets('gent');
     } catch(e) {}
   }
 
+  const CART_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours TTL
+
   function restoreCartFromLocalStorage() {
     try {
       const raw = localStorage.getItem("whiskyfest_cart");
       if (raw) {
         const parsed = JSON.parse(raw);
+        // Security check: expire cart if older than 24 hours
+        if (parsed.updatedAt && (Date.now() - parsed.updatedAt > CART_MAX_AGE_MS)) {
+          localStorage.removeItem("whiskyfest_cart");
+          return;
+        }
         if (parsed.cartRaw) {
           for (const k in cart) delete cart[k];
           Object.assign(cart, parsed.cartRaw);
@@ -4875,17 +4954,53 @@ const tickets = await getTickets('gent');
     let subtotal = 0;
     let totalItems = 0;
     let shippingActive = false;
+    let hasBotteling = false;
+    let bottelingId = "";
 
     Object.keys(cart).forEach(id => {
       const item = cart[id];
       if (item && item.qty > 0) {
         subtotal += item.price * item.qty;
         totalItems += item.qty;
-        if (item.category === "botteling" && item.delivery === "shipping") {
-          shippingActive = true;
+        if (item.category === "botteling") {
+          hasBotteling = true;
+          bottelingId = id;
+          if (item.delivery === "shipping") {
+            shippingActive = true;
+          }
         }
       }
     });
+
+    // Update modal delivery section visibility and state
+    const bottlingDeliverySection = document.getElementById("modal-bottling-delivery-section");
+    const shippingAddressFields = document.getElementById("modal-shipping-address-fields");
+    const optPickup = document.getElementById("opt-delivery-pickup");
+    const optShipping = document.getElementById("opt-delivery-shipping");
+    const radioPickup = document.querySelector('input[name="modal-bottling-delivery"][value="pickup"]') as HTMLInputElement;
+    const radioShipping = document.querySelector('input[name="modal-bottling-delivery"][value="shipping"]') as HTMLInputElement;
+
+    if (bottlingDeliverySection) {
+      if (hasBotteling) {
+        bottlingDeliverySection.style.display = "block";
+        if (radioPickup && radioShipping) {
+          if (shippingActive) {
+            radioShipping.checked = true;
+            if (optShipping) { optShipping.style.borderColor = "#1E3A8A"; optShipping.style.background = "rgba(30, 58, 138, 0.04)"; }
+            if (optPickup) { optPickup.style.borderColor = "#E6DDD0"; optPickup.style.background = "#FFFFFF"; }
+            if (shippingAddressFields) shippingAddressFields.style.display = "block";
+          } else {
+            radioPickup.checked = true;
+            if (optPickup) { optPickup.style.borderColor = "#1E3A8A"; optPickup.style.background = "rgba(30, 58, 138, 0.04)"; }
+            if (optShipping) { optShipping.style.borderColor = "#E6DDD0"; optShipping.style.background = "#FFFFFF"; }
+            if (shippingAddressFields) shippingAddressFields.style.display = "none";
+          }
+        }
+      } else {
+        bottlingDeliverySection.style.display = "none";
+        if (shippingAddressFields) shippingAddressFields.style.display = "none";
+      }
+    }
 
     const activeShipping = shippingActive ? 12.50 : 0;
     const activeFee = totalItems > 0 ? serviceFee : 0;
@@ -4902,26 +5017,34 @@ const tickets = await getTickets('gent');
       Object.keys(cart).forEach(id => {
         const item = cart[id];
         if (item && item.qty > 0) {
-          let displayTitle = item.title;
-          if (item.category === "tram" && item.timeslot) {
-            displayTitle = `${item.title} (${item.timeslot})`;
-          } else if (item.category === "masterclass" && item.timeslot) {
-            displayTitle = `${item.title} (${item.timeslot})`;
-          } else if (item.category === "trail" && item.timeslot) {
-            const guideSuffix = item.guide ? ` - Gids: ${item.guide}` : '';
-            displayTitle = `${item.title} (${item.timeslot}${guideSuffix})`;
-          } else if (item.category === "vatenmaken" && item.timeslot) {
-            displayTitle = `${item.title} (${item.timeslot})`;
-          } else if (item.category === "botteling" && item.delivery) {
-            const methodText = item.delivery === "shipping" ? "Verzenden" : "Ophalen";
-            displayTitle = `${item.title} [${methodText}]`;
+          let specText = "";
+          
+          if (item.category === "entree") {
+            specText = "Inclusief proefglas & festivalgids";
+          } else if (item.category === "tram") {
+            specText = item.timeslot ? `Afvaart: ${item.timeslot}` : "Historische rondvaart Gent";
+          } else if (item.category === "masterclass") {
+            specText = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Exclusieve proeverij";
+          } else if (item.category === "warehouse") {
+            specText = item.timeslot ? `Sessie: ${item.timeslot}` : "Dada Chapel Distilleerderij";
+          } else if (item.category === "trail") {
+            const guideSuffix = item.guide ? ` • Gids: ${item.guide}` : "";
+            specText = item.timeslot ? `${item.timeslot}${guideSuffix}` : "Culinaire ontdekkingstocht";
+          } else if (item.category === "vatenmaken") {
+            specText = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Workshop kuipen";
+          } else if (item.category === "botteling") {
+            specText = item.delivery === "shipping" ? "Verzending per post (+ €12,50)" : "Afhalen bij Infodesk (Stand O)";
           }
 
           const row = document.createElement("div");
           row.className = "modal-summary-item-row";
+          row.setAttribute("style", "display: flex !important; justify-content: space-between !important; align-items: center !important; gap: 0.75rem !important; padding: 0.65rem 0.85rem !important; background: #FFFFFF !important; border: 1px solid rgba(140, 110, 70, 0.22) !important; border-radius: 6px !important; margin-bottom: 0.4rem !important; box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;");
           row.innerHTML = `
-            <span>${item.qty}x ${displayTitle}</span>
-            <span>&euro;${(item.price * item.qty).toFixed(2)}</span>
+            <div style="display: flex !important; flex-direction: column !important; gap: 0.2rem !important; flex: 1 !important; min-width: 0 !important; text-align: left !important;">
+              <span style="font-weight: 700 !important; color: #171614 !important; font-size: 0.85rem !important; line-height: 1.25 !important; display: block !important;">${item.qty} &times; ${item.title}</span>
+              ${specText ? `<span style="font-size: 0.74rem !important; color: #665C54 !important; line-height: 1.2 !important; display: block !important;">${specText}</span>` : ''}
+            </div>
+            <span style="font-weight: 800 !important; color: #1E3A8A !important; font-size: 0.95rem !important; font-family: var(--font-sans, sans-serif) !important; white-space: nowrap !important; text-align: right !important; margin-left: auto !important;">&euro;${(item.price * item.qty).toFixed(2)}</span>
           `;
           modalSummaryItems.appendChild(row);
         }
@@ -4958,6 +5081,20 @@ const tickets = await getTickets('gent');
 
     return finalTotal;
   }
+
+  // Delivery radio event listeners in modal
+  document.querySelectorAll('input[name="modal-bottling-delivery"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      const targetVal = (e.target as HTMLInputElement).value;
+      Object.keys(cart).forEach(id => {
+        if (cart[id] && cart[id].category === "botteling") {
+          cart[id].delivery = targetVal;
+        }
+      });
+      updateShop();
+      recalcModalTotal();
+    });
+  });
 
   const promoInput = document.getElementById("checkout-promo-code") as HTMLInputElement;
   const promoMsg = document.getElementById("promo-status-msg");
@@ -5036,7 +5173,6 @@ const tickets = await getTickets('gent');
   }
 
   const payCards = document.querySelectorAll(".pay-method-card");
-  const bankGroup = document.getElementById("bank-group");
   payCards.forEach(card => {
     const radio = card.querySelector('input[type="radio"]') as HTMLInputElement;
     card.addEventListener("click", () => {
@@ -5044,15 +5180,12 @@ const tickets = await getTickets('gent');
       card.classList.add("active");
       if (radio) {
         radio.checked = true;
-        if (bankGroup) {
-          bankGroup.style.display = radio.value === "ideal" ? "flex" : "none";
-        }
       }
     });
   });
 
   if (mockPaymentForm) {
-    mockPaymentForm.addEventListener("submit", (e) => {
+    mockPaymentForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const emailInput = document.getElementById("cust-email") as HTMLInputElement;
       const email = emailInput ? emailInput.value : "deondraijer@gmail.com";
@@ -5063,50 +5196,120 @@ const tickets = await getTickets('gent');
       
       if (modalStep1) modalStep1.style.display = "none";
       if (modalStep2) modalStep2.style.display = "block";
+
+      let orderList: string[] = [];
+      let itemsOrdered: any[] = [];
+      let resPrefix = "WF";
+
+      if (activePromoCode.startsWith("WS-") || activePromoCode === "IWS") {
+        resPrefix = "WS";
+      }
+      
+      Object.keys(cart).forEach(id => {
+        const item = cart[id];
+        if (item && item.qty > 0) {
+          let itemDisplayTitle = item.title;
+          if (item.category === "tram" && item.timeslot) {
+            itemDisplayTitle = `${item.title} (${item.timeslot.split(' - ')[1] || item.timeslot})`;
+          } else if (item.category === "botteling" && item.delivery) {
+            const method = item.delivery === "shipping" ? "Verzenden" : "Ophalen";
+            itemDisplayTitle = `${item.title} [${method}]`;
+          }
+          
+          orderList.push(`${itemDisplayTitle} (${item.qty}x)`);
+          itemsOrdered.push({
+            id: id,
+            title: item.title,
+            qty: item.qty,
+            price: item.price,
+            category: item.category,
+            timeslot: item.timeslot || "",
+            delivery: item.delivery || "",
+            date: item.date || "",
+            time: item.time || ""
+          });
+        }
+      });
+
+      const shipStreetEl = document.getElementById("ship-street") as HTMLInputElement;
+      const shipZipEl = document.getElementById("ship-zip") as HTMLInputElement;
+      const shipCityEl = document.getElementById("ship-city") as HTMLInputElement;
+      const shipCountryEl = document.getElementById("ship-country") as HTMLSelectElement;
+
+      const shippingAddress = {
+        street: shipStreetEl ? shipStreetEl.value.trim() : "",
+        zip: shipZipEl ? shipZipEl.value.trim() : "",
+        city: shipCityEl ? shipCityEl.value.trim() : "",
+        country: shipCountryEl ? shipCountryEl.value : "BE"
+      };
+
+      // Real Whiskytix Backend Call (End-to-End Loop)
+      try {
+        const response = await fetch("http://localhost:4000/api/checkout/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            festivalId: "gent",
+            customerName: name,
+            customerEmail: email,
+            customerPhone: phone,
+            items: itemsOrdered,
+            shippingAddress: shippingAddress,
+            discountCents: Math.round(promoDiscount * 100),
+            returnUrl: window.location.origin + window.location.pathname
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.checkoutUrl) {
+            // Save pending order info to localStorage
+            const pendingOrderData = {
+              name: name,
+              email: email,
+              phone: phone,
+              items: itemsOrdered,
+              shippingAddress: shippingAddress,
+              isMember: resPrefix === "WS",
+              resNumber: data.orderNumber || `#${resPrefix}-2026-PENDING`,
+              discountApplied: promoDiscount,
+              totalPrice: recalcModalTotal()
+            };
+            localStorage.setItem('wf_last_order', JSON.stringify(pendingOrderData));
+            
+            // Redirect to Mollie checkout or local Mollie sandbox simulator!
+            const targetUrl = data.checkoutUrl.startsWith('/') ? `http://localhost:4000${data.checkoutUrl}` : data.checkoutUrl;
+            window.location.href = targetUrl;
+            return;
+          }
+        }
+      } catch (backendErr) {
+        console.warn("Whiskytix backend connectie overgeslagen (fallback geactiveerd):", backendErr);
+      }
       
       setTimeout(() => {
         try {
           if (modalStep2) modalStep2.style.display = "none";
-          
-          let orderList: string[] = [];
-          let itemsOrdered: any[] = [];
-          let resPrefix = "WF";
-
-          if (activePromoCode.startsWith("WS-") || activePromoCode === "IWS") {
-            resPrefix = "WS";
-          }
-          
-          Object.keys(cart).forEach(id => {
-            const item = cart[id];
-            if (item && item.qty > 0) {
-              let itemDisplayTitle = item.title;
-              if (item.category === "tram" && item.timeslot) {
-                itemDisplayTitle = `${item.title} (${item.timeslot.split(' - ')[1] || item.timeslot})`;
-              } else if (item.category === "botteling" && item.delivery) {
-                const method = item.delivery === "shipping" ? "Verzenden" : "Ophalen";
-                itemDisplayTitle = `${item.title} [${method}]`;
-              }
-              
-              orderList.push(`${itemDisplayTitle} (${item.qty}x)`);
-              itemsOrdered.push({
-                id: id,
-                title: item.title,
-                qty: item.qty,
-                price: item.price,
-                category: item.category,
-                timeslot: item.timeslot || "",
-                delivery: item.delivery || ""
-              });
-            }
-          });
-          
           const finalResNumber = `#${resPrefix}-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+
+          const shipStreetEl = document.getElementById("ship-street") as HTMLInputElement;
+          const shipZipEl = document.getElementById("ship-zip") as HTMLInputElement;
+          const shipCityEl = document.getElementById("ship-city") as HTMLInputElement;
+          const shipCountryEl = document.getElementById("ship-country") as HTMLSelectElement;
+
+          const shippingAddress = {
+            street: shipStreetEl ? shipStreetEl.value.trim() : "",
+            zip: shipZipEl ? shipZipEl.value.trim() : "",
+            city: shipCityEl ? shipCityEl.value.trim() : "",
+            country: shipCountryEl ? shipCountryEl.value : "BE"
+          };
 
           const orderData = {
             name: name,
             email: email,
             phone: phone,
             items: itemsOrdered,
+            shippingAddress: shippingAddress,
             isMember: resPrefix === "WS",
             resNumber: finalResNumber,
             discountApplied: promoDiscount,
@@ -5120,11 +5323,35 @@ const tickets = await getTickets('gent');
           if (receiptSentEmail) receiptSentEmail.textContent = email;
           if (receiptTicketsList) {
             receiptTicketsList.innerHTML = "";
-            orderList.forEach(txt => {
-              const div = document.createElement("div");
-              div.className = "receipt-ticket-li";
-              div.innerHTML = `<span>${txt}</span>`;
-              receiptTicketsList.appendChild(div);
+            itemsOrdered.forEach(item => {
+              let spec = "";
+              if (item.category === "entree") {
+                spec = "Inclusief proefglas & festivalgids";
+              } else if (item.category === "tram") {
+                spec = item.timeslot ? `Afvaart: ${item.timeslot}` : "Historische rondvaart Gent";
+              } else if (item.category === "masterclass") {
+                spec = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Exclusieve proeverij";
+              } else if (item.category === "warehouse") {
+                spec = item.timeslot ? `Sessie: ${item.timeslot}` : "Dada Chapel Distilleerderij";
+              } else if (item.category === "trail") {
+                spec = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Culinaire ontdekkingstocht";
+              } else if (item.category === "vatenmaken") {
+                spec = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Workshop kuipen";
+              } else if (item.category === "botteling") {
+                spec = item.delivery === "shipping" ? "Verzending per post (+ €12,50)" : "Afhalen bij Infodesk (Stand O)";
+              }
+
+              const row = document.createElement("div");
+              row.className = "receipt-ticket-row";
+              row.setAttribute("style", "display: flex !important; justify-content: space-between !important; align-items: center !important; gap: 0.75rem !important; padding: 0.55rem 0.75rem !important; background: #FFFFFF !important; border: 1px solid rgba(140, 110, 70, 0.2) !important; border-radius: 6px !important; margin-bottom: 0.4rem !important;");
+              row.innerHTML = `
+                <div style="display: flex !important; flex-direction: column !important; gap: 0.15rem !important; flex: 1 !important; min-width: 0 !important; text-align: left !important;">
+                  <span style="font-weight: 700 !important; color: #171614 !important; font-size: 0.84rem !important; line-height: 1.25 !important; display: block !important;">${item.qty} &times; ${item.title}</span>
+                  ${spec ? `<span style="font-size: 0.74rem !important; color: #665C54 !important; line-height: 1.2 !important; display: block !important;">${spec}</span>` : ''}
+                </div>
+                <span style="font-weight: 800 !important; color: #1E3A8A !important; font-size: 0.92rem !important; font-family: var(--font-sans, sans-serif) !important; white-space: nowrap !important; text-align: right !important; margin-left: auto !important;">&euro;${(item.price * item.qty).toFixed(2)}</span>
+              `;
+              receiptTicketsList.appendChild(row);
             });
           }
         } catch (err) {
@@ -6099,5 +6326,111 @@ const tickets = await getTickets('gent');
       document.body.style.overflow = '';
     });
   }
+
+  // 11. Handle Payment Return & Show Native Success Modal
+  (async function handleOrderReturn() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderNumber = urlParams.get('orderNumber') || urlParams.get('order') || urlParams.get('order_success');
+    const paymentStatus = urlParams.get('status');
+
+    if (!orderNumber) return;
+
+    // Reset shopping cart upon confirmed order
+    Object.keys(cart).forEach(id => {
+      if (cart[id]) cart[id].qty = 0;
+      const qEl = document.getElementById(`qty-${id}`);
+      if (qEl) qEl.textContent = "0";
+      const card = document.querySelector(`.ticket-stub[data-ticket-id="${id}"]`);
+      if (card) {
+        const qtyVal = card.querySelector('.qty-val');
+        if (qtyVal) qtyVal.textContent = "0";
+        card.classList.remove('selected');
+      }
+    });
+    localStorage.removeItem("whiskyfest_cart");
+    updateShop();
+
+    // Clean URL query parameters smoothly without reloading
+    const cleanUrl = window.location.pathname + window.location.hash;
+    window.history.replaceState({}, document.title, cleanUrl);
+
+    // Try fetching live order details from Whiskytix backend
+    let orderData: any = null;
+    try {
+      const res = await fetch(`http://localhost:4000/api/checkout/order/${encodeURIComponent(orderNumber)}`);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.order) orderData = json.order;
+      }
+    } catch (err) {
+      console.warn("Kon order niet direct ophalen van backend, gebruik localStorage fallback:", err);
+    }
+
+    if (!orderData) {
+      try {
+        const saved = localStorage.getItem('wf_last_order');
+        if (saved) orderData = JSON.parse(saved);
+      } catch (e) {}
+    }
+
+    // Populate Native Success Modal
+    const successResNumEl = document.getElementById("receipt-res-number") || document.querySelector("#modal-step-3 .ticket-summary-box strong");
+    if (successResNumEl) {
+      successResNumEl.textContent = orderNumber;
+    }
+
+    const emailDisplay = (orderData && (orderData.customerEmail || orderData.email)) || "uw e-mailadres";
+    if (receiptSentEmail) {
+      receiptSentEmail.textContent = emailDisplay;
+    }
+
+    if (receiptTicketsList) {
+      receiptTicketsList.innerHTML = "";
+
+      const itemsToRender = (orderData && orderData.items) || [];
+      if (itemsToRender.length > 0) {
+        itemsToRender.forEach((item: any) => {
+          let spec = "";
+          const qty = item.quantity || item.qty || 1;
+          const price = item.unitPriceCents ? (item.unitPriceCents / 100) : (item.price || 0);
+
+          if (item.category === "entree") {
+            spec = "Inclusief proefglas & festivalgids";
+          } else if (item.category === "tram") {
+            spec = item.timeslot ? `Afvaart: ${item.timeslot}` : "Historische rondvaart Gent";
+          } else if (item.category === "masterclass") {
+            spec = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Exclusieve proeverij";
+          } else if (item.category === "warehouse") {
+            spec = item.timeslot ? `Sessie: ${item.timeslot}` : "Dada Chapel Distilleerderij";
+          } else if (item.category === "trail") {
+            spec = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Culinaire ontdekkingstocht";
+          } else if (item.category === "vatenmaken") {
+            spec = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Workshop kuipen";
+          } else if (item.category === "botteling") {
+            spec = item.delivery === "shipping" ? "Verzending per post (+ €12,50)" : "Afhalen bij Infodesk (Stand O)";
+          }
+
+          const row = document.createElement("div");
+          row.className = "receipt-ticket-row";
+          row.setAttribute("style", "display: flex !important; justify-content: space-between !important; align-items: center !important; gap: 0.75rem !important; padding: 0.55rem 0.75rem !important; background: #FFFFFF !important; border: 1px solid rgba(140, 110, 70, 0.2) !important; border-radius: 6px !important; margin-bottom: 0.4rem !important;");
+          row.innerHTML = `
+            <div style="display: flex !important; flex-direction: column !important; gap: 0.15rem !important; flex: 1 !important; min-width: 0 !important; text-align: left !important;">
+              <span style="font-weight: 700 !important; color: #171614 !important; font-size: 0.84rem !important; line-height: 1.25 !important; display: block !important;">${qty} &times; ${item.title}</span>
+              ${spec ? `<span style="font-size: 0.74rem !important; color: #665C54 !important; line-height: 1.2 !important; display: block !important;">${spec}</span>` : ''}
+            </div>
+            <span style="font-weight: 800 !important; color: #1E3A8A !important; font-size: 0.92rem !important; font-family: var(--font-sans, sans-serif) !important; white-space: nowrap !important; text-align: right !important; margin-left: auto !important;">&euro;${(price * qty).toFixed(2).replace('.', ',')}</span>
+          `;
+          receiptTicketsList.appendChild(row);
+        });
+      }
+    }
+
+    // Display the success modal popup
+    if (modalOverlay) modalOverlay.style.display = "flex";
+    if (modalStep1) modalStep1.style.display = "none";
+    if (modalStep2) modalStep2.style.display = "none";
+    if (modalStep3) modalStep3.style.display = "block";
+    document.body.style.overflow = "hidden";
+  })();
 
   </script>
