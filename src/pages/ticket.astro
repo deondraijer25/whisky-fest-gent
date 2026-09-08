@@ -12,7 +12,7 @@ import Layout from '../layouts/Layout.astro';
       
       <!-- Top Action Buttons (Under each other on mobile, side-by-side on desktop) -->
       <div class="ticket-top-actions-bar">
-        <button type="button" class="btn btn-gold btn-ticket-action" onclick="window.print()">
+        <button type="button" class="btn btn-gold btn-ticket-action" id="btn-download-pdf-ticket">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
             <polyline points="7 10 12 15 17 10"/>
@@ -515,24 +515,29 @@ import Layout from '../layouts/Layout.astro';
   } else {
     // Entree tickets
     if (tvWatermark) tvWatermark.textContent = 'GWF';
-    if (tvMonth) tvMonth.textContent = 'NOV';
+    if (tvMonth) tvMonth.textContent = 'OKT';
     if (titleLower.includes('vrijdag')) {
-      if (tvDay) tvDay.textContent = '13';
+      if (tvDay) tvDay.textContent = '02';
     } else if (titleLower.includes('zondag')) {
-      if (tvDay) tvDay.textContent = '15';
+      if (tvDay) tvDay.textContent = '04';
     } else {
-      if (tvDay) tvDay.textContent = '14';
+      if (tvDay) tvDay.textContent = '03';
     }
     if (tvStatus) tvStatus.textContent = 'GELDIG TOEGANGSBEWIJS';
     if (tvScanInst) tvScanInst.textContent = 'SCAN BIJ DE DEUR';
   }
 
-  // If download parameter is provided, trigger PDF print dialog automatically after render
-  if (autoDownload) {
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        window.print();
-      }, 400);
+  const pdfDownloadUrl = `https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(code.replace(/^#/, ''))}/pdf?city=gent&name=${encodeURIComponent(name)}&title=${encodeURIComponent(title)}&time=${encodeURIComponent(time)}`;
+
+  const dlBtn = document.getElementById('btn-download-pdf-ticket');
+  if (dlBtn) {
+    dlBtn.addEventListener('click', () => {
+      window.open(pdfDownloadUrl, '_blank');
     });
+  }
+
+  // If download parameter is provided, automatically redirect to Whiskytix vector PDF stream
+  if (autoDownload) {
+    window.location.replace(pdfDownloadUrl);
   }
 </script>

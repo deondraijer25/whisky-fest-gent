@@ -166,7 +166,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
 
                 <!-- 3. Bottom Row: Action Buttons -->
                 <div class="ticket-actions-row">
-                  <button type="button" class="btn-ticket-download-gold" onclick="window.open('/ticket?id=WF-2026-84387-1&title=VIP%20Sessie%20-%20Vrijdag&name=Deon%20Draijer&time=13:00%20-%2017:00%20UUR', '_blank')">
+                  <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/WF-2026-84387-1/pdf?city=gent&name=Deon%20Draijer&title=VIP%20Sessie%20-%20Vrijdag&time=13:00%20-%2017:00%20UUR&orderNumber=WF-2026-84387', '_blank')">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     <span>Download E-Ticket (PDF)</span>
                   </button>
@@ -2674,13 +2674,13 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
             );
 
             // Natural schedule string
-            let formattedSchedule = "Vrijdag 13 november 2026 • " + displayTime;
+            let formattedSchedule = "Vrijdag 2 oktober 2026 • " + displayTime;
             if (titleLower.includes("zaterdag")) {
-              formattedSchedule = "Zaterdag 14 november 2026 • " + displayTime;
+              formattedSchedule = "Zaterdag 3 oktober 2026 • " + displayTime;
             } else if (titleLower.includes("zondag")) {
-              formattedSchedule = "Zondag 15 november 2026 • " + displayTime;
+              formattedSchedule = "Zondag 4 oktober 2026 • " + displayTime;
             } else if (item.category === 'masterclass') {
-              formattedSchedule = "Zaterdag 14 november 2026 • " + displayTime;
+              formattedSchedule = "Zaterdag 3 oktober 2026 • " + displayTime;
             }
 
             const ticketHTML = `
@@ -2745,7 +2745,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
 
                     <!-- 3. Bottom Row: Action Buttons -->
                     <div class="ticket-actions-row">
-                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('/ticket?id=${cleanCode}&title=${encodeURIComponent(item.title)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}&category=${encodeURIComponent(item.category || '')}&delivery=${encodeURIComponent(item.delivery || '')}&download=1', '_blank')">
+                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=gent&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(item.title)}&time=${encodeURIComponent(displayTime)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span>Download E-Ticket (PDF)</span>
                       </button>
