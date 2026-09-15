@@ -23,10 +23,10 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
   },
   {
     id: "2",
-    name: "Bacardi Martini Belgium BV",
-    category: "scotch",
-    brands: ["Aberfeldy", "Aultmore", "Craigellachie", "Royal Brackla", "Dewar's"],
-    description: "The Last Great Malts of Scotland: ontdek karaktervolle single malts en zeldzame single cask vullingen van historische distilleerderijen.",
+    name: "Distilleerderij de Bronckhorst",
+    category: "world",
+    brands: ["Bronckhorst Dutch Single Malt", "Achterhoekse Graandistillaten"],
+    description: "Kleine ambachtelijke stokerij uit de Achterhoek met passie voor lokaal geteeld graan en zorgvuldig geselecteerde eiken vaten.",
     hall: "De Leie"
   },
   {
@@ -63,19 +63,19 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
   },
   {
     id: "7",
-    name: "Niet op plattegrond",
+    name: "Stand 7 (Gereserveerd)",
     category: "independent",
     brands: [],
-    description: "Exposant niet aanwezig op de fysieke plattegrond.",
+    description: "Exposantpositie gereserveerd voor later moment.",
     isNotOnMap: true
   },
   {
     id: "8",
-    name: "Niet op plattegrond",
+    name: "Stand 8 (Beschikbaar)",
     category: "independent",
-    brands: [],
-    description: "Exposant niet aanwezig op de fysieke plattegrond.",
-    isNotOnMap: true
+    brands: ["Beschikbare Stand"],
+    description: "Exposantpositie in voorbereiding voor het festivalweekend.",
+    hall: "De Leie"
   },
   {
     id: "9",
@@ -135,7 +135,7 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
   },
   {
     id: "16",
-    name: "Niet op plattegrond",
+    name: "Exposant (Niet op plattegrond)",
     category: "independent",
     brands: [],
     description: "Exposant niet aanwezig op de fysieke plattegrond.",
@@ -143,7 +143,7 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
   },
   {
     id: "17",
-    name: "Niet op plattegrond",
+    name: "Exposant (Niet op plattegrond)",
     category: "independent",
     brands: [],
     description: "Exposant niet aanwezig op de fysieke plattegrond.",
@@ -159,10 +159,10 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
   },
   {
     id: "19",
-    name: "Niet op plattegrond",
+    name: "Stand 19 (Gereserveerd)",
     category: "independent",
     brands: [],
-    description: "Exposant niet aanwezig op de fysieke plattegrond.",
+    description: "Exposantpositie gereserveerd voor later moment.",
     isNotOnMap: true
   },
   {
@@ -183,7 +183,7 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
   },
   {
     id: "22",
-    name: "Niet op plattegrond",
+    name: "Exposant (Niet op plattegrond)",
     category: "independent",
     brands: [],
     description: "Exposant niet aanwezig op de fysieke plattegrond.",
@@ -240,17 +240,17 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
   {
     id: "29",
     name: "Disaronno International B.V.",
-    category: "scotch",
+    category: "world",
     brands: ["The Busker Triple Cask Irish Whiskey", "Glen Moray Speyside Single Malt"],
     description: "Toegankelijke en veelzijdige Ierse whiskey uit County Carlow en fruitige Speyside single malt gerijpt in wijn- en chardonnayvaten.",
     hall: "De Markt"
   },
   {
     id: "30",
-    name: "Distilleerderij de Bronckhorst",
-    category: "world",
-    brands: ["Bronckhorst Dutch Single Malt", "Achterhoekse Graandistillaten"],
-    description: "Kleine ambachtelijke stokerij uit de Achterhoek met passie voor lokaal geteeld graan en zorgvuldig geselecteerde eiken vaten.",
+    name: "Bacardi Martini Belgium BV",
+    category: "scotch",
+    brands: ["Aberfeldy", "Aultmore", "Craigellachie", "Royal Brackla", "Dewar's"],
+    description: "The Last Great Malts of Scotland: ontdek karaktervolle single malts en zeldzame single cask vullingen van historische distilleerderijen.",
     hall: "De Markt"
   },
   {
@@ -263,26 +263,26 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
   },
   {
     id: "32",
-    name: "Niet op plattegrond",
+    name: "El Cartel",
     category: "independent",
-    brands: [],
-    description: "Exposant niet aanwezig op de fysieke plattegrond.",
-    isNotOnMap: true
+    brands: ["El Cartel Whisky Selections", "Artisan Craft Spirits"],
+    description: "Exclusieve onafhankelijke selecties en karaktervolle expressies gepresenteerd door El Cartel.",
+    hall: "De Markt"
   },
   {
     id: "33",
-    name: "Niet op plattegrond",
+    name: "Stand 33 (Beschikbaar)",
     category: "independent",
-    brands: [],
-    description: "Exposant niet aanwezig op de fysieke plattegrond.",
-    isNotOnMap: true
+    brands: ["Beschikbare Stand"],
+    description: "Exposantpositie in voorbereiding voor het festivalweekend.",
+    hall: "De Markt"
   },
   {
     id: "34",
-    name: "Niet op plattegrond",
+    name: "Stand 34 (Gereserveerd)",
     category: "independent",
     brands: [],
-    description: "Exposant niet aanwezig op de fysieke plattegrond.",
+    description: "Exposantpositie gereserveerd voor later moment.",
     isNotOnMap: true
   },
   {
@@ -295,17 +295,17 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
   },
   {
     id: "36",
-    name: "Stand 36 (In Voorbereiding)",
+    name: "Stand 36 (Beschikbaar)",
     category: "independent",
-    brands: ["Binnenkort Bekend"],
+    brands: ["Beschikbare Stand"],
     description: "Exposantpositie in voorbereiding voor het festivalweekend.",
     hall: "Brasserie"
   },
   {
     id: "37",
-    name: "Stand 37 (In Voorbereiding)",
+    name: "Stand 37 (Beschikbaar)",
     category: "independent",
-    brands: ["Binnenkort Bekend"],
+    brands: ["Beschikbare Stand"],
     description: "Exposantpositie in voorbereiding voor het festivalweekend.",
     hall: "Brasserie"
   },

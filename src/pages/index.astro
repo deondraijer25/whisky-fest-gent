@@ -413,7 +413,7 @@ const tickets = await getTickets('gent');
                   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
                 }
               
-  /* ==========================================
+   /* ==========================================
      UNIVERSAL MODAL OVERLAY & POPUP STYLING
      ========================================== */
   .modal-overlay {
@@ -2146,7 +2146,7 @@ const tickets = await getTickets('gent');
   .hp-preloader-overlay {
     position: fixed;
     inset: 0;
-    z-index: 9999;
+    z-index: 99999999;
     background-color: var(--bg-parchment);
     display: flex;
     justify-content: center;
@@ -4335,6 +4335,13 @@ const tickets = await getTickets('gent');
     window.addEventListener('load', tryPlay);
   }
 
+  // Auto-open checkout modal if requested via URL param or hash
+  if (window.location.search.includes('checkout=open') || window.location.hash === '#checkout') {
+    setTimeout(() => {
+      if (typeof openCheckoutModal === 'function') openCheckoutModal();
+    }, 400);
+  }
+
   // 2. Safe Preloader Dismiss
   (function() {
     const pl = document.getElementById('hp-preloader');
@@ -4976,6 +4983,21 @@ const tickets = await getTickets('gent');
         }
       }
     });
+
+    // Option A Check: Masterclass without Entree
+    const mcWarningBanner = document.getElementById('modal-mc-warning-banner');
+    if (mcWarningBanner) {
+      let hasMc = false;
+      let hasEntree = false;
+      Object.keys(cart).forEach(k => {
+        const it = cart[k];
+        if (it && it.qty > 0) {
+          if (it.category === 'masterclass') hasMc = true;
+          if (it.category === 'entree') hasEntree = true;
+        }
+      });
+      mcWarningBanner.style.display = (hasMc && !hasEntree) ? 'block' : 'none';
+    }
 
     // Update modal delivery section visibility and state
     const bottlingDeliverySection = document.getElementById("modal-bottling-delivery-section");
@@ -5787,6 +5809,7 @@ const tickets = await getTickets('gent');
   const upsellModalCancel = document.getElementById('addon-upsell-cancel');
   const upsellModalProceed = document.getElementById('addon-upsell-proceed-btn');
 
+  window.openCheckoutModal = openCheckoutModal;
   function openCheckoutModal() {
     promoDiscount = 0;
     activePromoCode = "";
