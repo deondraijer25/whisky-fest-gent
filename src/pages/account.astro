@@ -177,10 +177,10 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                       <span>Deel Ticket</span>
                     </button>
                     <div class="ticket-share-menu">
-                      <a href="https://api.whatsapp.com/send?text=*Whisky%20Fest%20Den%20Haag%202026*%0AE-ticket%3A%20VIP%20Sessie%20-%20Vrijdag%0A%0AKaarthouder%3A%20Deon%20Draijer%0ATijdslot%3A%2013%3A00%20-%2017%3A00%20UUR%0ATicket%20Code%3A%20%23WF-2026-84387-1%0ALocatie%3A%20Grote%20Kerk%2C%20Den%20Haag" target="_blank" rel="noopener noreferrer" class="share-option-link">
+                      <a href="https://api.whatsapp.com/send?text=*Whisky%20Festival%20Gent%202026*%0AE-ticket%3A%20VIP%20Sessie%20-%20Vrijdag%0A%0AKaarthouder%3A%20Deon%20Draijer%0ATijdslot%3A%2013%3A00%20-%2017%3A00%20UUR%0ATicket%20Code%3A%20%23WF-2026-84387-1%0ALocatie%3A%20De%20Oude%20Vismijn%2C%20Gent" target="_blank" rel="noopener noreferrer" class="share-option-link">
                         <span>Deel via WhatsApp</span>
                       </a>
-                      <a href="mailto:?subject=E-ticket%20voor%20Whisky%20Fest%20Den%20Haag%3A%20VIP%20Sessie%20-%20Vrijdag" class="share-option-link">
+                      <a href="mailto:?subject=E-ticket%20voor%20Whisky%20Festival%20Gent%3A%20VIP%20Sessie%20-%20Vrijdag" class="share-option-link">
                         <span>Deel via E-mail</span>
                       </a>
                       <button type="button" class="share-option-link" onclick="navigator.clipboard.writeText(window.location.origin + '/ticket?id=WF-2026-84387-1&title=VIP%20Sessie%20-%20Vrijdag&name=Deon%20Draijer&time=13:00%20-%2017:00%20UUR'); alert('✓ Directe ticket link gekopieerd!');">
@@ -537,30 +537,36 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                   </g>
 
                   <!-- De Leie -->
+                  <!-- Row 1: Stands 1, 2, 3 -->
+                  <g class="svg-stand" data-stand="1">
+                    <rect x="190" y="95" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="209" y="113" class="stand-num">1</text>
+                  </g>
                   <g class="svg-stand" data-stand="2">
-                    <rect x="220" y="95" width="38" height="28" rx="3" class="stand-box" />
-                    <text x="239" y="113" class="stand-num">2</text>
+                    <rect x="242" y="95" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="261" y="113" class="stand-num">2</text>
                   </g>
                   <g class="svg-stand" data-stand="3">
-                    <rect x="275" y="95" width="38" height="28" rx="3" class="stand-box" />
-                    <text x="294" y="113" class="stand-num">3</text>
+                    <rect x="294" y="95" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="313" y="113" class="stand-num">3</text>
                   </g>
 
-                  <g class="svg-stand" data-stand="1">
-                    <rect x="165" y="110" width="36" height="28" rx="3" class="stand-box" />
-                    <text x="183" y="128" class="stand-num">1</text>
-                  </g>
+                  <!-- Row 2: Stands 4, 5, 6, 8 (7 is intentionally hidden for later use) -->
                   <g class="svg-stand" data-stand="4">
-                    <rect x="165" y="145" width="36" height="28" rx="3" class="stand-box" />
-                    <text x="183" y="163" class="stand-num">4</text>
+                    <rect x="190" y="145" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="209" y="163" class="stand-num">4</text>
                   </g>
                   <g class="svg-stand" data-stand="5">
-                    <rect x="220" y="145" width="38" height="28" rx="3" class="stand-box" />
-                    <text x="239" y="163" class="stand-num">5</text>
+                    <rect x="242" y="145" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="261" y="163" class="stand-num">5</text>
                   </g>
                   <g class="svg-stand" data-stand="6">
-                    <rect x="275" y="145" width="38" height="28" rx="3" class="stand-box" />
-                    <text x="294" y="163" class="stand-num">6</text>
+                    <rect x="294" y="145" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="313" y="163" class="stand-num">6</text>
+                  </g>
+                  <g class="svg-stand" data-stand="8">
+                    <rect x="346" y="145" width="38" height="28" rx="3" class="stand-box" />
+                    <text x="365" y="163" class="stand-num">8</text>
                   </g>
 
                   <!-- De Lieve -->
@@ -2664,7 +2670,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
             const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}&category=${encodeURIComponent(item.category || '')}&delivery=${encodeURIComponent(item.delivery || '')}`;
             
             const shareText = encodeURIComponent(
-              `*${'International Whisky Festival 2026'}*\n` +
+              `*${'Whisky Festival Gent 2026'}*\n` +
               `E-ticket: ${cleanTitle}\n\n` +
               `Kaarthouder: ${userName}\n` +
               `Tijdslot: ${displayTime}\n` +
@@ -2674,10 +2680,10 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
               `${ticketLink}`
             );
             
-            const mailSubject = encodeURIComponent(`E-ticket voor International Whisky Festival: ${cleanTitle}`);
+            const mailSubject = encodeURIComponent(`E-ticket voor Whisky Festival Gent: ${cleanTitle}`);
             const mailBody = encodeURIComponent(
               `Beste ${userName},\n\n` +
-              `Hierbij ontvang je jouw toegangsbewijs voor International Whisky Festival 2026.\n\n` +
+              `Hierbij ontvang je jouw toegangsbewijs voor Whisky Festival Gent 2026.\n\n` +
               `Ticket: ${cleanTitle}\n` +
               `Tijdslot: ${displayTime}\n` +
               `Ticket Code: ${displayCode}\n` +
