@@ -22,6 +22,8 @@ Bij het klonen, synchroniseren of aanpassen van festivalwebsites (Den Haag, Gent
   - Nooit monochrome witte logo's op lichte achtergronden plaatsen.
 - **Donkere achtergronden** (bijv. Hero video overlay, donkere banners):
   - Gebruik het witte monochrome stempel-logo (`src/assets/LogosAll/logo-wit-<city>.svg`).
+- **Strikte SVG Vector Onschendbaarheid:**
+  - Officiële logo-bestanden (in `src/assets/Logo/` en `src/assets/LogosAll/`) mogen **NOOIT programmatisch worden bewerkt** of voorzien van geautomatiseerde color/text replaces. Ze worden 1-op-1 als onaantastbare bronbestanden behandeld. CSS kleuren worden ontleend aan de logo's, nooit andersom.
 
 ## 3. Data Integriteit & Single Source of Truth
 - Data (data, locatie, sessies, masterclasses, prijzen) wordt ALTIJD direct ontleend aan:
@@ -41,3 +43,97 @@ Voordat een stadswebsite als voltooid wordt gemarkeerd:
 - **Den Haag is de master-blauwdruk:**
   - De tabellen, timetable-rijen, tabbladen, ticket-cards en pop-ups behouden exact dezelfde markup en styling.
   - Alleen de **data** (titels, sprekers, tijden, data, prijzen) en de **stadskleuren / media** worden dynamisch geladen.
+
+## 6. Strikt Verbod op Emojis en AI-gegenereerde Iconen
+- Het gebruik van Unicode emojis (bijv. `🎟️`, `📅`, `🗺️`, `👤`, `🛒`, `💡`, `🇧🇪`, `🇳🇱`, etc.) of generieke AI-iconen is **strikt VERBODEN** door de gehele codebase (componenten, navigatie-drawers, cards, knoppen, alerts en checkout flows).
+- **Verplichte Iconografie Standaard:**
+  - Gebruik uitsluitend op maat gemaakte, minimalistische monochrome inline `<svg>` vector line-art met expliciete strokes (`stroke-width: 2` of `2.5`, `stroke: currentColor` of merkkleur).
+  - Voor land- en stadsaanduidingen (zoals Gent / Amsterdam) worden strakke typografische badges (bijv. `BE`, `NL`) of officiële vectoren gebruikt.
+  - Voer bij elke release een geautomatiseerde regex-scan uit om te borgen dat de Unicode emoji-telling exact **0** is.
+
+## 7. Mobiele Bottom Sheet & Bestelflow Invarianten
+- **Gefaseerde Bestelervaring:**
+  - Bij het openen van de winkelwagen op mobiel (`<= 990px`) via de navbar of sticky bar wordt ALTIJD eerst de **Winkelwagen (Jouw Bestelling)** getoond.
+  - De Add-ons (*"Maak uw Beleving Compleet"*) worden **uitsluitend** getoond nadat de gebruiker in de winkelwagen op **`Afrekenen →`** heeft geklikt.
+- **View Isolatie & Class Toggling:**
+  - Gebruik altijd actieve CSS-klassen (`.sheet-view.is-active`, `.sheet-empty-state.is-visible`) in plaats van pure inline `display: flex !important` om te voorkomen dat views over elkaar heen renderen.
+- **Segmented Stepper Pill (`.sheet-stepper-pill`):**
+  - Gebruik een compacte stepper met `height: 38px`, witte actieknoppen `32x34px`, en `min-width: 28px` gecentreerd aantal zodat knoppen nooit worden afgesneden aan de schermrand.
+
+## 8. Horizontale Filters & Responsive Grids
+- **Touch-Scroll Filters:**
+  - Horizontale filterbalken (bijv. categorieën, sessies, standhouders) moeten voorzien zijn van `-webkit-overflow-scrolling: touch; scrollbar-width: none;` en `::-webkit-scrollbar { display: none; }` om native scrollbars te elimineren.
+- **Compacte 3-in-a-rij Grids op Mobiel:**
+  - Heritage USPs en Footer festival-logos worden op mobiele schermen altijd als 3-in-a-rij gerenderd (`grid-template-columns: repeat(3, 1fr) !important;`).
+- **Paginakoppen & Header Spacing op Mobiel:**
+  - Alle subpagina's (`/programma`, `/standhouders`, `/kaart`, `/account`, etc.) hebben een minimale bovenmarge van `padding-top: 7rem` tot `7.5rem` op mobiel om overlap met de fixed header te voorkomen.
+
+## 9. Desktop Sticky Cart & Scroll Invarianten
+- **Verplicht `overflow-x: clip`:**
+  - Gebruik op `html` en `body` ALTIJD `overflow-x: clip;` in plaats van `overflow-x: hidden;`. `overflow-x: hidden` breekt browser `position: sticky` op child elementen zoals `.ticket-receipt-card`.
+- **Top Offset & Alignment:**
+  - `.ticket-receipt-card` heeft altijd `position: -webkit-sticky; position: sticky; top: 90px; align-self: start;` om soepel mee te glijden onder de vaste navigatiebalk.
+
+## 10. Horizontale Tijdlijn & Preloader Invarianten
+- **Tijdlijn Sectiehoogte:**
+  - `.timeline-scroll-section` gebruikt een strak gekalibreerde hoogte van `185vh` op desktop. Vermijd `300vh` om dode witte scrollruimte na de laatste kaart te voorkomen.
+- **Preloader Duur & Jaartal:**
+  - De coin-flip preloader draait altijd exact 2.4s met zachte fade-out.
+  - Het oprichtingsjaartal (`EST. <jaar>`) moet strikt overeenkomen met het stadslogo (Amsterdam: 2025, Den Haag: 2000, Gent: 2004).
+
+## 11. Dropdown & Popup Container Layout Invarianten
+- **Verplichte Verticale Stacking in Dropdowns & Popups:**
+  - Elke wrapper/container binnen een dropdown of popup (bijv. `.cart-dropdown-bottom`, `.account-dropdown-menu`) MOET expliciete `display: flex; flex-direction: column; width: 100%;` hebben. Vertrouw NOOIT op impliciete block-flow wanneer kinderen globale klassen erven die `inline-flex` of `inline-block` bevatten.
+- **Globale `.btn` / `.btn-gold` Neutralisatie in Dropdowns:**
+  - Buttons die de globale `.btn` en/of `.btn-gold` klassen gebruiken binnen dropdown-contexten MOETEN altijd scoped overrides krijgen die de zware letterpress-stijlen neutraliseren:
+    - `border: none; box-shadow: none;` (verwijder dikke rand + zware schaduw)
+    - `padding: 0.65rem 1rem;` (compact, proportioneel aan dropdown)
+    - `border-radius: 6px;` (subtiel afgerond)
+    - `:hover` en `:active` states: `transform: none; box-shadow: none;` (geen translate-shifts)
+  - Dit voorkomt dat buttons visueel buiten proportie groeien en naastgelegen elementen overlappen.
+- **Dropdown Breedte Proportionaliteit:**
+  - Winkelwagen-dropdowns gebruiken `width: 420px; max-width: min(420px, calc(100vw - 2rem));` met `right: 0; left: auto;` voor rechts-uitgelijnde positionering onder het trigger-icoon.
+
+## 12. Eenduidige Servicekosten Staffel & Cart-Calculatie
+- **Vastgestelde Staffel:**
+  - **1 ticket**: € 1,75
+  - **2 t/m 5 tickets**: € 3,50
+  - **Meer dan 5 tickets (> 5)**: € 4,50
+- **Strikte Synchronisatie:**
+  - Gebruik NOOIT statische of hardcoded servicekosten in modals, alerts of checkout payloads.
+  - Zowel de desktop sticky cart, de mobiele bottom sheet, als de checkout modal recap MOETEN exact dezelfde rekenregel toepassen:
+    ```javascript
+    function getServiceFee(totalTickets) {
+      if (totalTickets <= 0) return 0;
+      if (totalTickets === 1) return 1.75;
+      if (totalTickets <= 5) return 3.50;
+      return 4.50;
+    }
+    ```
+  - Dit voorkomt dat ticketprijzen verspringen tussen winkelwagen, modal en het uiteindelijke betaalbedrag.
+
+## 13. Vercel Deploy & Multi-Repo Release Beheersing
+- **Lokale Pre-Flight Verificatie:**
+  - Test wijzigingen in de festivalwebsites ALTIJD eerst lokaal op de respectievelijke poorten:
+    - Den Haag: `http://localhost:4330`
+    - Amsterdam: `http://localhost:4331`
+    - Gent: `http://localhost:4332`
+    - Whiskytix API: `http://localhost:4000`
+- **Voorkomen Vercel Rate Limits:**
+  - Push NOOIT repetitieve incrementele testcommits direct naar deployment branches (`main`). Vercel hanteert op Hobby accounts een harde limiet van 100 deployments per dag (*"Deployment rate limited — retry in 24 hours"*).
+  - Bundel alle wijzigingen en push pas nadat lokale validatie en `npm run build` 100% succesvol zijn.
+
+## 14. Typografische Uniformiteit & Sanitisering van Ticket Titels
+- **Geen Redundante Tijdstippen in Titels:**
+  - Ticket- en sessietitels mogen NOOIT tijdstippen bevatten (bijv. `"13:00 – 17:00"`, `"19:00 - 23:00 uur"`). Tijdstippen horen uitsluitend thuis in de specifieke metadata-rij (`TIJD`), nooit in de `<h1>`/`<h3>` kop.
+- **Geautomatiseerde Sanitizer:**
+  - Zowel in `src/lib/ghl.ts` als in `src/components/TicketStub.astro` moet de titel altijd programmatisch geschoond worden met:
+    ```typescript
+    const displayTitle = title
+      .replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '')
+      .trim();
+    ```
+- **Gelijke Typografische Schaal:**
+  - Titels van dezelfde categorie (bijv. alle reguliere Entreetickets) moeten binnen hetzelfde formaat vallen (standaard `title-lg`), zodat alle kaarten in het grid een 100% identieke lettergrootte en visuele rust uitstralen.
+
+
