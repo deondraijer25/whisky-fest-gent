@@ -248,5 +248,115 @@ const orgSchema = {
 
     <!-- Global Mobile Slide-Up Cart & Sticky Bar for Gent -->
     <MobileCartDrawer city="gent" />
+
+    <!-- Real-time Live GHL Ticket Sync (Instant Realtime Updates from Leadfabriek CRM) -->
+    <script is:inline>
+      (function initRealtimeGhlSync() {
+        var GHL_API_BASE = 'https://services.leadconnectorhq.com';
+        var GHL_API_KEY = 'pit-150d6114-ac2c-4cf7-9d5c-ffc20499c790';
+        var GHL_LOCATION_ID = '1OZ9uxIBFoxwbheVC5iN';
+
+        function syncLiveTickets() {
+          fetch(GHL_API_BASE + '/objects/custom_objects.festival_tickets/records/search', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + GHL_API_KEY,
+              'Version': '2021-07-28',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              locationId: GHL_LOCATION_ID,
+              page: 1,
+              pageLimit: 250,
+              query: 'Gent',
+              searchAfter: []
+            })
+          })
+          .then(function(res) {
+            if (!res.ok) return null;
+            return res.json();
+          })
+          .then(function(data) {
+            if (!data) return;
+            var records = data.customObjectRecords || data.records || [];
+            if (!Array.isArray(records) || records.length === 0) return;
+
+            window.__LIVE_GHL_TICKETS__ = records;
+
+            records.forEach(function(r) {
+              var p = r.properties || r;
+              var rawTitle = p.title || '';
+              var cleanTitle = rawTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+              var priceNum = typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0);
+              var isSoldOut = p.is_sold_out === true || p.is_sold_out === 'true' || p.is_sold_out === '1';
+
+              // 1. Homepage ticket stubs
+              var cards = document.querySelectorAll('.ticket-stub[data-ticket-id="' + r.id + '"]');
+              cards.forEach(function(card) {
+                card.setAttribute('data-title', cleanTitle);
+                card.setAttribute('data-price', String(priceNum));
+                card.setAttribute('data-soldout', isSoldOut ? 'true' : 'false');
+
+                var titleEl = card.querySelector('.ticket-title');
+                if (titleEl) {
+                  titleEl.textContent = cleanTitle;
+                  titleEl.setAttribute('title', cleanTitle);
+                }
+
+                var priceParts = priceNum.toFixed(2).split('.');
+                var priceValEl = card.querySelector('.price-val');
+                var priceCentsEl = card.querySelector('.price-cents');
+                if (priceValEl) priceValEl.textContent = priceParts[0];
+                if (priceCentsEl) priceCentsEl.textContent = ',' + priceParts[1];
+
+                if (isSoldOut) {
+                  card.classList.add('ticket-sold-out');
+                  var qtySel = card.querySelector('.qty-selector');
+                  if (qtySel) {
+                    var soldBox = card.querySelector('.sold-out-box');
+                    if (!soldBox) {
+                      var newSold = document.createElement('div');
+                      newSold.className = 'sold-out-box';
+                      newSold.innerHTML = '<span class="sold-out-text">UITVERKOCHT</span>';
+                      qtySel.replaceWith(newSold);
+                    }
+                  }
+                } else {
+                  card.classList.remove('ticket-sold-out');
+                }
+              });
+
+              // 2. Programma timetable rows
+              var progButtons = document.querySelectorAll('.btn-table-buy[data-ticket-id="' + r.id + '"]');
+              progButtons.forEach(function(btn) {
+                btn.setAttribute('data-title', cleanTitle);
+                var row = btn.closest('.agenda-row-item');
+                if (row) {
+                  var rowTitle = row.querySelector('.item-name');
+                  if (rowTitle) rowTitle.textContent = cleanTitle;
+                  var rowPrice = row.querySelector('.item-price');
+                  if (rowPrice) rowPrice.textContent = '€ ' + priceNum.toFixed(2).replace('.', ',');
+                  if (isSoldOut) {
+                    btn.className = 'btn btn-gold btn-table-buy sold-out';
+                    btn.disabled = true;
+                    btn.textContent = 'Uitverkocht';
+                  }
+                }
+              });
+            });
+          })
+          .catch(function(err) {
+            // Silently fall back to pre-rendered HTML
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', syncLiveTickets);
+        } else {
+          syncLiveTickets();
+        }
+        window.addEventListener('focus', syncLiveTickets);
+      })();
+    </script>
   </body>
 </html>
