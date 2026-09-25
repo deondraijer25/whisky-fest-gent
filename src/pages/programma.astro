@@ -344,68 +344,84 @@ function formatSpeaker(host: string) {
               </div>
 
               <!-- Rows in 5 Clean Columns -->
-              {s.items.map((item) => (
-                <article class="agenda-row-item">
-                  <!-- 1. Tijd (Begin- en Eindtijd) -->
-                  <div class="col-time">
-                    <span class="item-time-val">{item.time}</span>
-                  </div>
+              {s.items.map((item) => {
+                const live = liveTickets.find(t => 
+                  t.id === item.id || 
+                  t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(item.title.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
+                  item.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))
+                );
+                const displayTitle = live?.title || item.title;
+                const displayPrice = live ? live.price : item.price;
+                const displayHost = (live?.ambassadorName ? `${live.ambassadorName}${live.ambassadorTitle ? ` — ${live.ambassadorTitle}` : ''}` : null) || item.host;
+                const displayDesc = live?.description || item.description;
+                const isSoldOut = Boolean(live?.isSoldOut || (live?.capacity && live?.sold >= live?.capacity) || s.isSoldOut);
+                const actualId = live?.id || item.id;
+                const spk = formatSpeaker(displayHost);
 
-                  <!-- 2. Programma Titel (1 regel) -->
-                  <div class="col-title">
-                    <h3 class="item-name">{item.title}</h3>
-                  </div>
-
-                  <!-- 3. Type & Locatie -->
-                  <div class="col-type-loc">
-                    <span class={`cat-pill cat-${item.category}`}>{item.categoryLabel}</span>
-                    <span class="item-loc-tag">
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                      {item.location}
-                    </span>
-                  </div>
-
-                  <!-- 4. Spreker / Gids (Naam bovenaan, rol/titel eronder) -->
-                  <div class="col-speaker">
-                    {(() => {
-                      const spk = formatSpeaker(item.host);
-                      return (
-                        <div class="speaker-block">
-                          <strong class="speaker-name">{spk.name}</strong>
-                          {spk.role && <span class="speaker-role">{spk.role}</span>}
-                        </div>
-                      );
-                    })()}
-                  </div>
-
-                  <!-- 5. Prijs & Details / Bestelknop -->
-                  <div class="col-action">
-                    <strong class="item-price">€ {item.price.toFixed(2).replace('.', ',')}</strong>
-                    <div class="action-buttons-group">
-                      <button 
-                        type="button" 
-                        class="btn-trigger-details"
-                        data-title={item.title}
-                        data-loc={item.location}
-                        data-time={item.time}
-                        data-host={item.host}
-                        data-desc={item.description}
-                        data-price={`€ ${item.price.toFixed(2).replace('.', ',')}`}
-                      >
-                        Details
-                      </button>
-                      <button 
-                        type="button" 
-                        class="btn btn-gold btn-table-buy"
-                        data-ticket-id={item.id}
-                        data-title={item.title}
-                      >
-                        + Bestel
-                      </button>
+                return (
+                  <article class="agenda-row-item">
+                    <!-- 1. Tijd (Begin- en Eindtijd) -->
+                    <div class="col-time">
+                      <span class="item-time-val">{item.time}</span>
                     </div>
-                  </div>
-                </article>
-              ))}
+
+                    <!-- 2. Programma Titel (1 regel) -->
+                    <div class="col-title">
+                      <h3 class="item-name">{displayTitle}</h3>
+                    </div>
+
+                    <!-- 3. Type & Locatie -->
+                    <div class="col-type-loc">
+                      <span class={`cat-pill cat-${item.category}`}>{item.categoryLabel}</span>
+                      <span class="item-loc-tag">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        {item.location}
+                      </span>
+                    </div>
+
+                    <!-- 4. Spreker / Gids (Naam bovenaan, rol/titel eronder) -->
+                    <div class="col-speaker">
+                      <div class="speaker-block">
+                        <strong class="speaker-name">{spk.name}</strong>
+                        {spk.role && <span class="speaker-role">{spk.role}</span>}
+                      </div>
+                    </div>
+
+                    <!-- 5. Prijs & Details / Bestelknop -->
+                    <div class="col-action">
+                      <strong class="item-price">€ {displayPrice.toFixed(2).replace('.', ',')}</strong>
+                      <div class="action-buttons-group">
+                        <button 
+                          type="button" 
+                          class="btn-trigger-details"
+                          data-title={displayTitle}
+                          data-loc={item.location}
+                          data-time={item.time}
+                          data-host={displayHost}
+                          data-desc={displayDesc}
+                          data-price={`€ ${displayPrice.toFixed(2).replace('.', ',')}`}
+                        >
+                          Details
+                        </button>
+                        {isSoldOut ? (
+                          <button type="button" class="btn btn-gold btn-table-buy sold-out" disabled>
+                            Uitverkocht
+                          </button>
+                        ) : (
+                          <button 
+                            type="button" 
+                            class="btn btn-gold btn-table-buy"
+                            data-ticket-id={actualId}
+                            data-title={displayTitle}
+                          >
+                            + Bestel
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
 
             </section>
@@ -419,56 +435,68 @@ function formatSpeaker(host: string) {
           </div>
 
           <div class="pane-rows-list">
-            {BOTTELLINGS.map((b) => (
-              <article class="agenda-row-item">
-                <!-- Left: Status & Location -->
-                <div class="col-time-loc">
-                  <span class="item-time-val">Single Cask</span>
-                  <span class="item-loc-tag">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                    Festivalslijterij
-                  </span>
-                </div>
+            {BOTTELLINGS.map((b) => {
+              const live = liveTickets.find(t => 
+                t.id === b.id || 
+                t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(b.title.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
+                b.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))
+              );
+              const displayTitle = live?.title || b.title;
+              const displayPrice = live ? live.price : b.price;
+              const displayDesc = live?.description || b.description;
+              const actualId = live?.id || b.id;
 
-                <!-- Center: Title & Specs -->
-                <div class="col-info">
-                  <div class="info-line-top">
-                    <h3 class="item-name">{b.title}</h3>
-                    <span class="cat-pill cat-warehouse">Gelimiteerd</span>
+              return (
+                <article class="agenda-row-item">
+                  <!-- Left: Status & Location -->
+                  <div class="col-time-loc">
+                    <span class="item-time-val">Single Cask</span>
+                    <span class="item-loc-tag">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                      Festivalslijterij
+                    </span>
                   </div>
-                  <div class="info-line-sub">
-                    <span class="speaker-name">{b.spec}</span>
-                  </div>
-                </div>
 
-                <!-- Right: Price & Actions -->
-                <div class="col-action">
-                  <strong class="item-price">€ {b.price.toFixed(2).replace('.', ',')}</strong>
-                  <div class="action-buttons-group">
-                    <button 
-                      type="button" 
-                      class="btn-trigger-details"
-                      data-title={b.title}
-                      data-loc="Festivalslijterij (De Oude Vismijn)"
-                      data-time="Tijdens festival afhalen"
-                      data-host={b.spec}
-                      data-desc={b.description}
-                      data-price={`€ ${b.price.toFixed(2).replace('.', ',')}`}
-                    >
-                      Details
-                    </button>
-                    <button 
-                      type="button" 
-                      class="btn btn-gold btn-table-buy"
-                      data-ticket-id={b.id}
-                      data-title={b.title}
-                    >
-                      + Reserveer
-                    </button>
+                  <!-- Center: Title & Specs -->
+                  <div class="col-info">
+                    <div class="info-line-top">
+                      <h3 class="item-name">{displayTitle}</h3>
+                      <span class="cat-pill cat-warehouse">Gelimiteerd</span>
+                    </div>
+                    <div class="info-line-sub">
+                      <span class="speaker-name">{b.spec}</span>
+                    </div>
                   </div>
-                </div>
-              </article>
-            ))}
+
+                  <!-- Right: Price & Actions -->
+                  <div class="col-action">
+                    <strong class="item-price">€ {displayPrice.toFixed(2).replace('.', ',')}</strong>
+                    <div class="action-buttons-group">
+                      <button 
+                        type="button" 
+                        class="btn-trigger-details"
+                        data-title={displayTitle}
+                        data-loc="Festivalslijterij (De Oude Vismijn)"
+                        data-time="Tijdens festival afhalen"
+                        data-host={b.spec}
+                        data-desc={displayDesc}
+                        data-price={`€ ${displayPrice.toFixed(2).replace('.', ',')}`}
+                      >
+                        Details
+                      </button>
+                      <button 
+                        type="button" 
+                        class="btn btn-gold btn-table-buy"
+                        data-ticket-id={actualId}
+                        data-title={displayTitle}
+                      >
+                        + Reserveer
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 
@@ -493,10 +521,19 @@ function formatSpeaker(host: string) {
             </div>
 
             {GENT_SPECIALS_ROWS.map((item) => {
-              const live = liveTickets.find(t => t.id === item.id);
+              const live = liveTickets.find(t => 
+                t.id === item.id || 
+                t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(item.title.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
+                item.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))
+              );
+              const displayTitle = live?.title || item.title;
+              const displayPrice = live ? live.price : item.price;
+              const displayHost = (live?.ambassadorName ? `${live.ambassadorName}${live.ambassadorTitle ? ` — ${live.ambassadorTitle}` : ''}` : null) || item.host;
+              const displayDesc = live?.description || item.description;
               const isSoldOut = Boolean(live?.isSoldOut || (live?.capacity && live?.sold >= live?.capacity) || item.id.includes('bootje') || item.id.includes('tour'));
-              const price = live ? live.price : item.price;
-              const spk = formatSpeaker(item.host);
+              const actualId = live?.id || item.id;
+              const spk = formatSpeaker(displayHost);
+
               return (
                 <article class="agenda-row-item">
                   <div class="col-time">
@@ -505,7 +542,7 @@ function formatSpeaker(host: string) {
                   </div>
 
                   <div class="col-title">
-                    <h3 class="item-name">{item.title}</h3>
+                    <h3 class="item-name">{displayTitle}</h3>
                   </div>
 
                   <div class="col-type-loc">
@@ -524,17 +561,17 @@ function formatSpeaker(host: string) {
                   </div>
 
                   <div class="col-action">
-                    <strong class="item-price">€ {price.toFixed(2).replace('.', ',')}</strong>
+                    <strong class="item-price">€ {displayPrice.toFixed(2).replace('.', ',')}</strong>
                     <div class="action-buttons-group">
                       <button 
                         type="button" 
                         class="btn-trigger-details"
-                        data-title={item.title}
+                        data-title={displayTitle}
                         data-loc={item.location}
                         data-time={item.time}
-                        data-host={item.host}
-                        data-desc={item.description}
-                        data-price={`€ ${price.toFixed(2).replace('.', ',')}`}
+                        data-host={displayHost}
+                        data-desc={displayDesc}
+                        data-price={`€ ${displayPrice.toFixed(2).replace('.', ',')}`}
                       >
                         Details
                       </button>
@@ -546,8 +583,8 @@ function formatSpeaker(host: string) {
                         <button 
                           type="button" 
                           class="btn btn-gold btn-table-buy"
-                          data-ticket-id={item.id}
-                          data-title={item.title}
+                          data-ticket-id={actualId}
+                          data-title={displayTitle}
                         >
                           + Boek
                         </button>
