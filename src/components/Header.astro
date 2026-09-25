@@ -1484,6 +1484,7 @@ const isAccount = pathname.startsWith("/account");
     const cart = getStoredCart();
     const items = cart.items || [];
     const totalCount = items.reduce((acc: number, item: any) => acc + (item.qty || 0), 0);
+    const subtotal = items.reduce((acc: number, item: any) => acc + ((item.price || 0) * (item.qty || 0)), 0);
     let serviceFee = 0;
     if (totalCount === 1) serviceFee = 1.75;
     else if (totalCount >= 2 && totalCount <= 5) serviceFee = 3.50;
@@ -1654,17 +1655,24 @@ const isAccount = pathname.startsWith("/account");
   if (cartBtn) {
     cartBtn.addEventListener('click', (e) => {
       e.stopPropagation();
+      const accountDropdown = document.getElementById('header-account-dropdown');
+      if (accountDropdown) accountDropdown.classList.remove('active');
+
       if (window.innerWidth <= 990) {
         if (cartDropdown) cartDropdown.classList.remove('active');
         window.dispatchEvent(new CustomEvent('open-mobile-cart-drawer', { detail: { view: 'cart' } }));
         return;
       }
-      updateHeaderCartUI();
+      try {
+        updateHeaderCartUI();
+      } catch (err) {
+        console.error('Error updating header cart UI:', err);
+      }
       if (cartDropdown) cartDropdown.classList.toggle('active');
     });
 
     document.addEventListener('click', (e) => {
-      if (cartDropdown && !cartDropdown.contains(e.target as Node) && e.target !== cartBtn) {
+      if (cartDropdown && !cartDropdown.contains(e.target as Node) && !cartBtn.contains(e.target as Node)) {
         cartDropdown.classList.remove('active');
       }
     });
