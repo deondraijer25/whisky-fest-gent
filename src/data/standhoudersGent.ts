@@ -263,10 +263,10 @@ export const EXHIBITORS_GENT: ExhibitorItem[] = [
   },
   {
     id: "32",
-    name: "El Cartel",
+    name: "Stand 32 (Beschikbaar)",
     category: "independent",
-    brands: ["El Cartel Whisky Selections", "Artisan Craft Spirits"],
-    description: "Exclusieve onafhankelijke selecties en karaktervolle expressies gepresenteerd door El Cartel.",
+    brands: ["Beschikbare Stand"],
+    description: "Exposantpositie in voorbereiding voor het festivalweekend.",
     hall: "De Markt"
   },
   {

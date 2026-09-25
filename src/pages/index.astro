@@ -5344,6 +5344,11 @@ const tickets = await getTickets('gent');
           };
           localStorage.setItem('wf_last_order', JSON.stringify(orderData));
 
+          const myAccountLink = document.getElementById("my-account-link");
+          if (myAccountLink) {
+            myAccountLink.setAttribute("href", `/account?view=login&email=${encodeURIComponent(email)}&order=${encodeURIComponent(finalResNumber)}`);
+          }
+
           const successResNumEl = document.querySelector("#modal-step-3 .ticket-summary-box strong");
           if (successResNumEl) successResNumEl.textContent = finalResNumber;
           
@@ -6410,6 +6415,12 @@ const tickets = await getTickets('gent');
     const emailDisplay = (orderData && (orderData.customerEmail || orderData.email)) || "uw e-mailadres";
     if (receiptSentEmail) {
       receiptSentEmail.textContent = emailDisplay;
+    }
+
+    const myAccountLink = document.getElementById("my-account-link");
+    if (myAccountLink) {
+      const emailForLink = (orderData && (orderData.customerEmail || orderData.email)) || '';
+      myAccountLink.setAttribute("href", `/account?view=login&email=${encodeURIComponent(emailForLink)}&order=${encodeURIComponent(orderNumber)}`);
     }
 
     if (receiptTicketsList) {
