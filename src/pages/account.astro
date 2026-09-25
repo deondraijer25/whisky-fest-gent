@@ -2655,6 +2655,13 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
       const ticketsContainer = document.getElementById("tickets-container");
       if (ticketsContainer && orderData.items) {
         ticketsContainer.innerHTML = "";
+
+        // Use pre-rendered ticket cards from WhiskyTix API if available
+        const preRenderedHtml = (window as any).__wtx_ticketsHtml;
+        if (preRenderedHtml) {
+          ticketsContainer.innerHTML = preRenderedHtml;
+          return; // Skip local template rendering
+        }
         
         let globalTicketIndex = 1;
         orderData.items.forEach((item: any) => {
@@ -2977,6 +2984,9 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                 const data = await res.json();
                 if (data && data.order) {
                   verifiedOrder = data.order;
+                  if (data.ticketsHtml) {
+                    (window as any).__wtx_ticketsHtml = data.ticketsHtml;
+                  }
                 }
               }
             } catch (err) {
