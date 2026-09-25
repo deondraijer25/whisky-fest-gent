@@ -6257,6 +6257,31 @@ const tickets = await getTickets('gent');
       lineup = item.tastingLineup;
     }
 
+    // Real-time live GHL overrides from Leadfabriek CRM
+    const liveRec = ((window as any).__LIVE_GHL_TICKETS__ || []).find((r: any) => r.id === mcId);
+    if (liveRec) {
+      const lp = liveRec.properties || liveRec;
+      if (lp.title) {
+        title = lp.title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+      }
+      if (lp.price !== undefined && lp.price !== null) {
+        numericPrice = typeof lp.price === 'number' ? lp.price : (parseFloat(lp.price) || parseFloat(lp.ticket_price) || numericPrice);
+      }
+      if (lp.ticket_description || lp.description) {
+        description = lp.ticket_description || lp.description;
+      }
+      if (lp.ambassador_name) ambName = lp.ambassador_name;
+      if (lp.ambassador_title) ambTitle = lp.ambassador_title;
+      if (lp.ambassador_bio) ambBio = lp.ambassador_bio;
+      if (lp.tasting_lineup) {
+        lineup = Array.isArray(lp.tasting_lineup) ? lp.tasting_lineup : String(lp.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean);
+      }
+      if (lp.date_label || lp.time_label) {
+        subtitle = `${lp.date_label || ''} • ${lp.time_label || ''}`;
+      }
+      if (lp.location) location = lp.location;
+    }
+
     // Populate modal fields
     const tagEl = document.querySelector('#masterclass-info-modal span[style*="font-family: var(--font-sans)"]');
     const titleEl = document.getElementById('mc-modal-title');
