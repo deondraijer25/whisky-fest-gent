@@ -458,7 +458,15 @@ const exhibitors = await getStandhouders('gent');
             <div class="card-body-content">
               <div class="card-title-zone">
                 <h4>{exh.name}</h4>
-                {exh.hall && <span class="card-hall-tag">📍 {exh.hall}</span>}
+                {exh.hall && (
+                  <span class="card-hall-tag">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -1px; margin-right: 3px;">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    {exh.hall}
+                  </span>
+                )}
               </div>
               <p>{exh.description}</p>
               {exh.brands && exh.brands.length > 0 && (
@@ -1283,8 +1291,9 @@ const exhibitors = await getStandhouders('gent');
 </style>
 
 <!-- CLIENT-SIDE LOGIC FOR SEARCH, FILTER, AND SVG HOVER & SELECTION -->
-<script define:vars={{ exhibitors }}>
+<script define:vars={{ initialExhibitors: exhibitors }}>
   // Initialize elements
+  let exhibitors = [...initialExhibitors];
   const searchInput = document.getElementById('exhibitor-search');
   const filterTabs = document.querySelectorAll('.filter-tab');
   const directoryCards = document.querySelectorAll('.directory-item-card');
@@ -1530,4 +1539,126 @@ const exhibitors = await getStandhouders('gent');
       document.querySelector('.map-visual-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
   });
+
+  // --- Real-time Live GHL Standhouder Synchronization ---
+  function applyStandRecords(records) {
+    if (!Array.isArray(records) || records.length === 0) return;
+
+    records.forEach(r => {
+      const p = r.properties || r;
+      const standId = String(p.stand_id || r.id);
+      const name = p.name || 'Standhouder';
+      const category = p.category || 'world';
+      const rawBrands = p.brands || '';
+      const brandsList = Array.isArray(rawBrands)
+        ? rawBrands
+        : String(rawBrands).split(',').map(b => b.trim()).filter(Boolean);
+      const description = p.stand_description || p.description || '';
+      const isNotOnMap = p.is_not_on_map === true || p.is_not_on_map === 'true' || p.is_not_on_map === '1' || p.is_not_on_map === 'ja';
+      const hall = p.hall || '';
+
+      // 1. Update in-memory exhibitors list
+      const exhIndex = exhibitors.findIndex(e => String(e.id) === standId);
+      const updatedItem = {
+        id: standId,
+        name: name,
+        category: category,
+        brands: brandsList,
+        description: description,
+        isNotOnMap: isNotOnMap,
+        hall: hall || (exhIndex >= 0 ? exhibitors[exhIndex].hall : '')
+      };
+
+      if (exhIndex >= 0) {
+        exhibitors[exhIndex] = { ...exhibitors[exhIndex], ...updatedItem };
+      } else {
+        exhibitors.push(updatedItem);
+      }
+
+      // 2. Update DOM card
+      const card = document.querySelector(`.directory-item-card[data-id="${standId}"]`);
+      if (card) {
+        card.setAttribute('data-name', name.toLowerCase());
+        card.setAttribute('data-cat', category);
+        card.setAttribute('data-brands', brandsList.join(' ').toLowerCase());
+        if (hall) card.setAttribute('data-hall', hall.toLowerCase());
+
+        const catTag = card.querySelector('.category-tag');
+        if (catTag) {
+          catTag.className = 'category-tag tag-' + category;
+          catTag.textContent = categoryLabels[category] || category;
+        }
+
+        const titleEl = card.querySelector('.card-title-zone h4');
+        if (titleEl) titleEl.textContent = name;
+
+        const descEl = card.querySelector('.card-body-content p');
+        if (descEl) descEl.textContent = description;
+
+        let brandsRow = card.querySelector('.card-brands-row');
+        if (brandsList.length > 0) {
+          if (!brandsRow) {
+            brandsRow = document.createElement('div');
+            brandsRow.className = 'card-brands-row';
+            card.querySelector('.card-body-content')?.appendChild(brandsRow);
+          }
+          brandsRow.innerHTML = '<strong>Merken:</strong> ' + brandsList.join(', ');
+        } else if (brandsRow) {
+          brandsRow.remove();
+        }
+      }
+    });
+
+    // 3. Update active detail card if selected stand changed
+    if (selectedStandId) {
+      const activeMatch = exhibitors.find(e => String(e.id) === selectedStandId);
+      if (activeMatch) {
+        showStandDetails(activeMatch);
+      }
+    }
+
+    // 4. Refresh filter/search
+    filterAndSearch();
+  }
+
+  function fetchLiveStandhouders() {
+    fetch('https://services.leadconnectorhq.com/objects/custom_objects.festival_standhouders/records/search', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer pit-150d6114-ac2c-4cf7-9d5c-ffc20499c790',
+        'Version': '2021-07-28',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        locationId: '1OZ9uxIBFoxwbheVC5iN',
+        page: 1,
+        pageLimit: 250,
+        query: 'Gent',
+        searchAfter: []
+      })
+    })
+    .then(res => res.ok ? res.json() : null)
+    .then(data => {
+      if (!data) return;
+      const records = data.customObjectRecords || data.records || [];
+      if (Array.isArray(records) && records.length > 0) {
+        window.__LIVE_GHL_STANDS__ = records;
+        applyStandRecords(records);
+      }
+    })
+    .catch(() => {});
+  }
+
+  // Hook into global live stands if already fetched
+  if (window.__LIVE_GHL_STANDS__) {
+    applyStandRecords(window.__LIVE_GHL_STANDS__);
+  }
+  window.addEventListener('ghl:stands-updated', (e) => {
+    if (e.detail) applyStandRecords(e.detail);
+  });
+
+  // Fetch directly and keep updated on focus and interval
+  fetchLiveStandhouders();
+  window.addEventListener('focus', fetchLiveStandhouders);
+  setInterval(fetchLiveStandhouders, 8000);
 </script>

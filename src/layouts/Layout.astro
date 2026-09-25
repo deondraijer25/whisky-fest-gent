@@ -249,7 +249,7 @@ const orgSchema = {
     <!-- Global Mobile Slide-Up Cart & Sticky Bar for Gent -->
     <MobileCartDrawer city="gent" />
 
-    <!-- Real-time Live GHL Ticket Sync (Instant Realtime Updates from Leadfabriek CRM) -->
+    <!-- Real-time Live GHL Ticket & Standhouder Sync (Instant Realtime Updates from Leadfabriek CRM) -->
     <script is:inline>
       (function initRealtimeGhlSync() {
         var GHL_API_BASE = 'https://services.leadconnectorhq.com';
@@ -350,12 +350,49 @@ const orgSchema = {
           });
         }
 
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', syncLiveTickets);
-        } else {
-          syncLiveTickets();
+        function syncLiveStands() {
+          fetch(GHL_API_BASE + '/objects/custom_objects.festival_standhouders/records/search', {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + GHL_API_KEY,
+              'Version': '2021-07-28',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              locationId: GHL_LOCATION_ID,
+              page: 1,
+              pageLimit: 250,
+              query: 'Gent',
+              searchAfter: []
+            })
+          })
+          .then(function(res) {
+            if (!res.ok) return null;
+            return res.json();
+          })
+          .then(function(data) {
+            if (!data) return;
+            var records = data.customObjectRecords || data.records || [];
+            if (!Array.isArray(records) || records.length === 0) return;
+
+            window.__LIVE_GHL_STANDS__ = records;
+            window.dispatchEvent(new CustomEvent('ghl:stands-updated', { detail: records }));
+          })
+          .catch(function(err) {});
         }
-        window.addEventListener('focus', syncLiveTickets);
+
+        function syncAll() {
+          syncLiveTickets();
+          syncLiveStands();
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', syncAll);
+        } else {
+          syncAll();
+        }
+        window.addEventListener('focus', syncAll);
+        setInterval(syncAll, 10000);
       })();
     </script>
   </body>

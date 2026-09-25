@@ -3216,7 +3216,27 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
     accountStands.forEach(standNode => {
       standNode.addEventListener('click', () => {
         const sId = standNode.getAttribute('data-stand');
-        const match = exhibitorsData.find(e => e.id === sId);
+        let match = exhibitorsData.find(e => e.id === sId);
+        if (window.__LIVE_GHL_STANDS__) {
+          const liveRec = window.__LIVE_GHL_STANDS__.find(r => {
+            const p = r.properties || r;
+            return String(p.stand_id || r.id) === sId;
+          });
+          if (liveRec) {
+            const p = liveRec.properties || liveRec;
+            const rawBrands = p.brands || '';
+            const brandsList = Array.isArray(rawBrands)
+              ? rawBrands
+              : String(rawBrands).split(',').map(b => b.trim()).filter(Boolean);
+            match = {
+              id: sId,
+              name: p.name || match?.name || '',
+              category: p.category || match?.category || '',
+              description: p.stand_description || p.description || match?.description || '',
+              brands: brandsList.length > 0 ? brandsList : (match?.brands || [])
+            };
+          }
+        }
 
         accountStands.forEach(s => s.classList.remove('selected-stand'));
         standNode.classList.add('selected-stand');
