@@ -2649,94 +2649,81 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
 
       // Render Dynamic Tickets in Tab 1 (Each ticket contains an individual Download Button)
       const ticketsContainer = document.getElementById("tickets-container");
-      if (ticketsContainer && orderData.items) {
+      if (ticketsContainer && (orderData.items || orderData.tickets || orderData.activeTickets)) {
         ticketsContainer.innerHTML = "";
-        
-        let globalTicketIndex = 1;
-        orderData.items.forEach((item: any) => {
-          let displayDay = "02";
-          let displayMonth = "OKT";
-          let displayTime = item.time || item.timeslot || "13:00 - 17:00 UUR";
-          let watermark = "WF";
-          
-          const titleLower = item.title.toLowerCase();
-          
-          if (item.category === "entree") {
-            watermark = orderData.isMember ? "WS" : "WF";
-            if (titleLower.includes("vrijdag")) {
-              displayDay = "02";
-              displayTime = titleLower.includes("vip") ? "13:00 - 17:00 UUR" : "19:00 - 23:00 UUR";
-            } else if (titleLower.includes("zondag")) {
-              displayDay = "04";
-              displayTime = "13:00 - 17:00 UUR";
-            } else {
-              displayDay = "03";
-              displayTime = (titleLower.includes("avond") || (item.time && item.time.includes("19:00")) || (item.timeslot && item.timeslot.includes("19:00")))
-                ? "19:00 - 23:00 UUR"
-                : "13:00 - 17:00 UUR";
-            }
-          } else if (item.category === "bootjes" || item.category === "dada") {
-            watermark = "GWF";
-            displayDay = "02-04";
-            displayTime = item.timeslot || "TIJDSSLOT VOLGENS PROGRAMMA";
-          } else if (item.category === "botteling") {
-            watermark = "FB";
-            displayDay = "02-04";
-            displayTime = item.delivery === "shipping" ? "VERZENDING PER POST" : "AFHALEN BIJ INFODESK (STAND O)";
-          } else if (item.category === "masterclass") {
-            watermark = "MC";
-            displayDay = "03";
-            displayTime = item.timeslot || "14:00 - 14:45 UUR";
-          }
 
-          // Expand multiple quantities into individual separate ticket cards
-          const qty = item.qty || 1;
-          for (let t = 0; t < qty; t++) {
-            const rawCode = (orderData.resNumber || "WF-2026-84387").replace('#', '');
-            const cleanCode = `${rawCode}-${globalTicketIndex}`;
+        // Prefer authoritative active tickets from Whiskytix (omits cancelled & swapped tickets!)
+        const authoritativeTickets = (orderData.activeTickets && Array.isArray(orderData.activeTickets) && orderData.activeTickets.length > 0)
+          ? orderData.activeTickets
+          : ((orderData.tickets && Array.isArray(orderData.tickets) && orderData.tickets.length > 0)
+              ? orderData.tickets.filter((t: any) => t.status !== 'cancelled' && t.status !== 'swapped')
+              : null);
+
+        if (authoritativeTickets && authoritativeTickets.length > 0) {
+          authoritativeTickets.forEach((ticket: any, tIdx: number) => {
+            const rawCode = (ticket.ticketCode || `${orderData.resNumber || 'WF-2026-84387'}-${tIdx + 1}`).replace(/^#/, '');
+            const cleanCode = rawCode.trim();
             const displayCode = `#${cleanCode}`;
-            
-            // Clean title: remove redundant time suffix if present so title stays concise and uniform
-            const cleanTitle = item.title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+            const attendeeName = ticket.attendeeName || userName;
+            const ticketTitle = ticket.sessionTitle || ticket.title || 'Festival Entreeticket';
+            const cleanTitle = ticketTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+            const displayTime = ticket.timeStr || ticket.time || ticket.timeslot || '13:00 - 17:00 UUR';
+            const formattedDate = ticket.dateStr || ticket.date || 'Vrijdag 2 oktober 2026';
+            const formattedSchedule = `${formattedDate} • ${displayTime}`;
 
-            // Natural schedule string
-            let formattedSchedule = "Vrijdag 2 oktober 2026 • " + displayTime;
-            let formattedDate = "Vrijdag 2 oktober 2026";
-            if (titleLower.includes("zaterdag")) {
-              formattedSchedule = "Zaterdag 3 oktober 2026 • " + displayTime;
-              formattedDate = "Zaterdag 3 oktober 2026";
-            } else if (titleLower.includes("zondag")) {
-              formattedSchedule = "Zondag 4 oktober 2026 • " + displayTime;
-              formattedDate = "Zondag 4 oktober 2026";
-            } else if (item.category === 'masterclass') {
-              formattedSchedule = "Zaterdag 3 oktober 2026 • " + displayTime;
-              formattedDate = "Zaterdag 3 oktober 2026";
+            const titleLower = ticketTitle.toLowerCase();
+            let watermark = orderData.isMember ? "WS" : "WF";
+            let locationName = "De Oude Vismijn, Gent";
+            let scanInstruction = "SCAN BIJ DE DEUR";
+
+            if (titleLower.includes("masterclass")) {
+              watermark = "MC";
+              locationName = "De Oude Vismijn (MC-Ruimte)";
+              scanInstruction = "TOON BIJ DE MASTERCLASS ZAAL";
+            } else if (titleLower.includes("botteling") || titleLower.includes("fles")) {
+              watermark = "FB";
+              locationName = (ticket.delivery === "shipping" || displayTime.toLowerCase().includes("verzending"))
+                ? "Verzending per Post (BE & NL)"
+                : "De Oude Vismijn (Infodesk Stand O)";
+              scanInstruction = (ticket.delivery === "shipping" || displayTime.toLowerCase().includes("verzending"))
+                ? "VERZONDEN"
+                : "AFHALEN BIJ INFODESK";
+            } else if (titleLower.includes("boot") || titleLower.includes("tram")) {
+              watermark = "GWF";
+              locationName = "Steiger De Oude Vismijn";
+              scanInstruction = "TOON BIJ INSCHEPEN";
+            } else if (titleLower.includes("vip")) {
+              watermark = "VIP";
             }
 
-            // Clean public HTTPS URL that WhatsApp always recognizes as a blue clickable link
+            const isCheckedIn = ticket.status === 'checked_in';
+            const isReplacement = !!ticket.replacedTicketCode || cleanCode.includes('-R');
+            const isComp = !!ticket.swapReason && (ticket.swapReason.toLowerCase().includes('cadeau') || ticket.swapReason.toLowerCase().includes('handmatig') || ticket.swapReason.toLowerCase().includes('toegevoegd'));
+
             const baseUrl = window.location.origin;
-            
-            const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&category=${encodeURIComponent(item.category || '')}&delivery=${encodeURIComponent(item.delivery || '')}`;
+            const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(attendeeName)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}`;
 
             const shareText = encodeURIComponent(
-              `*${'Whisky Festival Gent 2026'}*\n` +
+              `*Whisky Festival Gent 2026*\n` +
               `E-ticket: ${cleanTitle}\n\n` +
-              `Kaarthouder: ${userName}\n` +
+              `Kaarthouder: ${attendeeName}\n` +
+              `Datum: ${formattedDate}\n` +
               `Tijdslot: ${displayTime}\n` +
               `Ticket Code: ${displayCode}\n` +
-              `Locatie: De Oude Vismijn, Gent\n\n` +
+              `Locatie: ${locationName}\n\n` +
               `Bekijk en download je officiële E-ticket:\n` +
               `${ticketLink}`
             );
-            
+
             const mailSubject = encodeURIComponent(`E-ticket voor Whisky Festival Gent: ${cleanTitle}`);
             const mailBody = encodeURIComponent(
-              `Beste ${userName},\n\n` +
+              `Beste ${attendeeName},\n\n` +
               `Hierbij ontvang je jouw toegangsbewijs voor Whisky Festival Gent 2026.\n\n` +
               `Ticket: ${cleanTitle}\n` +
+              `Datum: ${formattedDate}\n` +
               `Tijdslot: ${displayTime}\n` +
               `Ticket Code: ${displayCode}\n` +
-              `Locatie: De Oude Vismijn, Gent\n\n` +
+              `Locatie: ${locationName}\n\n` +
               `Bekijk en download je digitale ticket direct via onderstaande link:\n` +
               `${ticketLink}\n\n` +
               `Graag tot ziens op het festival!`
@@ -2750,7 +2737,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                     <span class="scan-label">CONTROLE STUB</span>
                     <div class="qr-code-holder">
                       <img 
-                        src="https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=gent&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}" 
+                        src="https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=gent&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}" 
                         alt="Controle QR-Code ${displayCode}" 
                         width="105" 
                         height="105" 
@@ -2759,7 +2746,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                         loading="lazy"
                       />
                     </div>
-                    <span class="scan-instructions">${item.category === 'botteling' && item.delivery === 'shipping' ? 'VERZONDEN' : 'SCAN BIJ DE DEUR'}</span>
+                    <span class="scan-instructions">${scanInstruction}</span>
                     <span class="scan-res-hash">${displayCode}</span>
                   </div>
 
@@ -2772,13 +2759,15 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                       <div class="ticket-title-block">
                         <h2 class="ticket-session-title">${cleanTitle}</h2>
                         <p class="ticket-schedule-text">${formattedSchedule}</p>
+                        ${isReplacement ? `<span style="display:inline-block;margin-top:4px;font-size:0.72rem;font-weight:700;background:#FEF3C7;color:#92400E;padding:2px 8px;border-radius:4px;border:1px solid #FCD34D;">Vervangt ticket ${ticket.replacedTicketCode || 'vorig ticket'}</span>` : ''}
+                        ${isComp ? `<span style="display:inline-block;margin-top:4px;font-size:0.72rem;font-weight:700;background:#E0E9FF;color:#1E3A8A;padding:2px 8px;border-radius:4px;border:1px solid #93C5FD;">Cadeau / Toegevoegd ticket</span>` : ''}
                       </div>
                       <div class="ticket-badges-block">
-                        <span class="ticket-status-tag">
+                        <span class="ticket-status-tag" style="${isCheckedIn ? 'background:#DCFCE7;color:#166534;border-color:#86EFAC;' : ''}">
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                          ${item.category === 'botteling' ? (item.delivery === 'shipping' ? 'Verzending Bevestigd' : 'Geldig Ophaalbewijs') : 'Geldig Toegangsbewijs'}
+                          ${isCheckedIn ? 'Ingecheckt aan de Deur' : (titleLower.includes('botteling') ? ((ticket.delivery === 'shipping' || displayTime.toLowerCase().includes('verzending')) ? 'Verzending Bevestigd' : 'Geldig Ophaalbewijs') : 'Geldig Toegangsbewijs')}
                         </span>
-                        ${qty > 1 ? `<span class="ticket-qty-tag">Ticket ${t + 1} van ${qty}</span>` : ''}
+                        ${authoritativeTickets.length > 1 ? `<span class="ticket-qty-tag">Ticket ${tIdx + 1} van ${authoritativeTickets.length}</span>` : ''}
                       </div>
                     </div>
 
@@ -2786,11 +2775,11 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                     <div class="ticket-meta-trio">
                       <div class="meta-col">
                         <span class="meta-col-label">Kaarthouder</span>
-                        <strong class="meta-col-val">${userName}</strong>
+                        <strong class="meta-col-val">${attendeeName}</strong>
                       </div>
                       <div class="meta-col">
                         <span class="meta-col-label">Locatie</span>
-                        <strong class="meta-col-val">${item.category === 'masterclass' ? 'De Oude Vismijn (MC-Ruimte)' : item.category === 'botteling' ? (item.delivery === 'shipping' ? 'Verzending per Post (BE & NL)' : 'De Oude Vismijn (Infodesk Stand O)') : 'De Oude Vismijn, Gent'}</strong>
+                        <strong class="meta-col-val">${locationName}</strong>
                       </div>
                       <div class="meta-col">
                         <span class="meta-col-label">Ticket Code</span>
@@ -2800,7 +2789,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
 
                     <!-- 3. Bottom Row: Action Buttons -->
                     <div class="ticket-actions-row">
-                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=gent&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
+                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=gent&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span>Download E-Ticket (PDF)</span>
                       </button>
@@ -2827,11 +2816,191 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                 </div>
               </div>
             `;
-
             ticketsContainer.innerHTML += ticketHTML;
-            globalTicketIndex++;
-          }
-        });
+          });
+        } else if (orderData.items) {
+          // Fallback to orderData.items if authoritative tickets not yet loaded
+          let globalTicketIndex = 1;
+          orderData.items.forEach((item: any) => {
+            let displayDay = "02";
+            let displayMonth = "OKT";
+            let displayTime = item.time || item.timeslot || "13:00 - 17:00 UUR";
+            let watermark = "WF";
+            
+            const titleLower = item.title.toLowerCase();
+            
+            if (item.category === "entree") {
+              watermark = orderData.isMember ? "WS" : "WF";
+              if (titleLower.includes("vrijdag")) {
+                displayDay = "02";
+                displayTime = titleLower.includes("vip") ? "13:00 - 17:00 UUR" : "19:00 - 23:00 UUR";
+              } else if (titleLower.includes("zondag")) {
+                displayDay = "04";
+                displayTime = "13:00 - 17:00 UUR";
+              } else {
+                displayDay = "03";
+                displayTime = (titleLower.includes("avond") || (item.time && item.time.includes("19:00")) || (item.timeslot && item.timeslot.includes("19:00")))
+                  ? "19:00 - 23:00 UUR"
+                  : "13:00 - 17:00 UUR";
+              }
+            } else if (item.category === "bootjes" || item.category === "dada") {
+              watermark = "GWF";
+              displayDay = "02-04";
+              displayTime = item.timeslot || "TIJDSSLOT VOLGENS PROGRAMMA";
+            } else if (item.category === "botteling") {
+              watermark = "FB";
+              displayDay = "02-04";
+              displayTime = item.delivery === "shipping" ? "VERZENDING PER POST" : "AFHALEN BIJ INFODESK (STAND O)";
+            } else if (item.category === "masterclass") {
+              watermark = "MC";
+              displayDay = "03";
+              displayTime = item.timeslot || "14:00 - 14:45 UUR";
+            }
+
+            // Expand multiple quantities into individual separate ticket cards
+            const qty = item.qty || 1;
+            for (let t = 0; t < qty; t++) {
+              const rawCode = (orderData.resNumber || "WF-2026-84387").replace('#', '');
+              const cleanCode = `${rawCode}-${globalTicketIndex}`;
+              const displayCode = `#${cleanCode}`;
+              
+              // Clean title: remove redundant time suffix if present so title stays concise and uniform
+              const cleanTitle = item.title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+
+              // Natural schedule string
+              let formattedSchedule = "Vrijdag 2 oktober 2026 • " + displayTime;
+              let formattedDate = "Vrijdag 2 oktober 2026";
+              if (titleLower.includes("zaterdag")) {
+                formattedSchedule = "Zaterdag 3 oktober 2026 • " + displayTime;
+                formattedDate = "Zaterdag 3 oktober 2026";
+              } else if (titleLower.includes("zondag")) {
+                formattedSchedule = "Zondag 4 oktober 2026 • " + displayTime;
+                formattedDate = "Zondag 4 oktober 2026";
+              } else if (item.category === 'masterclass') {
+                formattedSchedule = "Zaterdag 3 oktober 2026 • " + displayTime;
+                formattedDate = "Zaterdag 3 oktober 2026";
+              }
+
+              // Clean public HTTPS URL that WhatsApp always recognizes as a blue clickable link
+              const baseUrl = window.location.origin;
+              
+              const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&category=${encodeURIComponent(item.category || '')}&delivery=${encodeURIComponent(item.delivery || '')}`;
+
+              const shareText = encodeURIComponent(
+                `*${'Whisky Festival Gent 2026'}*\n` +
+                `E-ticket: ${cleanTitle}\n\n` +
+                `Kaarthouder: ${userName}\n` +
+                `Tijdslot: ${displayTime}\n` +
+                `Ticket Code: ${displayCode}\n` +
+                `Locatie: De Oude Vismijn, Gent\n\n` +
+                `Bekijk en download je officiële E-ticket:\n` +
+                `${ticketLink}`
+              );
+              
+              const mailSubject = encodeURIComponent(`E-ticket voor Whisky Festival Gent: ${cleanTitle}`);
+              const mailBody = encodeURIComponent(
+                `Beste ${userName},\n\n` +
+                `Hierbij ontvang je jouw toegangsbewijs voor Whisky Festival Gent 2026.\n\n` +
+                `Ticket: ${cleanTitle}\n` +
+                `Tijdslot: ${displayTime}\n` +
+                `Ticket Code: ${displayCode}\n` +
+                `Locatie: De Oude Vismijn, Gent\n\n` +
+                `Bekijk en download je digitale ticket direct via onderstaande link:\n` +
+                `${ticketLink}\n\n` +
+                `Graag tot ziens op het festival!`
+              );
+
+              const ticketHTML = `
+                <div class="ticket-envelope">
+                  <div class="ticket-stub-large">
+                    <!-- Scanner Stub -->
+                    <div class="ticket-right-stub">
+                      <span class="scan-label">CONTROLE STUB</span>
+                      <div class="qr-code-holder">
+                        <img 
+                          src="https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=gent&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}" 
+                          alt="Controle QR-Code ${displayCode}" 
+                          width="105" 
+                          height="105" 
+                          class="qr-code-img"
+                          style="display:block; width:105px; height:105px; object-fit:contain; image-rendering:pixelated;"
+                          loading="lazy"
+                        />
+                      </div>
+                      <span class="scan-instructions">${item.category === 'botteling' && item.delivery === 'shipping' ? 'VERZONDEN' : 'SCAN BIJ DE DEUR'}</span>
+                      <span class="scan-res-hash">${displayCode}</span>
+                    </div>
+
+                    <!-- Clean Main Body -->
+                    <div class="ticket-left-stub">
+                      <div class="ticket-watermark">${watermark}</div>
+                      
+                      <!-- 1. Header Row -->
+                      <div class="ticket-header-row">
+                        <div class="ticket-title-block">
+                          <h2 class="ticket-session-title">${cleanTitle}</h2>
+                          <p class="ticket-schedule-text">${formattedSchedule}</p>
+                        </div>
+                        <div class="ticket-badges-block">
+                          <span class="ticket-status-tag">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            ${item.category === 'botteling' ? (item.delivery === 'shipping' ? 'Verzending Bevestigd' : 'Geldig Ophaalbewijs') : 'Geldig Toegangsbewijs'}
+                          </span>
+                          ${qty > 1 ? `<span class="ticket-qty-tag">Ticket ${t + 1} van ${qty}</span>` : ''}
+                        </div>
+                      </div>
+
+                      <!-- 2. Middle Row: 3-Column Meta Grid -->
+                      <div class="ticket-meta-trio">
+                        <div class="meta-col">
+                          <span class="meta-col-label">Kaarthouder</span>
+                          <strong class="meta-col-val">${userName}</strong>
+                        </div>
+                        <div class="meta-col">
+                          <span class="meta-col-label">Locatie</span>
+                          <strong class="meta-col-val">${item.category === 'masterclass' ? 'De Oude Vismijn (MC-Ruimte)' : item.category === 'botteling' ? (item.delivery === 'shipping' ? 'Verzending per Post (BE & NL)' : 'De Oude Vismijn (Infodesk Stand O)') : 'De Oude Vismijn, Gent'}</strong>
+                        </div>
+                        <div class="meta-col">
+                          <span class="meta-col-label">Ticket Code</span>
+                          <strong class="meta-col-val font-mono">${displayCode}</strong>
+                        </div>
+                      </div>
+
+                      <!-- 3. Bottom Row: Action Buttons -->
+                      <div class="ticket-actions-row">
+                        <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=gent&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                          <span>Download E-Ticket (PDF)</span>
+                        </button>
+
+                        <div class="ticket-share-wrapper">
+                          <button type="button" class="btn-ticket-share-white btn-share-trigger">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                            <span>Deel Ticket</span>
+                          </button>
+                          <div class="ticket-share-menu">
+                            <a href="https://api.whatsapp.com/send?text=${shareText}" target="_blank" rel="noopener noreferrer" class="share-option-link">
+                              <span>Deel via WhatsApp</span>
+                            </a>
+                            <a href="mailto:?subject=${mailSubject}&body=${mailBody}" class="share-option-link">
+                              <span>Deel via E-mail</span>
+                            </a>
+                            <button type="button" class="share-option-link" onclick="navigator.clipboard.writeText('${ticketLink}'); alert('✓ Directe ticket link gekopieerd!');">
+                              <span>Kopieer Ticket Link</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+
+              ticketsContainer.innerHTML += ticketHTML;
+              globalTicketIndex++;
+            }
+          });
+        }
       }
     }
 
@@ -2965,7 +3134,14 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                   phone: vOrder.customerPhone || orderData.phone,
                   resNumber: vOrder.orderNumber || orderData.resNumber,
                   items: items.length > 0 ? items : orderData.items,
+                  tickets: vOrder.tickets || orderData.tickets || [],
+                  activeTickets: vOrder.activeTickets || orderData.activeTickets || [],
+                  cancelledTickets: vOrder.cancelledTickets || orderData.cancelledTickets || [],
+                  swappedTickets: vOrder.swappedTickets || orderData.swappedTickets || [],
+                  itemsSummary: vOrder.itemsSummary || orderData.itemsSummary || '',
+                  totalPrice: vOrder.totalCents ? (vOrder.totalCents / 100) : orderData.totalPrice,
                 };
+                localStorage.setItem('wf_last_order', JSON.stringify(orderData));
                 updatePortalUI();
               }
             })
@@ -3086,6 +3262,11 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                   category: 'entree'
                 }
               ],
+              tickets: verifiedOrder.tickets || [],
+              activeTickets: verifiedOrder.activeTickets || [],
+              cancelledTickets: verifiedOrder.cancelledTickets || [],
+              swappedTickets: verifiedOrder.swappedTickets || [],
+              itemsSummary: verifiedOrder.itemsSummary || '',
               resNumber: fullResNumber,
               isMember: fullResNumber.includes('WS'),
               totalPrice: verifiedOrder.totalCents ? (verifiedOrder.totalCents / 100) : (verifiedOrder.totalPrice || 42.50)
