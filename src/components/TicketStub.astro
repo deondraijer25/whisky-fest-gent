@@ -55,7 +55,16 @@ if (date.toLowerCase().includes('vrijdag') && (date.includes('2') || date.toLowe
 }
 
 // Clean access / location display
-const cleanLoc = (location || '').replace(/\s*\(De Oude Vismijn\)/gi, '').trim();
+let cleanLoc = (location || '')
+  .replace(/\s*\(De Oude Vismijn\)/gi, '')
+  .replace(/\s*De Oude Vismijn/gi, '')
+  .trim();
+if (/melden bij entree-deur/i.test(cleanLoc)) {
+  cleanLoc = 'Entree-deur';
+}
+if (/afhalen bij festival slijterij/i.test(cleanLoc)) {
+  cleanLoc = 'Festival Slijterij';
+}
 const accessText = 
   category === 'entree' ? '1 PERSOON' :
   category === 'botteling' ? '1 FLES (70CL)' :
