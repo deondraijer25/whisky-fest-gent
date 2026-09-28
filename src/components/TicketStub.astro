@@ -55,10 +55,11 @@ if (date.toLowerCase().includes('vrijdag') && (date.includes('2') || date.toLowe
 }
 
 // Clean access / location display
+const cleanLoc = (location || '').replace(/\s*\(De Oude Vismijn\)/gi, '').trim();
 const accessText = 
   category === 'entree' ? '1 PERSOON' :
   category === 'botteling' ? '1 FLES (70CL)' :
-  (location || (extraMeta ? extraMeta.toUpperCase() : 'DE OUDE VISMIJN'));
+  (cleanLoc ? cleanLoc.toUpperCase() : (extraMeta ? extraMeta.toUpperCase() : 'DE OUDE VISMIJN'));
 
 // Clean time format
 const cleanTime = time.toLowerCase().includes('uur') ? time : (time + ' uur');
@@ -354,12 +355,10 @@ const titleSizeClass =
     width: 100% !important;
   }
 
-  .meta-col {
+    .meta-col {
     display: flex !important;
     flex-direction: column !important;
     gap: 0.15rem !important;
-    min-width: 0 !important;
-    overflow: hidden !important;
   }
 
   .meta-col-label {
@@ -383,9 +382,6 @@ const titleSizeClass =
     letter-spacing: 0.02em !important;
     white-space: nowrap !important;
     line-height: 1.2 !important;
-    max-width: 220px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
   }
 
   /* Next Row: Meer Info Link */
@@ -411,9 +407,6 @@ const titleSizeClass =
     transition: all 0.2s ease !important;
     white-space: nowrap !important;
     line-height: 1.2 !important;
-    max-width: 220px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
   }
 
   .btn-mc-info-trigger:hover {
