@@ -1774,12 +1774,48 @@ const marqueeBrands = BRAND.featuredBrands || [
                       <input type="text" id="ship-city" placeholder="Gent" class="form-control" style="padding: 0.5rem 0.75rem; font-size: 0.85rem;" />
                     </div>
                   </div>
-                  <div class="form-group" style="margin-bottom: 0;">
+                  <div class="form-group" style="margin-bottom: 0.65rem;">
                     <label for="ship-country" class="form-label" style="font-size: 0.7rem;">Land</label>
                     <select id="ship-country" class="form-control" style="padding: 0.5rem 0.75rem; font-size: 0.85rem;">
                       <option value="BE" selected>België</option>
                       <option value="NL">Nederland</option>
                     </select>
+                  </div>
+
+                  <!-- 18+ Leeftijdscontrole (Alcoholwetgeving) -->
+                  <div id="modal-bottling-age-section" style="margin-top: 0.75rem; padding: 0.85rem; background: rgba(30, 58, 138, 0.05); border: 1.5px solid rgba(30, 58, 138, 0.25); border-radius: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem;">
+                      <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: #1E3A8A; color: #FFF; font-size: 0.65rem; font-weight: 800;">18+</span>
+                        <strong style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: #1E3A8A;">Leeftijdscontrole (Alcoholwetgeving)</strong>
+                      </div>
+                      <span style="font-size: 0.68rem; font-weight: 700; color: #665C54;">Verplicht bij verzending</span>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.65rem;">
+                      <label for="ship-birthdate" class="form-label" style="font-size: 0.72rem; font-weight: 700; color: #171614;">
+                        Geboortedatum koper (minimaal 18 jaar) <span style="color: #dc2626;">*</span>
+                      </label>
+                      <input 
+                        type="date" 
+                        id="ship-birthdate" 
+                        class="form-control" 
+                        style="padding: 0.5rem 0.75rem; font-size: 0.85rem; background: #FFFFFF;" 
+                      />
+                      <span id="birthdate-error-msg" style="display: none; color: #dc2626; font-size: 0.72rem; font-weight: 600; margin-top: 3px;"></span>
+                    </div>
+
+                    <label id="label-ship-age-consent" style="display: flex; align-items: flex-start; gap: 0.65rem; cursor: pointer; user-select: none; margin-bottom: 0; padding: 0.35rem 0; transition: background 0.2s;">
+                      <input 
+                        type="checkbox" 
+                        id="ship-age-consent" 
+                        style="accent-color: #1E3A8A; width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; cursor: pointer;" 
+                      />
+                      <span style="font-size: 0.75rem; color: #171614; line-height: 1.35;">
+                        Bij aankoop van een festival botteling ben ik ervan op de hoogte dat, bij verzending, mijn leeftijd geverifieerd kan worden aan de hand van een geldig legitimatiebewijs. <span style="color: #dc2626;">*</span>
+                      </span>
+                    </label>
+                    <span id="consent-error-msg" style="display: none; color: #dc2626; font-size: 0.72rem; font-weight: 600; margin-top: 3px;"></span>
                   </div>
                 </div>
               </div>
@@ -5104,6 +5140,14 @@ const marqueeBrands = BRAND.featuredBrands || [
   });
 
   if (mockPaymentForm) {
+    // Set max birthdate to 18 years ago today
+    const bDateInput = document.getElementById("ship-birthdate") as HTMLInputElement;
+    if (bDateInput) {
+      const maxD = new Date();
+      maxD.setFullYear(maxD.getFullYear() - 18);
+      bDateInput.max = maxD.toISOString().split("T")[0];
+    }
+
     mockPaymentForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const emailInput = document.getElementById("cust-email") as HTMLInputElement;
@@ -5112,9 +5156,6 @@ const marqueeBrands = BRAND.featuredBrands || [
       const name = nameInput ? nameInput.value : "Deon Draijer";
       const phoneInput = document.getElementById("cust-phone") as HTMLInputElement;
       const phone = phoneInput ? phoneInput.value : "+31 6 12345678";
-      
-      if (modalStep1) modalStep1.style.display = "none";
-      if (modalStep2) modalStep2.style.display = "block";
 
       let orderList: string[] = [];
       let itemsOrdered: any[] = [];
@@ -5150,17 +5191,97 @@ const marqueeBrands = BRAND.featuredBrands || [
         }
       });
 
+      const hasBottlingShipping = itemsOrdered.some(it => it.category === "botteling" && it.delivery === "shipping");
       const shipStreetEl = document.getElementById("ship-street") as HTMLInputElement;
       const shipZipEl = document.getElementById("ship-zip") as HTMLInputElement;
       const shipCityEl = document.getElementById("ship-city") as HTMLInputElement;
       const shipCountryEl = document.getElementById("ship-country") as HTMLSelectElement;
+      const shipBirthdateEl = document.getElementById("ship-birthdate") as HTMLInputElement;
+      const shipAgeConsentEl = document.getElementById("ship-age-consent") as HTMLInputElement;
+      const birthdateErrorMsg = document.getElementById("birthdate-error-msg");
+      const consentErrorMsg = document.getElementById("consent-error-msg");
 
-      const shippingAddress = {
+      if (hasBottlingShipping) {
+        if (birthdateErrorMsg) birthdateErrorMsg.style.display = "none";
+        if (consentErrorMsg) consentErrorMsg.style.display = "none";
+
+        if (!shipStreetEl || !shipStreetEl.value.trim()) {
+          if (shipStreetEl) shipStreetEl.focus();
+          alert("Vul alstublieft een geldig bezorgadres (straat en huisnummer) in voor de verzending van uw fles.");
+          return;
+        }
+        if (!shipZipEl || !shipZipEl.value.trim()) {
+          if (shipZipEl) shipZipEl.focus();
+          alert("Vul alstublieft een postcode in.");
+          return;
+        }
+        if (!shipCityEl || !shipCityEl.value.trim()) {
+          if (shipCityEl) shipCityEl.focus();
+          alert("Vul alstublieft een woonplaats in.");
+          return;
+        }
+
+        // Validate birthdate (must be 18+)
+        if (!shipBirthdateEl || !shipBirthdateEl.value) {
+          if (birthdateErrorMsg) {
+            birthdateErrorMsg.textContent = "Geboortedatum is verplicht om te verifiëren dat u 18 jaar of ouder bent.";
+            birthdateErrorMsg.style.display = "block";
+          }
+          if (shipBirthdateEl) shipBirthdateEl.focus();
+          return;
+        }
+
+        const bDate = new Date(shipBirthdateEl.value);
+        if (isNaN(bDate.getTime())) {
+          if (birthdateErrorMsg) {
+            birthdateErrorMsg.textContent = "Voer een geldige geboortedatum in.";
+            birthdateErrorMsg.style.display = "block";
+          }
+          if (shipBirthdateEl) shipBirthdateEl.focus();
+          return;
+        }
+
+        const today = new Date();
+        let age = today.getFullYear() - bDate.getFullYear();
+        const m = today.getMonth() - bDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < bDate.getDate())) {
+          age--;
+        }
+        if (age < 18) {
+          if (birthdateErrorMsg) {
+            birthdateErrorMsg.textContent = "U dient minimaal 18 jaar oud te zijn om alcoholische festivalbottelingen te bestellen en laten bezorgen.";
+            birthdateErrorMsg.style.display = "block";
+          }
+          if (shipBirthdateEl) shipBirthdateEl.focus();
+          return;
+        }
+
+        // Validate age consent checkbox
+        if (!shipAgeConsentEl || !shipAgeConsentEl.checked) {
+          if (consentErrorMsg) {
+            consentErrorMsg.textContent = "U dient akkoord te gaan met de verificatie van uw leeftijd aan de hand van een geldig legitimatiebewijs.";
+            consentErrorMsg.style.display = "block";
+          }
+          if (shipAgeConsentEl) shipAgeConsentEl.focus();
+          return;
+        }
+      }
+
+      if (modalStep1) modalStep1.style.display = "none";
+      if (modalStep2) modalStep2.style.display = "block";
+
+      const shippingAddress = hasBottlingShipping ? {
         street: shipStreetEl ? shipStreetEl.value.trim() : "",
         zip: shipZipEl ? shipZipEl.value.trim() : "",
         city: shipCityEl ? shipCityEl.value.trim() : "",
         country: shipCountryEl ? shipCountryEl.value : "BE"
-      };
+      } : undefined;
+
+      const ageVerification = hasBottlingShipping ? {
+        birthDate: shipBirthdateEl ? shipBirthdateEl.value : "",
+        idCheckAcknowledged: shipAgeConsentEl ? shipAgeConsentEl.checked : false,
+        verifiedAt: new Date().toISOString()
+      } : undefined;
 
       // Real Whiskytix Backend Call (End-to-End Loop)
       try {
@@ -5174,6 +5295,7 @@ const marqueeBrands = BRAND.featuredBrands || [
             customerPhone: phone,
             items: itemsOrdered,
             shippingAddress: shippingAddress,
+            ageVerification: ageVerification,
             discountCents: Math.round(promoDiscount * 100),
             returnUrl: window.location.origin + window.location.pathname
           })
@@ -5189,6 +5311,7 @@ const marqueeBrands = BRAND.featuredBrands || [
               phone: phone,
               items: itemsOrdered,
               shippingAddress: shippingAddress,
+              ageVerification: ageVerification,
               isMember: resPrefix === "WS",
               resNumber: data.orderNumber || `#${resPrefix}-2026-PENDING`,
               discountApplied: promoDiscount,
@@ -5229,6 +5352,7 @@ const marqueeBrands = BRAND.featuredBrands || [
             phone: phone,
             items: itemsOrdered,
             shippingAddress: shippingAddress,
+            ageVerification: ageVerification,
             isMember: resPrefix === "WS",
             resNumber: finalResNumber,
             discountApplied: promoDiscount,
@@ -5262,7 +5386,7 @@ const marqueeBrands = BRAND.featuredBrands || [
               } else if (item.category === "vatenmaken") {
                 spec = item.timeslot ? `Tijdslot: ${item.timeslot}` : "Workshop kuipen";
               } else if (item.category === "botteling") {
-                spec = item.delivery === "shipping" ? "Verzending per post (+ €12,50)" : "Afhalen bij Infodesk (Stand O)";
+                spec = item.delivery === "shipping" ? "Verzending per post (+ €12,50) • 18+ Leeftijdscheck akkoord" : "Afhalen bij Infodesk (Stand O)";
               }
 
               const row = document.createElement("div");
