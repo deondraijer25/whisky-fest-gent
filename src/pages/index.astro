@@ -6414,11 +6414,13 @@ const tickets = await getTickets('gent');
 
     // Try fetching live order details from Whiskytix backend
     let orderData: any = null;
+    let liveTicketsHtml: string = '';
     try {
       const res = await fetch(`https://whiskytix-r1qq.vercel.app/api/checkout/order/${encodeURIComponent(orderNumber)}`);
       if (res.ok) {
         const json = await res.json();
         if (json.order) orderData = json.order;
+        if (json.ticketsHtml) liveTicketsHtml = json.ticketsHtml;
       }
     } catch (err) {
       console.warn("Kon order niet direct ophalen van backend, gebruik localStorage fallback:", err);
@@ -6449,9 +6451,12 @@ const tickets = await getTickets('gent');
     }
 
     if (receiptTicketsList) {
-      receiptTicketsList.innerHTML = "";
+      if (liveTicketsHtml) {
+        receiptTicketsList.innerHTML = liveTicketsHtml;
+      } else {
+        receiptTicketsList.innerHTML = "";
 
-      const itemsToRender = (orderData && orderData.items) || [];
+        const itemsToRender = (orderData && orderData.items) || [];
       if (itemsToRender.length > 0) {
         itemsToRender.forEach((item: any) => {
           let spec = "";
@@ -6488,6 +6493,7 @@ const tickets = await getTickets('gent');
         });
       }
     }
+  }
 
     // Display the success modal popup
     if (modalOverlay) modalOverlay.style.display = "flex";

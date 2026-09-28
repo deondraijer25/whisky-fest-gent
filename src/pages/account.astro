@@ -2950,6 +2950,43 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
         }
 
         updatePortalUI();
+
+        // 3. LIVE WHISKYTIX SYNC: Always re-fetch latest order & pre-rendered ticketsHtml from Whiskytix
+        const activeResNo = session.resNumber || (orderData && orderData.resNumber);
+        if (activeResNo) {
+          const cleanCode = activeResNo.replace(/^#/, '').trim();
+          fetch(`https://whiskytix-r1qq.vercel.app/api/checkout/order/${encodeURIComponent(cleanCode)}`)
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data) => {
+              if (data && data.order) {
+                if (data.ticketsHtml) {
+                  (window as any).__wtx_ticketsHtml = data.ticketsHtml;
+                }
+                const vOrder = data.order;
+                const items = (vOrder.items || []).map((it: any) => ({
+                  id: it.id || it.ticketId || 'ticket',
+                  title: it.title || it.name || 'Entreeticket',
+                  qty: it.quantity || it.qty || 1,
+                  price: it.unitPriceCents ? it.unitPriceCents / 100 : it.price || 0,
+                  category: it.category || 'entree',
+                  timeslot: it.timeslot || it.time || '',
+                  delivery: it.delivery || '',
+                }));
+                orderData = {
+                  ...orderData,
+                  name: vOrder.customerName || orderData.name,
+                  email: vOrder.customerEmail || orderData.email,
+                  phone: vOrder.customerPhone || orderData.phone,
+                  resNumber: vOrder.orderNumber || orderData.resNumber,
+                  items: items.length > 0 ? items : orderData.items,
+                };
+                updatePortalUI();
+              }
+            })
+            .catch((err) => {
+              console.warn('Whiskytix achtergrond sync:', err);
+            });
+        }
       }
     }
 
