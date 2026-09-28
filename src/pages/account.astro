@@ -135,19 +135,15 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                 <span class="scan-label">CONTROLE STUB</span>
                 
                 <div class="qr-code-holder">
-                  <svg width="105" height="105" viewBox="0 0 100 100" style="shape-rendering: crispedges; display:block;">
-                    <path d="M0,0 h30 v10 h-20 v20 h-10 z" fill="#1D1C1A"/>
-                    <path d="M10,10 h10 v10 h-10 z" fill="#1D1C1A"/>
-                    <path d="M70,0 h30 v30 h-10 v-20 h-20 z" fill="#1D1C1A"/>
-                    <path d="M80,10 h10 v10 h-10 z" fill="#1D1C1A"/>
-                    <path d="M0,70 h10 v20 h20 v10 h-30 z" fill="#1D1C1A"/>
-                    <path d="M10,80 h10 v10 h-10 z" fill="#1D1C1A"/>
-                    <path d="M45,45 h10 v10 h-10 z" fill="var(--whisky-gold-dark)"/>
-                    <path d="M30,30 h10 v5 h-10 z M35,40 h15 v5 h-15 z M55,30 h10 v10 h-5 v-5 h-5 z" fill="#1D1C1A"/>
-                    <path d="M70,70 h30 v10 h-10 v10 h-20 z M80,80 h10 v10 h-10 z" fill="#1D1C1A"/>
-                    <path d="M40,65 h10 v10 h-10 z M55,60 h10 v5 h-10 z M60,75 h5 v15 h-5 z" fill="#1D1C1A"/>
-                    <path d="M65,45 h10 v5 h-10 z M30,55 h5 v15 h-5 z M45,85 h10 v5 h-10 z" fill="#1D1C1A"/>
-                  </svg>
+                  <img 
+                    src="https://whiskytix-r1qq.vercel.app/api/tickets/WF-2026-84387-1/qr.svg?city=gent&name=Deon%20Draijer&title=VIP%20Sessie%20-%20Vrijdag" 
+                    alt="Controle QR-Code" 
+                    width="105" 
+                    height="105" 
+                    class="qr-code-img"
+                    style="display:block; width:105px; height:105px; object-fit:contain; image-rendering:pixelated;"
+                    loading="lazy"
+                  />
                 </div>
 
                 <span class="scan-instructions">SCAN BIJ DE DEUR</span>
@@ -2655,13 +2651,6 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
       const ticketsContainer = document.getElementById("tickets-container");
       if (ticketsContainer && orderData.items) {
         ticketsContainer.innerHTML = "";
-
-        // Use pre-rendered ticket cards from WhiskyTix API if available
-        const preRenderedHtml = (window as any).__wtx_ticketsHtml;
-        if (preRenderedHtml) {
-          ticketsContainer.innerHTML = preRenderedHtml;
-          return; // Skip local template rendering
-        }
         
         let globalTicketIndex = 1;
         orderData.items.forEach((item: any) => {
@@ -2756,19 +2745,15 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                   <div class="ticket-right-stub">
                     <span class="scan-label">CONTROLE STUB</span>
                     <div class="qr-code-holder">
-                      <svg width="105" height="105" viewBox="0 0 100 100" style="shape-rendering: crispedges; display:block;">
-                        <path d="M0,0 h30 v10 h-20 v20 h-10 z" fill="#1D1C1A"/>
-                        <path d="M10,10 h10 v10 h-10 z" fill="#1D1C1A"/>
-                        <path d="M70,0 h30 v30 h-10 v-20 h-20 z" fill="#1D1C1A"/>
-                        <path d="M80,10 h10 v10 h-10 z" fill="#1D1C1A"/>
-                        <path d="M0,70 h10 v20 h20 v10 h-30 z" fill="#1D1C1A"/>
-                        <path d="M10,80 h10 v10 h-10 z" fill="#1D1C1A"/>
-                        <path d="M45,45 h10 v10 h-10 z" fill="var(--whisky-gold-dark)"/>
-                        <path d="M30,30 h10 v5 h-10 z M35,40 h15 v5 h-15 z M55,30 h10 v10 h-5 v-5 h-5 z" fill="#1D1C1A"/>
-                        <path d="M70,70 h30 v10 h-10 v10 h-20 z M80,80 h10 v10 h-10 z" fill="#1D1C1A"/>
-                        <path d="M40,65 h10 v10 h-10 z M55,60 h10 v5 h-10 z M60,75 h5 v15 h-5 z" fill="#1D1C1A"/>
-                        <path d="M65,45 h10 v5 h-10 z M30,55 h5 v15 h-5 z M45,85 h10 v5 h-10 z" fill="#1D1C1A"/>
-                      </svg>
+                      <img 
+                        src="https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=gent&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}" 
+                        alt="Controle QR-Code ${displayCode}" 
+                        width="105" 
+                        height="105" 
+                        class="qr-code-img"
+                        style="display:block; width:105px; height:105px; object-fit:contain; image-rendering:pixelated;"
+                        loading="lazy"
+                      />
                     </div>
                     <span class="scan-instructions">${item.category === 'botteling' && item.delivery === 'shipping' ? 'VERZONDEN' : 'SCAN BIJ DE DEUR'}</span>
                     <span class="scan-res-hash">${displayCode}</span>
@@ -2959,9 +2944,6 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
             .then((res) => (res.ok ? res.json() : null))
             .then((data) => {
               if (data && data.order) {
-                if (data.ticketsHtml) {
-                  (window as any).__wtx_ticketsHtml = data.ticketsHtml;
-                }
                 const vOrder = data.order;
                 const items = (vOrder.items || []).map((it: any) => ({
                   id: it.id || it.ticketId || 'ticket',
@@ -3021,9 +3003,6 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                 const data = await res.json();
                 if (data && data.order) {
                   verifiedOrder = data.order;
-                  if (data.ticketsHtml) {
-                    (window as any).__wtx_ticketsHtml = data.ticketsHtml;
-                  }
                 }
               }
             } catch (err) {
