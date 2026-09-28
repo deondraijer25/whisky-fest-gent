@@ -2699,11 +2699,25 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
             // Clean title: remove redundant time suffix if present so title stays concise and uniform
             const cleanTitle = item.title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
 
+            // Natural schedule string
+            let formattedSchedule = "Vrijdag 2 oktober 2026 • " + displayTime;
+            let formattedDate = "Vrijdag 2 oktober 2026";
+            if (titleLower.includes("zaterdag")) {
+              formattedSchedule = "Zaterdag 3 oktober 2026 • " + displayTime;
+              formattedDate = "Zaterdag 3 oktober 2026";
+            } else if (titleLower.includes("zondag")) {
+              formattedSchedule = "Zondag 4 oktober 2026 • " + displayTime;
+              formattedDate = "Zondag 4 oktober 2026";
+            } else if (item.category === 'masterclass') {
+              formattedSchedule = "Zaterdag 3 oktober 2026 • " + displayTime;
+              formattedDate = "Zaterdag 3 oktober 2026";
+            }
+
             // Clean public HTTPS URL that WhatsApp always recognizes as a blue clickable link
             const baseUrl = window.location.origin;
             
-            const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}&category=${encodeURIComponent(item.category || '')}&delivery=${encodeURIComponent(item.delivery || '')}`;
-            
+            const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&category=${encodeURIComponent(item.category || '')}&delivery=${encodeURIComponent(item.delivery || '')}`;
+
             const shareText = encodeURIComponent(
               `*${'Whisky Festival Gent 2026'}*\n` +
               `E-ticket: ${cleanTitle}\n\n` +
@@ -2727,16 +2741,6 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
               `${ticketLink}\n\n` +
               `Graag tot ziens op het festival!`
             );
-
-            // Natural schedule string
-            let formattedSchedule = "Vrijdag 2 oktober 2026 • " + displayTime;
-            if (titleLower.includes("zaterdag")) {
-              formattedSchedule = "Zaterdag 3 oktober 2026 • " + displayTime;
-            } else if (titleLower.includes("zondag")) {
-              formattedSchedule = "Zondag 4 oktober 2026 • " + displayTime;
-            } else if (item.category === 'masterclass') {
-              formattedSchedule = "Zaterdag 3 oktober 2026 • " + displayTime;
-            }
 
             const ticketHTML = `
               <div class="ticket-envelope">
@@ -2796,7 +2800,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
 
                     <!-- 3. Bottom Row: Action Buttons -->
                     <div class="ticket-actions-row">
-                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=gent&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
+                      <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=gent&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span>Download E-Ticket (PDF)</span>
                       </button>

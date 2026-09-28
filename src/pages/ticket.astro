@@ -546,7 +546,19 @@ import Layout from '../layouts/Layout.astro';
     if (tvScanInst) tvScanInst.textContent = 'SCAN BIJ DE DEUR';
   }
 
-  const pdfDownloadUrl = `https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(code.replace(/^#/, ''))}/pdf?city=gent&name=${encodeURIComponent(name)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(resolvedTime)}`;
+  const rawDateParam = params.get('date') || '';
+  let resolvedDate = rawDateParam;
+  if (!resolvedDate) {
+    if (titleLower.includes('vrijdag')) {
+      resolvedDate = 'Vrijdag 2 oktober 2026';
+    } else if (titleLower.includes('zondag')) {
+      resolvedDate = 'Zondag 4 oktober 2026';
+    } else {
+      resolvedDate = 'Zaterdag 3 oktober 2026';
+    }
+  }
+
+  const pdfDownloadUrl = `https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(code.replace(/^#/, ''))}/pdf?city=gent&name=${encodeURIComponent(name)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(resolvedTime)}&date=${encodeURIComponent(resolvedDate)}`;
 
   const dlBtn = document.getElementById('btn-download-pdf-ticket');
   if (dlBtn) {
