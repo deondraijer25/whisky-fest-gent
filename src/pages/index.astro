@@ -7,8 +7,21 @@ import TicketStub from '../components/TicketStub.astro';
 import { getTickets } from '../lib/ghl';
 import LogoSvg from '../assets/Logo/Logo.svg?raw';
 import GentStampWit from '../assets/LogosAll/logo-wit-gent.svg?raw';
+import { BRAND } from '../config/brand.config';
 
 const tickets = await getTickets('gent');
+const marqueeBrands = BRAND.featuredBrands || [
+  'Bowmore',
+  'Laphroaig',
+  'House of Suntory',
+  'Dada Chapel',
+  'Bruichladdich',
+  'Kilchoman',
+  'Glen Scotia',
+  'Glencadam',
+  'Loch Lomond',
+  'Tomintoul'
+];
 ---
 
 <Layout 
@@ -133,84 +146,23 @@ const tickets = await getTickets('gent');
       </div>
     </section>
 
-                    <!-- 3. CONTINUOUS MOVING PARTNER & DISTILLERY MARQUEE SLIDER -->
+    <!-- 3. CONTINUOUS MOVING PARTNER & DISTILLERY MARQUEE SLIDER -->
     <section class="trust-marquee-section" aria-label="Aanwezige Partner Distilleerderijen">
       <div class="trust-marquee-wrapper">
         <div class="trust-marquee-track">
-          
-          <span class="trust-text-logo">The Macallan</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Highland Park</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Glenfiddich</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">The Balvenie</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Laphroaig</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Ardbeg</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Springbank</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Bowmore</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Teeling Whiskey</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">SMWS</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">House of Suntory</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Glengoyne</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Talisker</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Lagavulin</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Dalmore</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Arran Single Malt</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Oban</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Nc'nean</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          
-          <span class="trust-text-logo">The Macallan</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Highland Park</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Glenfiddich</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">The Balvenie</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Laphroaig</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Ardbeg</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Springbank</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Bowmore</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Teeling Whiskey</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">SMWS</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">House of Suntory</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Glengoyne</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Talisker</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Lagavulin</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Dalmore</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Arran Single Malt</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Oban</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-          <span class="trust-text-logo">Nc'nean</span>
-          <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
+          {marqueeBrands.map((brand) => (
+            <>
+              <span class="trust-text-logo">{brand}</span>
+              <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
+            </>
+          ))}
+          <!-- Duplicated track for infinite smooth loop -->
+          {marqueeBrands.map((brand) => (
+            <>
+              <span class="trust-text-logo">{brand}</span>
+              <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
+            </>
+          ))}
         </div>
       </div>
     </section>
@@ -1714,80 +1666,19 @@ const tickets = await getTickets('gent');
         
         <div class="trust-marquee-wrapper">
           <div class="trust-marquee-track">
-            <span class="trust-text-logo">The Macallan</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Highland Park</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Glenfiddich</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">The Balvenie</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Laphroaig</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Ardbeg</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Springbank</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Bowmore</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Teeling Whiskey</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">SMWS</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">House of Suntory</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Glengoyne</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Talisker</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Lagavulin</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Dalmore</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Arran Single Malt</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Oban</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Nc'nean</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            
+            {marqueeBrands.map((brand) => (
+              <>
+                <span class="trust-text-logo">{brand}</span>
+                <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
+              </>
+            ))}
             <!-- Duplicated track for infinite smooth loop -->
-            <span class="trust-text-logo">The Macallan</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Highland Park</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Glenfiddich</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">The Balvenie</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Laphroaig</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Ardbeg</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Springbank</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Bowmore</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Teeling Whiskey</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">SMWS</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">House of Suntory</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Glengoyne</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Talisker</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Lagavulin</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Dalmore</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Arran Single Malt</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Oban</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
-            <span class="trust-text-logo">Nc'nean</span>
-            <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
+            {marqueeBrands.map((brand) => (
+              <>
+                <span class="trust-text-logo">{brand}</span>
+                <span class="partner-sep" style="color: #caac8e; font-size: 0.9rem; opacity: 0.85; user-select: none;">◆</span>
+              </>
+            ))}
           </div>
         </div>
       </div>

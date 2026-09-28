@@ -34,6 +34,7 @@ export interface BrandConfig {
 
   address?: string;
   email?: string;
+  featuredBrands?: string[];
 
   copy: {
     heroTitleLine1: string;
@@ -67,6 +68,19 @@ export const BRAND: BrandConfig = {
   localPort: 4332,
   address: 'Rekelingestraat 5, 9000 Gent, België',
   email: 'info@whiskyfestival.be',
+
+  featuredBrands: [
+    'Bowmore',
+    'Laphroaig',
+    'House of Suntory',
+    'Dada Chapel',
+    'Bruichladdich',
+    'Kilchoman',
+    'Glen Scotia',
+    'Glencadam',
+    'Loch Lomond',
+    'Tomintoul'
+  ],
 
   colors: {
     primary: '#1E3A8A',         // Gent Royal Blue
