@@ -718,13 +718,25 @@ const orgSchema = {
                 var cardId = card.getAttribute('data-ticket-id');
                 // Remove from shopping cart if present
                 try {
-                  var rawCart = localStorage.getItem('gent_cart_v1');
+                  var rawCart = localStorage.getItem('whiskyfest_cart');
                   if (rawCart) {
                     var parsedCart = JSON.parse(rawCart);
-                    if (cardId && parsedCart[cardId]) {
-                      delete parsedCart[cardId];
-                      localStorage.setItem('gent_cart_v1', JSON.stringify(parsedCart));
-                      window.dispatchEvent(new CustomEvent('cart-updated', { detail: parsedCart }));
+                    if (parsedCart) {
+                      var changed = false;
+                      if (parsedCart.cartRaw && parsedCart.cartRaw[cardId]) {
+                        delete parsedCart.cartRaw[cardId];
+                        if (Array.isArray(parsedCart.items)) {
+                          parsedCart.items = parsedCart.items.filter(function(it) { return it.id !== cardId; });
+                        }
+                        changed = true;
+                      } else if (parsedCart[cardId]) {
+                        delete parsedCart[cardId];
+                        changed = true;
+                      }
+                      if (changed) {
+                        localStorage.setItem('whiskyfest_cart', JSON.stringify(parsedCart));
+                        window.dispatchEvent(new CustomEvent('cart-updated', { detail: parsedCart }));
+                      }
                     }
                   }
                 } catch(e) {}

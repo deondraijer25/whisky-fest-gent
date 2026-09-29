@@ -5396,7 +5396,10 @@ const marqueeBrands = BRAND.featuredBrands || [
             };
             localStorage.setItem('wf_last_order', JSON.stringify(pendingOrderData));
             
-            // In-modal completion: keep user on festival site
+            // Redirect to Mollie checkout or local Mollie sandbox simulator!
+            const targetUrl = data.checkoutUrl.startsWith('/') ? `https://whiskytix-r1qq.vercel.app${data.checkoutUrl}` : data.checkoutUrl;
+            window.location.href = targetUrl;
+            return;
           }
         }
       } catch (backendErr) {
