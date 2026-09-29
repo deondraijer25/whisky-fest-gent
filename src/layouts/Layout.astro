@@ -507,6 +507,16 @@ const orgSchema = {
                     }
                   } else {
                     card.classList.remove('ticket-sold-out');
+                    var existingSoldBox = card.querySelector('.sold-out-box');
+                    if (existingSoldBox) {
+                      var newQty = document.createElement('div');
+                      newQty.className = 'qty-selector';
+                      newQty.innerHTML = 
+                        '<button type="button" class="qty-btn minus-btn" data-action="minus" aria-label="Aantal verlagen" disabled>&minus;</button>' +
+                        '<span class="qty-val" id="qty-' + r.id + '">0</span>' +
+                        '<button type="button" class="qty-btn plus-btn" data-action="plus" aria-label="Aantal verhogen">&plus;</button>';
+                      existingSoldBox.replaceWith(newQty);
+                    }
                   }
                   break;
                 }
