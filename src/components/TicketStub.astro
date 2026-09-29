@@ -112,6 +112,8 @@ const titleSizeClass =
     date.toLowerCase().includes('zaterdag') ? 'zaterdag' :
     date.toLowerCase().includes('zondag') ? 'zondag' : 'all'
   }
+  data-date={date}
+  data-time={cleanTime || time}
 >
   <!-- Inner art-deco double border -->
   <div class="ticket-inner-border"></div>

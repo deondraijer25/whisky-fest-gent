@@ -4796,10 +4796,16 @@ const marqueeBrands = BRAND.featuredBrands || [
     const price = parseFloat(card.getAttribute('data-price') || '0');
     const title = card.getAttribute('data-title') || '';
     const category = card.getAttribute('data-category') || 'entree';
+    const cardDate = card.getAttribute('data-date') || '';
+    const cardTime = card.getAttribute('data-time') || '';
     const qtyVal = card.querySelector('.qty-val') as HTMLElement;
 
     if (!cart[id]) {
-      cart[id] = { title, price, qty: 0, category };
+      cart[id] = { title, price, qty: 0, category, date: cardDate, time: cardTime, timeslot: cardTime };
+    } else {
+      if (cardDate && !cart[id].date) cart[id].date = cardDate;
+      if (cardTime && !cart[id].time) cart[id].time = cardTime;
+      if (cardTime && !cart[id].timeslot) cart[id].timeslot = cardTime;
     }
 
     const tramSelect = card.querySelector('.tram-select') as HTMLSelectElement;
@@ -4845,7 +4851,9 @@ const marqueeBrands = BRAND.featuredBrands || [
       const price = parseFloat(card.getAttribute('data-price') || '0');
       const title = card.getAttribute('data-title') || '';
       const category = card.getAttribute('data-category') || 'entree';
-      cart[id] = { title, price, qty: 0, category };
+      const cardDate = card.getAttribute('data-date') || '';
+      const cardTime = card.getAttribute('data-time') || '';
+      cart[id] = { title, price, qty: 0, category, date: cardDate, time: cardTime, timeslot: cardTime };
     }
 
     if (select.classList.contains('tram-select') || select.classList.contains('intro-select') || select.classList.contains('trail-time-select') || select.classList.contains('vatenmaken-time-select')) {
@@ -5177,16 +5185,26 @@ const marqueeBrands = BRAND.featuredBrands || [
           }
           
           orderList.push(`${itemDisplayTitle} (${item.qty}x)`);
+          let itemDate = item.date || "";
+          let itemTime = item.time || item.timeslot || "";
+          if (!itemDate || !itemTime) {
+            const matchedTicket = (denHaagTicketsData || []).find((t: any) => t.id === id || t.title === item.title);
+            if (matchedTicket) {
+              if (!itemDate) itemDate = matchedTicket.date || "";
+              if (!itemTime) itemTime = matchedTicket.time || "";
+            }
+          }
+
           itemsOrdered.push({
             id: id,
             title: item.title,
             qty: item.qty,
             price: item.price,
             category: item.category,
-            timeslot: item.timeslot || "",
+            timeslot: item.timeslot || itemTime || "",
             delivery: item.delivery || "",
-            date: item.date || "",
-            time: item.time || ""
+            date: itemDate,
+            time: itemTime
           });
         }
       });

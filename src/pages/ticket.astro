@@ -477,29 +477,101 @@ import Layout from '../layouts/Layout.astro';
     tvQrImg.alt = `Controle QR-Code ${code}`;
   }
 
-  let resolvedTime = time;
-  if (!params.get('time')) {
-    if (titleLower.includes('vrijdag')) {
-      resolvedTime = titleLower.includes('vip') ? '13:00 - 17:00 UUR' : '19:00 - 23:00 UUR';
-    } else if (titleLower.includes('zondag')) {
-      resolvedTime = '13:00 - 17:00 UUR';
-    } else if (titleLower.includes('zaterdag')) {
-      resolvedTime = titleLower.includes('avond') ? '19:00 - 23:00 UUR' : '13:00 - 17:00 UUR';
-    }
-  }
-  if (tvTime) tvTime.textContent = resolvedTime.toUpperCase();
+  let resolvedTime = (time && time !== 'Regulier') ? time.replace(/–/g, '-') : '';
+  let resolvedDate = (params.get('date') && params.get('date') !== 'Festivaldag') ? params.get('date')! : '';
+  let resolvedDay = '02';
+  let resolvedMonth = 'OKT';
 
   const isBotteling = category === 'botteling' || titleLower.includes('botteling') || titleLower.includes('fles');
   const isMasterclass = category === 'masterclass' || titleLower.includes('masterclass');
   const isBoottocht = category === 'tram' || category === 'bootjes' || titleLower.includes('boot');
   const isWarehouse = category === 'warehouse' || category === 'dada' || titleLower.includes('dada');
 
+  if (isMasterclass) {
+    if (titleLower.includes('cvh')) {
+      resolvedDate = 'Zaterdag 3 oktober 2026';
+      resolvedTime = '12:15 - 13:00 UUR';
+      resolvedDay = '03';
+    } else if (titleLower.includes('fettercairn')) {
+      resolvedDate = 'Zaterdag 3 oktober 2026';
+      resolvedTime = '15:00 - 15:45 UUR';
+      resolvedDay = '03';
+    } else if (titleLower.includes('bowmore')) {
+      resolvedDate = 'Zaterdag 3 oktober 2026';
+      resolvedTime = '19:30 - 20:15 UUR';
+      resolvedDay = '03';
+    } else if (titleLower.includes('fuji')) {
+      resolvedDate = 'Zaterdag 3 oktober 2026';
+      resolvedTime = '21:00 - 21:45 UUR';
+      resolvedDay = '03';
+    } else if (titleLower.includes('jura')) {
+      resolvedDate = 'Zondag 4 oktober 2026';
+      resolvedTime = '12:15 - 13:00 UUR';
+      resolvedDay = '04';
+    } else if (titleLower.includes('laphroaig')) {
+      resolvedDate = 'Zondag 4 oktober 2026';
+      resolvedTime = '13:30 - 14:15 UUR';
+      resolvedDay = '04';
+    } else if (titleLower.includes('suntory')) {
+      resolvedDate = 'Zondag 4 oktober 2026';
+      resolvedTime = '15:00 - 15:45 UUR';
+      resolvedDay = '04';
+    } else if (titleLower.includes('dada')) {
+      if (titleLower.includes('vrijdag')) {
+        resolvedDate = 'Vrijdag 2 oktober 2026';
+        resolvedTime = '20:00 - 20:45 UUR';
+        resolvedDay = '02';
+      } else {
+        resolvedDate = 'Zaterdag 3 oktober 2026';
+        resolvedTime = '13:45 - 14:30 UUR';
+        resolvedDay = '03';
+      }
+    } else if (titleLower.includes('zondag')) {
+      resolvedDate = resolvedDate || 'Zondag 4 oktober 2026';
+      resolvedTime = resolvedTime || '13:30 - 14:15 UUR';
+      resolvedDay = '04';
+    } else {
+      resolvedDate = resolvedDate || 'Zaterdag 3 oktober 2026';
+      resolvedTime = resolvedTime || '14:00 - 14:45 UUR';
+      resolvedDay = '03';
+    }
+  } else if (isBoottocht) {
+    resolvedDate = resolvedDate || 'Zaterdag 3 oktober 2026';
+    resolvedTime = resolvedTime || '12:00 - 13:00 UUR';
+    resolvedDay = '02-04';
+  } else if (isBotteling) {
+    resolvedDate = resolvedDate || 'Festivaleditie (2-4 okt)';
+    resolvedTime = resolvedTime || (delivery === 'shipping' ? 'VERZENDING PER POST' : 'AFHALEN BIJ INFODESK (STAND O)');
+    resolvedDay = '02-04';
+  } else {
+    // Entree
+    if (titleLower.includes('vrijdag')) {
+      resolvedDate = 'Vrijdag 2 oktober 2026';
+      resolvedTime = resolvedTime || (titleLower.includes('vip') ? '13:00 - 17:00 UUR' : '19:00 - 23:00 UUR');
+      resolvedDay = '02';
+    } else if (titleLower.includes('zondag')) {
+      resolvedDate = 'Zondag 4 oktober 2026';
+      resolvedTime = resolvedTime || '13:00 - 17:00 UUR';
+      resolvedDay = '04';
+    } else {
+      resolvedDate = 'Zaterdag 3 oktober 2026';
+      resolvedTime = resolvedTime || (titleLower.includes('avond') ? '19:00 - 23:00 UUR' : '13:00 - 17:00 UUR');
+      resolvedDay = '03';
+    }
+  }
+
+  if (!resolvedTime) resolvedTime = '13:00 - 17:00 UUR';
+  if (!resolvedTime.toUpperCase().includes('UUR') && !resolvedTime.toUpperCase().includes('POST') && !resolvedTime.toUpperCase().includes('INFODESK')) {
+    resolvedTime += ' UUR';
+  }
+
+  if (tvTime) tvTime.textContent = resolvedTime.toUpperCase();
+  if (tvMonth) tvMonth.textContent = resolvedMonth;
+  if (tvDay) tvDay.textContent = resolvedDay;
+
   if (isBotteling) {
     if (tvWatermark) tvWatermark.textContent = 'FB';
-    if (tvMonth) tvMonth.textContent = 'OKT';
-    if (tvDay) tvDay.textContent = '02-04';
     if (tvTimeLabel) tvTimeLabel.textContent = 'LEVERING:';
-    
     if (delivery === 'shipping' || resolvedTime.toUpperCase().includes('VERZENDING')) {
       if (tvStatus) {
         tvStatus.textContent = 'VERZENDING BEVESTIGD';
@@ -519,43 +591,19 @@ import Layout from '../layouts/Layout.astro';
     }
   } else if (isMasterclass) {
     if (tvWatermark) tvWatermark.textContent = 'MC';
-    if (tvMonth) tvMonth.textContent = 'OKT';
-    if (tvDay) tvDay.textContent = '03';
     if (tvLoc) tvLoc.textContent = 'De Oude Vismijn (MC-Ruimte)';
     if (tvStatus) tvStatus.textContent = 'GELDIG PROEFTICKET';
     if (tvScanInst) tvScanInst.textContent = 'TOON BIJ DE MASTERCLASS ZAAL';
   } else if (isBoottocht) {
     if (tvWatermark) tvWatermark.textContent = 'GWF';
-    if (tvMonth) tvMonth.textContent = 'OKT';
-    if (tvDay) tvDay.textContent = '02-04';
     if (tvLoc) tvLoc.textContent = 'Steiger De Oude Vismijn';
     if (tvStatus) tvStatus.textContent = 'GELDIG AFVAARTBEWIJS';
     if (tvScanInst) tvScanInst.textContent = 'TOON BIJ INSCHEPEN';
   } else {
     // Entree tickets
     if (tvWatermark) tvWatermark.textContent = 'GWF';
-    if (tvMonth) tvMonth.textContent = 'OKT';
-    if (titleLower.includes('vrijdag')) {
-      if (tvDay) tvDay.textContent = '02';
-    } else if (titleLower.includes('zondag')) {
-      if (tvDay) tvDay.textContent = '04';
-    } else {
-      if (tvDay) tvDay.textContent = '03';
-    }
     if (tvStatus) tvStatus.textContent = 'GELDIG TOEGANGSBEWIJS';
     if (tvScanInst) tvScanInst.textContent = 'SCAN BIJ DE DEUR';
-  }
-
-  const rawDateParam = params.get('date') || '';
-  let resolvedDate = rawDateParam;
-  if (!resolvedDate) {
-    if (titleLower.includes('vrijdag')) {
-      resolvedDate = 'Vrijdag 2 oktober 2026';
-    } else if (titleLower.includes('zondag')) {
-      resolvedDate = 'Zondag 4 oktober 2026';
-    } else {
-      resolvedDate = 'Zaterdag 3 oktober 2026';
-    }
   }
 
   const pdfDownloadUrl = `https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(code.replace(/^#/, ''))}/pdf?city=gent&name=${encodeURIComponent(name)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(resolvedTime)}&date=${encodeURIComponent(resolvedDate)}`;
