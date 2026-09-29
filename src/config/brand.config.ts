@@ -61,7 +61,7 @@ export const BRAND: BrandConfig = {
   venue: 'De Oude Vismijn Gent',
   venueShort: 'De Oude Vismijn',
   foundingYear: 2004,
-  edition: 'Editie 2027',
+  edition: '26e Editie (2027)',
   datesText: '1, 2 en 3 Oktober 2027',
   datesShort: '1-3 Okt 2027',
   domain: 'https://whisky-fest-gent.vercel.app',
