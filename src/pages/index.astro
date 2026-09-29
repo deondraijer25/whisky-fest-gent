@@ -4809,9 +4809,13 @@ const marqueeBrands = BRAND.featuredBrands || [
     if (!cart[id]) {
       cart[id] = { title, price, qty: 0, category, date: cardDate, time: cardTime, timeslot: cardTime };
     } else {
-      if (cardDate && !cart[id].date) cart[id].date = cardDate;
-      if (cardTime && !cart[id].time) cart[id].time = cardTime;
-      if (cardTime && !cart[id].timeslot) cart[id].timeslot = cardTime;
+      cart[id].title = title;
+      cart[id].price = price;
+      if (cardDate) cart[id].date = cardDate;
+      if (cardTime) cart[id].time = cardTime;
+      if (category === 'masterclass' || !cart[id].timeslot) {
+        cart[id].timeslot = cardTime;
+      }
     }
 
     const tramSelect = card.querySelector('.tram-select') as HTMLSelectElement;
@@ -5193,12 +5197,17 @@ const marqueeBrands = BRAND.featuredBrands || [
           orderList.push(`${itemDisplayTitle} (${item.qty}x)`);
           let itemDate = item.date || "";
           let itemTime = item.time || item.timeslot || "";
-          if (!itemDate || !itemTime) {
-            const matchedTicket = (denHaagTicketsData || []).find((t: any) => t.id === id || t.title === item.title);
-            if (matchedTicket) {
-              if (!itemDate) itemDate = matchedTicket.date || "";
-              if (!itemTime) itemTime = matchedTicket.time || "";
+          const matchedTicket = (denHaagTicketsData || []).find((t: any) => t.id === id || (t.title && item.title && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === item.title.toLowerCase().replace(/[^a-z0-9]/g, '')));
+          if (matchedTicket) {
+            if (matchedTicket.date) itemDate = matchedTicket.date;
+            if (matchedTicket.time) {
+              itemTime = matchedTicket.time;
+              if (item.category === 'masterclass' || item.category === 'entree') {
+                item.timeslot = matchedTicket.time;
+              }
             }
+            if (matchedTicket.price) item.price = matchedTicket.price;
+            if (matchedTicket.title) item.title = matchedTicket.title;
           }
 
           itemsOrdered.push({
@@ -5907,6 +5916,45 @@ const marqueeBrands = BRAND.featuredBrands || [
     allAddonsList = denHaagTicketsData.filter(t => t.category !== 'entree');
     if (typeof renderAddonUpsellList === 'function') {
       renderAddonUpsellList();
+    }
+
+    // Synchronize active in-memory cart with live GHL data
+    let cartModified = false;
+    Object.keys(cart).forEach(id => {
+      const item = cart[id];
+      if (!item) return;
+      const match = denHaagTicketsData.find(t => t.id === id || (t.title && item.title && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === item.title.toLowerCase().replace(/[^a-z0-9]/g, '')));
+      if (match) {
+        if (match.title && item.title !== match.title) {
+          item.title = match.title;
+          cartModified = true;
+        }
+        if (match.price && item.price !== match.price) {
+          item.price = match.price;
+          cartModified = true;
+        }
+        if (match.date && item.date !== match.date) {
+          item.date = match.date;
+          cartModified = true;
+        }
+        if (match.time) {
+          let cleanTime = match.time;
+          if (!cleanTime.toLowerCase().includes('uur')) cleanTime += ' uur';
+          if (item.time !== cleanTime) {
+            item.time = cleanTime;
+            cartModified = true;
+          }
+          if (item.category === 'masterclass' || item.category === 'entree') {
+            if (item.timeslot !== cleanTime) {
+              item.timeslot = cleanTime;
+              cartModified = true;
+            }
+          }
+        }
+      }
+    });
+    if (cartModified) {
+      updateShop(true);
     }
   }
 

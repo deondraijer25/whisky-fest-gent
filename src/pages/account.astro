@@ -2622,6 +2622,22 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
       let date = (rawDate && rawDate.trim() && rawDate !== 'Festivaldag') ? rawDate.trim() : '';
       let time = (rawTime && rawTime.trim() && rawTime !== 'Regulier') ? rawTime.trim().replace(/–/g, '-') : '';
 
+      // Live GHL synchronization: GHL custom object is the authoritative single source of truth!
+      const liveGhlTickets = (window as any).__LIVE_GHL_TICKETS__;
+      if (Array.isArray(liveGhlTickets) && liveGhlTickets.length > 0) {
+        const cleanTKey = titleLower.replace(/[^a-z0-9]/g, '');
+        const ghlMatch = liveGhlTickets.find((r: any) => {
+          const p = r.properties || r;
+          const pTitle = (p.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+          return pTitle && cleanTKey && (pTitle.includes(cleanTKey) || cleanTKey.includes(pTitle));
+        });
+        if (ghlMatch) {
+          const p = ghlMatch.properties || ghlMatch;
+          if (p.date_label) date = p.date_label.trim();
+          if (p.time_label) time = p.time_label.trim().replace(/–/g, '-');
+        }
+      }
+
       // Fallback defaults ONLY if date or time are completely absent
       if (!date) {
         if (titleLower.includes('vrijdag')) {
@@ -3192,6 +3208,11 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
         }
       }
     }
+
+    // Live re-render when GHL tickets sync completes in background
+    window.addEventListener('ghl:tickets-updated', () => {
+      updatePortalUI();
+    });
 
     if (loginForm) {
       loginForm.addEventListener('submit', async (e) => {
