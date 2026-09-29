@@ -1956,7 +1956,7 @@ const marqueeBrands = BRAND.featuredBrands || [
       <div style="max-height: 60vh; overflow-y: auto; padding: 1.75rem 2rem; display: flex; flex-direction: column; gap: 1.5rem;">
         
         <!-- Ambassador Box -->
-        <div style="background: #FFFFFF; border: 1px solid #A8DAB5; border-radius: 8px; padding: 1.15rem 1.35rem; display: flex; gap: 1.15rem; align-items: flex-start; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);">
+        <div id="mc-modal-ambassador-box" style="background: #FFFFFF; border: 1px solid #A8DAB5; border-radius: 8px; padding: 1.15rem 1.35rem; display: flex; gap: 1.15rem; align-items: flex-start; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);">
           <div style="width: 44px; height: 44px; border-radius: 50%; background: #E6F4EA; border: 1.5px solid #A8DAB5; color: #1E3A8A; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
           </div>
@@ -1980,13 +1980,13 @@ const marqueeBrands = BRAND.featuredBrands || [
         </div>
 
         <!-- Description -->
-        <div>
+        <div id="mc-modal-desc-box">
           <h4 id="mc-modal-about-heading" style="font-family: var(--font-sans, sans-serif); font-size: 1.05rem; font-weight: 800; margin: 0 0 0.45rem 0; color: var(--text-charcoal); letter-spacing: -0.01em;">Over deze Masterclass</h4>
           <p id="mc-modal-description" style="font-family: var(--font-sans); font-size: 0.92rem; color: var(--text-charcoal); line-height: 1.6; margin: 0;">Beschrijving...</p>
         </div>
 
         <!-- Lineup -->
-        <div>
+        <div id="mc-modal-lineup-box">
           <h4 id="mc-modal-lineup-heading" style="font-family: var(--font-sans, sans-serif); font-size: 1.05rem; font-weight: 800; margin: 0 0 0.65rem 0; color: var(--text-charcoal); letter-spacing: -0.01em;">Officiële Proeflijst (Inbegrepen Drams)</h4>
           <ul id="mc-modal-lineup" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
           </ul>
@@ -6293,16 +6293,13 @@ const marqueeBrands = BRAND.featuredBrands || [
     let subtitle = item ? `${item.date} • ${item.time}` : 'Exclusieve festivalbeleving';
     let location = (item && item.location) || 'De Oude Vismijn Gent';
     let duration = '45 minuten';
-    let description = (item && item.extra) || 'Ervaar een uniek festivalonderdeel tijdens het International Whisky Festival Gent.';
-    let ambName = 'International Whisky Festival';
-    let ambTitle = 'Expert & Begeleider';
-    let ambBio = 'Ervaren team met passie voor whiskycultuur, vakmanschap en historische tradities.';
-    let descHeading = 'Over deze Masterclass';
-    let lineupHeading = 'Officiële Proeflijst (Inbegrepen Drams):';
-    let lineup = [
-      'Exclusieve Single Malt Proefdram #1',
-      'Zeldzame Cask Strength Proefdram #2'
-    ];
+    let description = (item && (item.description || item.extra)) || '';
+    let ambName = item?.ambassadorName || '';
+    let ambTitle = item?.ambassadorTitle || (ambName ? 'Expert & Begeleider' : '');
+    let ambBio = item?.ambassadorBio || '';
+    let descHeading = 'Over dit Festivalonderdeel';
+    let lineupHeading = 'Inbegrepen bij dit ticket:';
+    let lineup: string[] = (item?.tastingLineup && Array.isArray(item.tastingLineup)) ? item.tastingLineup : [];
 
     if (mcId.includes('vip') || (item && item.title && item.title.toLowerCase().includes('vip'))) {
       tag = 'VIP FESTIVAL SESSIE';
@@ -6394,16 +6391,12 @@ const marqueeBrands = BRAND.featuredBrands || [
       location = item?.location || 'De Oude Vismijn (Spaarkamer)';
       duration = '45 minuten';
       descHeading = 'Over deze Masterclass';
-      description = `Exclusieve masterclass: ${item?.title || ''}. ${item?.extra ? 'Extra toelichting: ' + item.extra : ''}`;
-      ambName = (item?.title && item.title.includes('Macallan')) ? 'Gerard Spaans' : 'Brand Ambassador';
-      ambTitle = (item?.title && item.title.includes('Macallan')) ? 'Senior Brand Ambassador & Master of Malt' : 'Senior Brand Ambassador';
-      ambBio = 'Internationaal expert met diepgaande kennis over distillatietechnieken, vatselecties en de unieke smaakprofielen van deze distilleerderij.';
+      description = item?.description || item?.extra || '';
+      ambName = (item?.title && item.title.includes('Macallan')) ? 'Gerard Spaans' : (item?.ambassadorName || '');
+      ambTitle = (item?.title && item.title.includes('Macallan')) ? 'Senior Brand Ambassador & Master of Malt' : (item?.ambassadorTitle || (ambName ? 'Masterclass Host' : ''));
+      ambBio = (item?.title && item.title.includes('Macallan')) ? 'Internationaal expert met diepgaande kennis over distillatietechnieken, vatselecties en de unieke smaakprofielen van deze distilleerderij.' : (item?.ambassadorBio || '');
       lineupHeading = 'Officiële Proeflijst (Inbegrepen Drams):';
-      lineup = [
-        'Proefdram #1: Distillery Signature Expressie (12 Y.O.)',
-        'Proefdram #2: Cask Strength Single Cask Sample',
-        'Proefdram #3: Exclusieve Vintage Editie'
-      ];
+      lineup = (item?.tastingLineup && Array.isArray(item.tastingLineup) && item.tastingLineup.length > 0) ? item.tastingLineup : [];
     }
 
     // Dynamic overrides from GHL or dataset if provided
@@ -6430,14 +6423,16 @@ const marqueeBrands = BRAND.featuredBrands || [
       if (lp.price !== undefined && lp.price !== null) {
         numericPrice = typeof lp.price === 'number' ? lp.price : (parseFloat(lp.price) || parseFloat(lp.ticket_price) || numericPrice);
       }
-      if (lp.ticket_description || lp.description) {
-        description = lp.ticket_description || lp.description;
+      if (lp.ticket_description !== undefined || lp.description !== undefined) {
+        description = (lp.ticket_description || lp.description || '').trim();
       }
-      if (lp.ambassador_name) ambName = lp.ambassador_name;
-      if (lp.ambassador_title) ambTitle = lp.ambassador_title;
-      if (lp.ambassador_bio) ambBio = lp.ambassador_bio;
-      if (lp.tasting_lineup) {
-        lineup = Array.isArray(lp.tasting_lineup) ? lp.tasting_lineup : String(lp.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean);
+      if (lp.ambassador_name !== undefined) {
+        ambName = (lp.ambassador_name || '').trim();
+        ambTitle = (lp.ambassador_title || (ambName ? 'Masterclass Host' : '')).trim();
+        ambBio = (lp.ambassador_bio || '').trim();
+      }
+      if (lp.tasting_lineup !== undefined) {
+        lineup = lp.tasting_lineup ? (Array.isArray(lp.tasting_lineup) ? lp.tasting_lineup : String(lp.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean)) : [];
       }
       if (lp.date_label || lp.time_label) {
         subtitle = `${lp.date_label || ''} • ${lp.time_label || ''}`;
@@ -6464,22 +6459,55 @@ const marqueeBrands = BRAND.featuredBrands || [
     if (subtitleEl) subtitleEl.textContent = subtitle;
     if (locationEl) locationEl.textContent = location;
     if (durationEl) durationEl.textContent = duration;
-    if (aboutHeadingEl) aboutHeadingEl.textContent = descHeading;
-    if (descEl) descEl.textContent = description;
 
-    if (lineupHeadingEl) lineupHeadingEl.textContent = lineupHeading;
+    // Toggle description box
+    const descBox = document.getElementById('mc-modal-desc-box');
+    if (descBox) {
+      if (description && description.trim() !== '') {
+        descBox.style.display = 'block';
+        if (aboutHeadingEl) aboutHeadingEl.textContent = descHeading;
+        if (descEl) descEl.textContent = description;
+      } else {
+        descBox.style.display = 'none';
+      }
+    }
 
-    if (ambNameEl) ambNameEl.textContent = ambName;
-    if (ambTitleEl) ambTitleEl.textContent = ambTitle;
-    if (ambBioEl) ambBioEl.textContent = ambBio;
+    // Toggle ambassador box
+    const ambBox = document.getElementById('mc-modal-ambassador-box');
+    if (ambBox) {
+      if (ambName && ambName.trim() !== '') {
+        ambBox.style.display = 'flex';
+        if (ambNameEl) ambNameEl.textContent = ambName;
+        if (ambTitleEl) {
+          ambTitleEl.textContent = ambTitle;
+          ambTitleEl.style.display = ambTitle ? 'block' : 'none';
+        }
+        if (ambBioEl) {
+          ambBioEl.textContent = ambBio;
+          ambBioEl.style.display = ambBio ? 'block' : 'none';
+        }
+      } else {
+        ambBox.style.display = 'none';
+      }
+    }
 
-    if (lineupList) {
-      lineupList.innerHTML = lineup.map(dram => `
-        <li style="display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.9rem; background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 6px; font-size: 0.9rem; color: var(--text-charcoal, #171614);">
-          <span style="color: #1E3A8A; font-size: 0.75rem; line-height: 1;">◆</span>
-          <span style="font-weight: 600;">${dram}</span>
-        </li>
-      `).join('');
+    // Toggle lineup box
+    const lineupBox = document.getElementById('mc-modal-lineup-box');
+    if (lineupBox) {
+      if (lineup && lineup.length > 0) {
+        lineupBox.style.display = 'block';
+        if (lineupHeadingEl) lineupHeadingEl.textContent = lineupHeading;
+        if (lineupList) {
+          lineupList.innerHTML = lineup.map(dram => `
+            <li style="display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.9rem; background: #FFFFFF; border: 1px solid #E6DDD0; border-radius: 6px; font-size: 0.9rem; color: var(--text-charcoal, #171614);">
+              <span style="color: #1E3A8A; font-size: 0.75rem; line-height: 1;">◆</span>
+              <span style="font-weight: 600;">${dram}</span>
+            </li>
+          `).join('');
+        }
+      } else {
+        lineupBox.style.display = 'none';
+      }
     }
 
     // Format Price correctly

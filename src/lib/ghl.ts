@@ -9,7 +9,7 @@ const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID || (typeof import.meta !== '
 const GHL_TICKETS_OBJECT_KEY = process.env.GHL_TICKETS_SCHEMA_ID || (typeof import.meta !== 'undefined' && import.meta.env?.GHL_TICKETS_SCHEMA_ID) || 'custom_objects.festival_tickets';
 const GHL_STANDS_OBJECT_KEY = process.env.GHL_STANDS_SCHEMA_ID || (typeof import.meta !== 'undefined' && import.meta.env?.GHL_STANDS_SCHEMA_ID) || 'custom_objects.festival_standhouders';
 
-const CACHE_TTL_MS = 60 * 1000;
+const CACHE_TTL_MS = 5 * 1000;
 interface CacheEntry<T> {
   data: T;
   timestamp: number;

@@ -620,7 +620,7 @@ function formatSpeaker(host: string) {
         
         <div class="m-speaker-card">
           <strong id="m-host">Spreker</strong>
-          <p>Officiële masterclass / activiteit tijdens Whisky Fest Den Haag.</p>
+          <p>Officiële masterclass / activiteit tijdens Gents Whisky Festival.</p>
         </div>
 
         <div class="m-footer-actions">
@@ -2128,8 +2128,19 @@ function formatSpeaker(host: string) {
     if (titleEl) titleEl.textContent = title;
     if (locEl) locEl.textContent = loc;
     if (timeEl) timeEl.textContent = time ? `${time} uur` : '';
-    if (descEl) descEl.textContent = desc;
-    if (hostEl) hostEl.textContent = host ? `Spreker: ${host}` : 'Officiële Masterclass';
+    if (descEl) {
+      descEl.textContent = desc;
+      descEl.style.display = desc ? 'block' : 'none';
+    }
+    const speakerBox = hostEl ? hostEl.closest('.m-speaker-card') as HTMLElement : null;
+    if (speakerBox) {
+      if (host && host.trim()) {
+        speakerBox.style.display = 'block';
+        if (hostEl) hostEl.textContent = `Spreker: ${host}`;
+      } else {
+        speakerBox.style.display = 'none';
+      }
+    }
     if (priceEl) priceEl.textContent = price || '€ 20,00';
 
     if (modal) {
