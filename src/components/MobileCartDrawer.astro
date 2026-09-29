@@ -454,7 +454,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         const isSoldOut = item.isSoldOut;
         const catLabel = item.category === 'warehouse' ? 'Dada Rondleiding' : item.category === 'boot' ? 'Whisky Bootjes' : item.category === 'botteling' ? 'Botteling' : 'Masterclass';
 
-        const dateStr = item.date ? item.date.replace(/ 2026/g, '') : '';
+        const dateStr = item.date ? item.date.replace(/\s*202[67]/g, '') : '';
         const metaParts = [dateStr, item.time, item.location || 'De Oude Vismijn'].filter(Boolean);
         const metaLine = metaParts.join(' • ');
 

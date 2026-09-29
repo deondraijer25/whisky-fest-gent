@@ -50,16 +50,16 @@ const effectiveDay = day || (
   date.toLowerCase().includes('zondag') ? 'zondag' : 'all'
 );
 
-// Clean date display (e.g. "VRIJDAG 2 OKT")
+// Clean date display (e.g. "VRIJDAG 1 OKT")
 let cleanDate = date;
-if (effectiveDay === 'vrijdag' || (date.toLowerCase().includes('vrijdag') && (date.includes('2') || date.toLowerCase().includes('2 okt')))) {
-  cleanDate = 'VRIJDAG 2 OKT';
-} else if (effectiveDay === 'zaterdag' || (date.toLowerCase().includes('zaterdag') && (date.includes('3') || date.toLowerCase().includes('3 okt')))) {
-  cleanDate = 'ZATERDAG 3 OKT';
-} else if (effectiveDay === 'zondag' || (date.toLowerCase().includes('zondag') && (date.includes('4') || date.toLowerCase().includes('4 okt')))) {
-  cleanDate = 'ZONDAG 4 OKT';
+if (effectiveDay === 'vrijdag' || (date.toLowerCase().includes('vrijdag') && (date.includes('1') || date.toLowerCase().includes('1 okt')))) {
+  cleanDate = 'VRIJDAG 1 OKT';
+} else if (effectiveDay === 'zaterdag' || (date.toLowerCase().includes('zaterdag') && (date.includes('2') || date.toLowerCase().includes('2 okt')))) {
+  cleanDate = 'ZATERDAG 2 OKT';
+} else if (effectiveDay === 'zondag' || (date.toLowerCase().includes('zondag') && (date.includes('3') || date.toLowerCase().includes('3 okt')))) {
+  cleanDate = 'ZONDAG 3 OKT';
 } else {
-  cleanDate = date.replace(/ 2026/g, '').toUpperCase();
+  cleanDate = date.replace(/\s*202[67]/g, '').toUpperCase();
 }
 
 // Clean access / location display

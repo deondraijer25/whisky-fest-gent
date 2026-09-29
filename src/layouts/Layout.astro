@@ -23,10 +23,10 @@ const {
 const eventSchema = {
   "@context": "https://schema.org",
   "@type": "Festival",
-  "name": "Gents Whisky Festival 2026",
+  "name": "Gents Whisky Festival 2027",
   "description": "Het bekendste en meest sfeervolle whisky festival van Vlaanderen. Proef honderden whisky's, volg exclusieve masterclasses en geniet van de unieke sfeer in De Oude Vismijn te Gent.",
-  "startDate": "2026-10-02T19:00:00+02:00",
-  "endDate": "2026-10-04T17:00:00+02:00",
+  "startDate": "2027-10-01T19:00:00+02:00",
+  "endDate": "2027-10-03T17:00:00+02:00",
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "location": {
@@ -309,6 +309,36 @@ const orgSchema = {
           .then(function(records) {
             if (!Array.isArray(records) || records.length === 0) return;
 
+            records = records.filter(function(r) {
+              var p = r.properties || r;
+              var title = (p.title || '').toLowerCase();
+              if (title.indexOf('programma volgt') !== -1) return false;
+              return true;
+            });
+            if (records.length === 0) return;
+
+            // Deterministic sort: Entrees ALWAYS first, then specials (botteling, bootjes, warehouse), then masterclasses
+            var CATEGORY_ORDER = { entree: 1, botteling: 2, tram: 3, warehouse: 4, masterclass: 5, trail: 6, vatenmaken: 7 };
+            var DAY_ORDER = { vrijdag: 1, zaterdag: 2, zondag: 3, all: 4 };
+
+            records.sort(function(a, b) {
+              var pA = a.properties || a;
+              var pB = b.properties || b;
+              var catA = CATEGORY_ORDER[(pA.category || '').toLowerCase()] || 99;
+              var catB = CATEGORY_ORDER[(pB.category || '').toLowerCase()] || 99;
+              if (catA !== catB) return catA - catB;
+
+              var dayA = DAY_ORDER[(pA.day || '').toLowerCase()] || 99;
+              var dayB = DAY_ORDER[(pB.day || '').toLowerCase()] || 99;
+              if (dayA !== dayB) return dayA - dayB;
+
+              var timeA = (pA.time_label || '').match(/(\d{1,2}:\d{2})/) ? (pA.time_label || '').match(/(\d{1,2}:\d{2})/)[1] : (pA.time_label || '');
+              var timeB = (pB.time_label || '').match(/(\d{1,2}:\d{2})/) ? (pB.time_label || '').match(/(\d{1,2}:\d{2})/)[1] : (pB.time_label || '');
+              if (timeA && timeB && timeA !== timeB) return timeA.localeCompare(timeB);
+
+              return (pA.title || '').localeCompare(pB.title || '');
+            });
+
             window.__LIVE_GHL_TICKETS__ = records;
             var matchedCards = new Set();
             var matchedRows = new Set();
@@ -350,14 +380,14 @@ const orgSchema = {
               var category = (p.category || '').toLowerCase().trim() || 'masterclass';
 
               var cleanDate = dateLabel;
-              if (day === 'vrijdag' || (cleanDate.toLowerCase().includes('vrijdag') && (cleanDate.includes('2') || cleanDate.toLowerCase().includes('2 okt')))) {
-                cleanDate = 'VRIJDAG 2 OKT';
-              } else if (day === 'zaterdag' || (cleanDate.toLowerCase().includes('zaterdag') && (cleanDate.includes('3') || cleanDate.toLowerCase().includes('3 okt')))) {
-                cleanDate = 'ZATERDAG 3 OKT';
-              } else if (day === 'zondag' || (cleanDate.toLowerCase().includes('zondag') && (cleanDate.includes('4') || cleanDate.toLowerCase().includes('4 okt')))) {
-                cleanDate = 'ZONDAG 4 OKT';
+              if (day === 'vrijdag' || (cleanDate.toLowerCase().includes('vrijdag') && (cleanDate.includes('1') || cleanDate.toLowerCase().includes('1 okt')))) {
+                cleanDate = 'VRIJDAG 1 OKT';
+              } else if (day === 'zaterdag' || (cleanDate.toLowerCase().includes('zaterdag') && (cleanDate.includes('2') || cleanDate.toLowerCase().includes('2 okt')))) {
+                cleanDate = 'ZATERDAG 2 OKT';
+              } else if (day === 'zondag' || (cleanDate.toLowerCase().includes('zondag') && (cleanDate.includes('3') || cleanDate.toLowerCase().includes('3 okt')))) {
+                cleanDate = 'ZONDAG 3 OKT';
               } else {
-                cleanDate = cleanDate.replace(/ 2026/g, '').toUpperCase();
+                cleanDate = cleanDate.replace(/\s*202[67]/g, '').toUpperCase();
               }
 
               var cleanTime = timeLabel;
@@ -406,13 +436,21 @@ const orgSchema = {
               // 1. Homepage ticket stubs
               var cardFound = false;
               var allCards = document.querySelectorAll('.ticket-stub');
-              allCards.forEach(function(card) {
+              for (var ci = 0; ci < allCards.length; ci++) {
+                var card = allCards[ci];
+                if (matchedCards.has(card)) continue;
+
                 var cardId = card.getAttribute('data-ticket-id');
                 var cardTitle = (card.getAttribute('data-title') || '').toLowerCase().replace(/[^a-z0-9]/g, '');
                 var matchKey = cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '');
-                var isMatch = (cardId && cardId === r.id) || (cardTitle && matchKey && (cardTitle.indexOf(matchKey) !== -1 || matchKey.indexOf(cardTitle) !== -1));
+                var cardTime = (card.getAttribute('data-time') || '').toLowerCase().replace(/[^0-9]/g, '');
+                var matchTime = cleanTime.toLowerCase().replace(/[^0-9]/g, '');
 
-                if (isMatch) {
+                var isIdMatch = cardId && cardId === r.id;
+                var isTitleMatch = cardTitle && matchKey && (cardTitle === matchKey || cardTitle.indexOf(matchKey) !== -1 || matchKey.indexOf(cardTitle) !== -1);
+                var isTimeMatch = !cardTime || !matchTime || cardTime === matchTime;
+
+                if (isIdMatch || (isTitleMatch && isTimeMatch)) {
                   cardFound = true;
                   matchedCards.add(card);
                   card.setAttribute('data-ticket-id', r.id);
@@ -451,7 +489,8 @@ const orgSchema = {
                     if (locVal && accessText) locVal.textContent = accessText;
                   }
 
-                  if (isSoldOut) {
+                  var isComingSoon = p.status_badge === 'comingsoon';
+                  if (isSoldOut || isComingSoon) {
                     card.classList.add('ticket-sold-out');
                     var qtySel = card.querySelector('.qty-selector');
                     if (qtySel) {
@@ -459,15 +498,19 @@ const orgSchema = {
                       if (!soldBox) {
                         var newSold = document.createElement('div');
                         newSold.className = 'sold-out-box';
-                        newSold.innerHTML = '<span class="sold-out-text">UITVERKOCHT</span>';
+                        newSold.innerHTML = '<span class="sold-out-text">' + (isComingSoon ? 'BINNENKORT' : 'UITVERKOCHT') + '</span>';
                         qtySel.replaceWith(newSold);
+                      } else {
+                        var tEl = soldBox.querySelector('.sold-out-text');
+                        if (tEl) tEl.textContent = isComingSoon ? 'BINNENKORT' : 'UITVERKOCHT';
                       }
                     }
                   } else {
                     card.classList.remove('ticket-sold-out');
                   }
+                  break;
                 }
-              });
+              }
 
               // Dynamically inject brand-new ticket card if not present in DOM
               if (!cardFound && category !== 'standhouder') {
@@ -682,6 +725,22 @@ const orgSchema = {
                 row.remove();
               }
             });
+
+            // Re-order DOM cards strictly according to sorted records!
+            var ticketsListContainer = document.getElementById('shop-tickets-list');
+            var showMoreContainer = document.getElementById('show-more-container');
+            if (ticketsListContainer) {
+              records.forEach(function(r) {
+                var card = ticketsListContainer.querySelector('.ticket-stub[data-ticket-id="' + r.id + '"]');
+                if (card) {
+                  if (showMoreContainer) {
+                    ticketsListContainer.insertBefore(card, showMoreContainer);
+                  } else {
+                    ticketsListContainer.appendChild(card);
+                  }
+                }
+              });
+            }
 
             // Re-apply active filters on the homepage
             if (typeof window.__applyTicketFilters === 'function') {

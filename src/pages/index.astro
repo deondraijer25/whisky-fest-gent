@@ -26,7 +26,7 @@ const marqueeBrands = BRAND.featuredBrands || [
 
 <Layout 
   title="Home - Premium Vintage-Modern Ontwerp" 
-  description="Bezoek het meest sfeervolle en bekende whiskyfestival van Nederland in de De Oude Vismijn Gent. 2, 3 en 4 oktober 2026. Bestel hier direct uw entreekaarten via onze mock ticketshop."
+  description="Bezoek het meest sfeervolle en bekende whiskyfestival van België in De Oude Vismijn Gent. 1, 2 en 3 oktober 2027. Bestel hier direct uw entreekaarten via onze online ticketshop."
 >
   <!-- 0. HOMEPAGE 2.5-SECOND COIN-FLIP PRELOADER -->
   <div id="hp-preloader" class="hp-preloader-overlay">
@@ -111,7 +111,7 @@ const marqueeBrands = BRAND.featuredBrands || [
           </h1>
 
           <div class="hero-date-line">
-            <span class="date-text">2, 3 &amp; 4 Oktober 2026</span>
+            <span class="date-text">1, 2 &amp; 3 Oktober 2027</span>
             <span class="date-sep">◆</span>
             <span class="loc-text">De Oude Vismijn Gent</span>
           </div>
@@ -195,9 +195,9 @@ const marqueeBrands = BRAND.featuredBrands || [
               <span class="filter-label">Dag:</span>
               <div class="filter-buttons" id="day-filter-buttons">
                 <button type="button" class="filter-tab-btn active" data-filter-day="all">Alle Dagen</button>
-                <button type="button" class="filter-tab-btn" data-filter-day="vrijdag">Vrijdag 2 Okt</button>
-                <button type="button" class="filter-tab-btn" data-filter-day="zaterdag">Zaterdag 3 Okt</button>
-                <button type="button" class="filter-tab-btn" data-filter-day="zondag">Zondag 4 Okt</button>
+                <button type="button" class="filter-tab-btn" data-filter-day="vrijdag">Vrijdag 1 Okt</button>
+                <button type="button" class="filter-tab-btn" data-filter-day="zaterdag">Zaterdag 2 Okt</button>
+                <button type="button" class="filter-tab-btn" data-filter-day="zondag">Zondag 3 Okt</button>
               </div>
             </div>
             <div class="filter-row" style="margin-top: 0.5rem;">
@@ -239,15 +239,15 @@ const marqueeBrands = BRAND.featuredBrands || [
                   <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
                 <div class="custom-dd-item" data-value="vrijdag" role="option">
-                  <span>Vrijdag 2 Okt 2026</span>
+                  <span>Vrijdag 1 Okt 2027</span>
                   <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
                 <div class="custom-dd-item" data-value="zaterdag" role="option">
-                  <span>Zaterdag 3 Okt 2026</span>
+                  <span>Zaterdag 2 Okt 2027</span>
                   <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
                 <div class="custom-dd-item" data-value="zondag" role="option">
-                  <span>Zondag 4 Okt 2026</span>
+                  <span>Zondag 3 Okt 2027</span>
                   <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
               </div>
@@ -1887,7 +1887,7 @@ const marqueeBrands = BRAND.featuredBrands || [
             <div class="ticket-summary-box">
               <div class="summary-item">
                 <span>Reserveringsnummer:</span>
-                <strong id="receipt-res-number" style="color: #1E3A8A; font-family: var(--font-sans); font-weight: 800;">#WF-2026-98741</strong>
+                <strong id="receipt-res-number" style="color: #1E3A8A; font-family: var(--font-sans); font-weight: 800;">#GWF-2027-98741</strong>
               </div>
               <div class="summary-item">
                 <span>E-mailadres:</span>
@@ -4537,10 +4537,26 @@ const marqueeBrands = BRAND.featuredBrands || [
   let activeDay = 'all';
   let activeCat = 'all';
   let activeTime = 'all';
-  let visibleCount = 10;
+  let visibleCount = 20;
 
   const showMoreContainer = document.getElementById('show-more-container');
   const showMoreBtn = document.getElementById('show-more-btn');
+
+  const CATEGORY_PRIORITY: Record<string, number> = {
+    entree: 1,
+    botteling: 2,
+    tram: 3,
+    warehouse: 4,
+    masterclass: 5,
+    trail: 6,
+    vatenmaken: 7
+  };
+  const DAY_PRIORITY: Record<string, number> = {
+    vrijdag: 1,
+    zaterdag: 2,
+    zondag: 3,
+    all: 4
+  };
 
   function applyFilters() {
     if (timeFilterRow) {
@@ -4577,6 +4593,35 @@ const marqueeBrands = BRAND.featuredBrands || [
       }
     });
 
+    // Deterministic sort: Entrees ALWAYS first, then specials (botteling, bootjes, tours), then masterclasses
+    matchingCards.sort((a, b) => {
+      const catA = CATEGORY_PRIORITY[a.getAttribute('data-category') || ''] || 99;
+      const catB = CATEGORY_PRIORITY[b.getAttribute('data-category') || ''] || 99;
+      if (catA !== catB) return catA - catB;
+
+      const dayA = DAY_PRIORITY[a.getAttribute('data-day') || ''] || 99;
+      const dayB = DAY_PRIORITY[b.getAttribute('data-day') || ''] || 99;
+      if (dayA !== dayB) return dayA - dayB;
+
+      const timeA = (a.getAttribute('data-time') || '').match(/(\d{1,2}:\d{2})/) ? (a.getAttribute('data-time') || '').match(/(\d{1,2}:\d{2})/)![1] : '';
+      const timeB = (b.getAttribute('data-time') || '').match(/(\d{1,2}:\d{2})/) ? (b.getAttribute('data-time') || '').match(/(\d{1,2}:\d{2})/)![1] : '';
+      if (timeA && timeB && timeA !== timeB) return timeA.localeCompare(timeB);
+
+      return (a.getAttribute('data-title') || '').localeCompare(b.getAttribute('data-title') || '');
+    });
+
+    // Reorder DOM cards in tickets-list to reflect sorted order
+    const ticketsList = document.getElementById('shop-tickets-list');
+    if (ticketsList) {
+      matchingCards.forEach(card => {
+        if (showMoreContainer) {
+          ticketsList.insertBefore(card, showMoreContainer);
+        } else {
+          ticketsList.appendChild(card);
+        }
+      });
+    }
+
     const totalMatching = matchingCards.length;
     matchingCards.forEach((card, idx) => {
       if (idx < visibleCount) {
@@ -4589,8 +4634,7 @@ const marqueeBrands = BRAND.featuredBrands || [
     if (totalMatching > visibleCount) {
       if (showMoreContainer) showMoreContainer.style.display = 'block';
       const remaining = totalMatching - visibleCount;
-      const nextBatch = Math.min(10, remaining);
-      if (showMoreBtn) showMoreBtn.textContent = `Laad 10 meer (${remaining} over) ↓`;
+      if (showMoreBtn) showMoreBtn.textContent = `Laad meer tickets (${remaining} over) ↓`;
     } else {
       if (showMoreContainer) showMoreContainer.style.display = 'none';
     }
@@ -4613,7 +4657,7 @@ const marqueeBrands = BRAND.featuredBrands || [
       dayButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       activeDay = btn.getAttribute('data-filter-day') || 'all';
-      visibleCount = 10;
+      visibleCount = 20;
       applyFilters();
     });
   });
@@ -4623,7 +4667,7 @@ const marqueeBrands = BRAND.featuredBrands || [
       catButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       activeCat = btn.getAttribute('data-filter-cat') || 'all';
-      visibleCount = 10;
+      visibleCount = 20;
       applyFilters();
     });
   });
@@ -4633,7 +4677,7 @@ const marqueeBrands = BRAND.featuredBrands || [
       timeButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       activeTime = btn.getAttribute('data-filter-time') || 'all';
-      visibleCount = 10;
+      visibleCount = 20;
       applyFilters();
     });
   });
@@ -4691,7 +4735,7 @@ const marqueeBrands = BRAND.featuredBrands || [
 
   setupCustomDropdown('dd-filter-day', (val, label) => {
     activeDay = val;
-    if (ddDayText) ddDayText.textContent = val === 'all' ? 'Alle Dagen' : label.split(' 2026')[0];
+    if (ddDayText) ddDayText.textContent = val === 'all' ? 'Alle Dagen' : label.replace(/\s*202[67]/g, '').trim();
     dayButtons.forEach(b => {
       b.classList.toggle('active', (b.getAttribute('data-filter-day') || 'all') === activeDay);
     });
@@ -4725,7 +4769,7 @@ const marqueeBrands = BRAND.featuredBrands || [
       document.querySelectorAll('#dd-filter-day .custom-dd-item').forEach(i => i.classList.remove('active'));
       dayItem.classList.add('active');
       const s = dayItem.querySelector('span');
-      ddDayText.textContent = activeDay === 'all' ? 'Alle Dagen' : (s ? s.textContent?.split(' 2026')[0] || '' : '');
+      ddDayText.textContent = activeDay === 'all' ? 'Alle Dagen' : (s ? s.textContent?.replace(/\s*202[67]/g, '').trim() || '' : '');
     }
 
     const catItem = document.querySelector(`#dd-filter-cat .custom-dd-item[data-value="${activeCat}"]`);
@@ -5346,7 +5390,7 @@ const marqueeBrands = BRAND.featuredBrands || [
               shippingAddress: shippingAddress,
               ageVerification: ageVerification,
               isMember: resPrefix === "WS",
-              resNumber: data.orderNumber || `#${resPrefix}-2026-PENDING`,
+              resNumber: data.orderNumber || `#${resPrefix}-2027-PENDING`,
               discountApplied: promoDiscount,
               totalPrice: recalcModalTotal()
             };
@@ -5365,7 +5409,7 @@ const marqueeBrands = BRAND.featuredBrands || [
       setTimeout(() => {
         try {
           if (modalStep2) modalStep2.style.display = "none";
-          const finalResNumber = `#${resPrefix}-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+          const finalResNumber = `#${resPrefix}-2027-${Math.floor(10000 + Math.random() * 90000)}`;
 
           const shipStreetEl = document.getElementById("ship-street") as HTMLInputElement;
           const shipZipEl = document.getElementById("ship-zip") as HTMLInputElement;
@@ -6304,7 +6348,7 @@ const marqueeBrands = BRAND.featuredBrands || [
     if (mcId.includes('vip') || (item && item.title && item.title.toLowerCase().includes('vip'))) {
       tag = 'VIP FESTIVAL SESSIE';
       title = item?.title || 'VIP Sessie - Vrijdagmiddag';
-      subtitle = `${item?.date || 'Vrijdag 2 Okt 2026'} • ${item?.time || '13:00 – 17:00 uur'}`;
+      subtitle = `${item?.date || 'Vrijdag 1 Okt 2027'} • ${item?.time || '13:00 – 17:00 uur'}`;
       location = 'De Oude Vismijn Gent';
       duration = '4 uur exclusieve festivaltoegang';
       descHeading = 'Over het VIP Arrangement';
@@ -6323,12 +6367,12 @@ const marqueeBrands = BRAND.featuredBrands || [
     } else if (domCategory === 'entree' || mcId.startsWith('session-')) {
       tag = 'REGULIERE FESTIVAL SESSIE';
       title = item?.title || 'Reguliere Festival Entree';
-      subtitle = `${item?.date || 'Festivaldag 2026'} • ${item?.time || '4 uur toegang'}`;
+      subtitle = `${item?.date || 'Festivaldag 2027'} • ${item?.time || '4 uur toegang'}`;
       location = 'De Oude Vismijn Gent';
       duration = '4 uur festivaltoegang';
       descHeading = 'Over deze Festivalsessie';
-      description = 'Beleef de magie van het meest toonaangevende whiskyfestival van Nederland in de historische De Oude Vismijn van Gent. Ontdek meer dan 40 standhouders en honderden verschillende Schotse single malts, wereldwhisky’s en Nederlandse distilleerderijen.';
-      ambName = 'International Whisky Festival Team';
+      description = 'Beleef de magie van het meest toonaangevende whiskyfestival van België in de historische De Oude Vismijn van Gent. Ontdek meer dan 40 standhouders en honderden verschillende Schotse single malts, wereldwhisky’s en ambachtelijke distilleerderijen.';
+      ambName = 'Gents Whisky Festival Team';
       ambTitle = 'Festival Host';
       ambBio = 'Het officiële festivalteam staat klaar om u te verwelkomen in de historische ambiance van de De Oude Vismijn.';
       lineupHeading = 'Wat is inbegrepen bij uw entree:';
@@ -6376,7 +6420,7 @@ const marqueeBrands = BRAND.featuredBrands || [
       location = 'Uitsluitend af te halen tijdens het festival bij De Oude Vismijn';
       duration = 'Festival Cask Exclusive';
       descHeading = 'Over deze Festival Botteling';
-      description = `Officiële exclusieve botteling voor het Gents Whisky Festival 2026. ${item?.title || ''}`;
+      description = `Officiële exclusieve botteling voor het Gents Whisky Festival 2027. ${item?.title || ''}`;
       ambName = 'Festival Bottling Panel';
       ambTitle = 'Cask Selection Committee';
       ambBio = 'Persoonlijk geselecteerd uit de beste vaten op vatsterkte.';

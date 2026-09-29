@@ -36,7 +36,7 @@ import Layout from '../layouts/Layout.astro';
             <div class="qr-code-holder">
               <img 
                 id="tv-qr-img"
-                src="https://whiskytix-r1qq.vercel.app/api/tickets/GWF-2026-84387-1/qr.svg?city=gent&name=Deon%20Draijer&title=Vrijdagavond%20Sessie" 
+                src="https://whiskytix-r1qq.vercel.app/api/tickets/GWF-2027-84387-1/qr.svg?city=gent&name=Deon%20Draijer&title=Vrijdagavond%20Sessie" 
                 alt="Controle QR-Code" 
                 width="110" 
                 height="110" 
@@ -47,7 +47,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <span class="scan-instructions" id="tv-scan-inst">SCAN BIJ DE DEUR</span>
-            <span class="scan-res-hash" id="tv-code">#GWF-2026-84387-1</span>
+            <span class="scan-res-hash" id="tv-code">#GWF-2027-84387-1</span>
           </div>
 
           <!-- Session & Holder details (Right on desktop, Bottom on mobile) -->
@@ -86,7 +86,7 @@ import Layout from '../layouts/Layout.astro';
                 </div>
                 <div class="meta-item">
                   <span class="meta-label">TICKET CODE:</span>
-                  <strong class="meta-value" style="color: var(--brand-red, #E30613);" id="tv-ticket-code">#GWF-2026-84387-1</strong>
+                  <strong class="meta-value" style="color: var(--brand-red, #E30613);" id="tv-ticket-code">#GWF-2027-84387-1</strong>
                 </div>
               </div>
 
@@ -437,7 +437,7 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
   const params = new URLSearchParams(window.location.search);
-  let code = params.get('id') || params.get('code') || 'WF-2026-84387-1';
+  let code = params.get('id') || params.get('code') || 'GWF-2027-84387-1';
   if (!code.startsWith('#')) code = '#' + code;
   const title = params.get('title') || 'VIP Sessie - Vrijdag';
   const name = params.get('name') || 'Deon Draijer';
@@ -482,15 +482,15 @@ import Layout from '../layouts/Layout.astro';
 
   if (!resolvedDate) {
     if (titleLower.includes('vrijdag')) {
-      resolvedDate = 'Vrijdag 2 oktober 2026';
+      resolvedDate = 'Vrijdag 1 oktober 2027';
     } else if (titleLower.includes('zondag')) {
-      resolvedDate = 'Zondag 4 oktober 2026';
+      resolvedDate = 'Zondag 3 oktober 2027';
     } else if (titleLower.includes('zaterdag')) {
-      resolvedDate = 'Zaterdag 3 oktober 2026';
+      resolvedDate = 'Zaterdag 2 oktober 2027';
     } else if (category === 'botteling' || titleLower.includes('botteling')) {
-      resolvedDate = 'Festivaleditie (2-4 okt)';
+      resolvedDate = 'Festivaleditie (1-3 okt)';
     } else {
-      resolvedDate = 'Zaterdag 3 oktober 2026';
+      resolvedDate = 'Zaterdag 2 oktober 2027';
     }
   }
 

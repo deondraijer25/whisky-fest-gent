@@ -38,12 +38,12 @@ function parseGhlBoolean(val: any): boolean {
 
 const CATEGORY_ORDER: Record<string, number> = {
   entree: 1,
-  masterclass: 2,
-  warehouse: 3,
-  tram: 4,
-  trail: 5,
-  vatenmaken: 6,
-  botteling: 7
+  botteling: 2,
+  tram: 3,
+  warehouse: 4,
+  masterclass: 5,
+  trail: 6,
+  vatenmaken: 7
 };
 
 const DAY_ORDER: Record<string, number> = {
@@ -170,16 +170,30 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
       return TICKETS_GENT;
     }
 
-    const parsedTickets: TicketItem[] = records.map((r: any, idx: number) => {
+    const filteredRecords = records.filter((r: any) => {
       const p = r.properties || r;
+      const title = (p.title || '').toLowerCase();
+      if (title.includes('programma volgt')) return false;
+      return true;
+    });
+
+    const parsedTickets: TicketItem[] = filteredRecords.map((r: any, idx: number) => {
+      const p = r.properties || r;
+      const isComingSoon = p.status_badge === 'comingsoon';
       const isSoldOut = parseGhlBoolean(p.is_sold_out);
       const capacity = parseInt(p.capacity, 10) || 0;
       const sold = parseInt(p.sold, 10) || 0;
-      const effectiveSoldOut = isSoldOut || (capacity > 0 && sold >= capacity);
+      const effectiveSoldOut = isComingSoon || isSoldOut || (capacity > 0 && sold >= capacity);
 
-      let statusBadge: 'sold-out' | 'limited' | 'popular' | 'selling-fast' | undefined = undefined;
-      if (effectiveSoldOut) {
+      let statusBadge: any = undefined;
+      let statusText: string | undefined = undefined;
+
+      if (isComingSoon) {
+        statusBadge = 'comingsoon';
+        statusText = 'Binnenkort';
+      } else if (effectiveSoldOut) {
         statusBadge = 'sold-out';
+        statusText = 'Uitverkocht';
       } else if (p.status_badge && p.status_badge !== 'none') {
         statusBadge = p.status_badge;
       }
