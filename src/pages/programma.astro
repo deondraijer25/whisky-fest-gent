@@ -280,8 +280,12 @@ function formatSpeaker(host: string) {
               {s.items.map((item) => {
                 const live = liveTickets.find(t => 
                   t.id === item.id || 
-                  t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(item.title.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
-                  item.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))
+                  (
+                    (t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(item.title.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
+                     item.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))) &&
+                    (!t.day || t.day === 'all' || s.id.startsWith(t.day)) &&
+                    (!t.time || !item.time || t.time.includes(item.time.split(/[-–]/)[0].trim()))
+                  )
                 );
                 const displayTitle = live?.title || item.title;
                 const displayPrice = live ? live.price : item.price;
@@ -456,19 +460,23 @@ function formatSpeaker(host: string) {
             {GENT_SPECIALS_ROWS.map((item) => {
               const live = liveTickets.find(t => 
                 t.id === item.id || 
-                t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(item.title.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
-                item.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))
+                (
+                  (t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(item.title.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
+                   item.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))) &&
+                  (!item.dayLabel || !t.day || t.day === 'all' || item.dayLabel.toLowerCase().includes(t.day.toLowerCase())) &&
+                  (!t.time || !item.time || t.time.includes(item.time.split(/[-–]/)[0].trim()))
+                )
               );
               const displayTitle = live?.title || item.title;
               const displayPrice = live ? live.price : item.price;
               const displayHost = (live?.ambassadorName ? `${live.ambassadorName}${live.ambassadorTitle ? ` — ${live.ambassadorTitle}` : ''}` : null) || item.host;
               const displayDesc = live?.description || item.description;
-              const isSoldOut = Boolean(live?.isSoldOut || (live?.capacity && live?.sold >= live?.capacity) || item.id.includes('bootje') || item.id.includes('tour'));
+              const isSoldOut = Boolean(live?.isSoldOut || (live?.capacity && live?.sold >= live?.capacity));
               const actualId = live?.id || item.id;
               const spk = formatSpeaker(displayHost);
 
               return (
-                <article class="agenda-row-item">
+                <article class="agenda-row-item" data-ticket-id={actualId}>
                   <div class="col-time">
                     <span class="item-time-val">{item.time}</span>
                     {item.dayLabel && <span class="item-day-sub">{item.dayLabel}</span>}
