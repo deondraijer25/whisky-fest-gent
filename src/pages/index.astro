@@ -5396,10 +5396,7 @@ const marqueeBrands = BRAND.featuredBrands || [
             };
             localStorage.setItem('wf_last_order', JSON.stringify(pendingOrderData));
             
-            // Redirect to Mollie checkout or local Mollie sandbox simulator!
-            const targetUrl = data.checkoutUrl.startsWith('/') ? `https://whiskytix-r1qq.vercel.app${data.checkoutUrl}` : data.checkoutUrl;
-            window.location.href = targetUrl;
-            return;
+            // In-modal completion: keep user on festival site
           }
         }
       } catch (backendErr) {
@@ -5479,6 +5476,21 @@ const marqueeBrands = BRAND.featuredBrands || [
               receiptTicketsList.appendChild(row);
             });
           }
+
+          // Reset shopping cart upon confirmed order
+          Object.keys(cart).forEach(id => {
+            if (cart[id]) cart[id].qty = 0;
+            const qEl = document.getElementById(`qty-${id}`);
+            if (qEl) qEl.textContent = "0";
+            const card = document.querySelector(`.ticket-stub[data-ticket-id="${id}"]`);
+            if (card) {
+              const qtyVal = card.querySelector('.qty-val');
+              if (qtyVal) qtyVal.textContent = "0";
+              card.classList.remove('selected');
+            }
+          });
+          localStorage.removeItem("whiskyfest_cart");
+          updateShop();
         } catch (err) {
           console.error("Order processing error:", err);
         } finally {
@@ -6686,10 +6698,7 @@ const marqueeBrands = BRAND.featuredBrands || [
     }
 
     if (receiptTicketsList) {
-      if (liveTicketsHtml) {
-        receiptTicketsList.innerHTML = liveTicketsHtml;
-      } else {
-        receiptTicketsList.innerHTML = "";
+      receiptTicketsList.innerHTML = "";
 
         const itemsToRender = (orderData && orderData.items) || [];
       if (itemsToRender.length > 0) {
@@ -6728,7 +6737,6 @@ const marqueeBrands = BRAND.featuredBrands || [
         });
       }
     }
-  }
 
     // Display the success modal popup
     if (modalOverlay) modalOverlay.style.display = "flex";
