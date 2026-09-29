@@ -268,7 +268,7 @@ const orgSchema = {
               locationId: GHL_LOCATION_ID,
               page: 1,
               pageLimit: 250,
-              query: 'Gent',
+              filters: [{ field: 'properties.festival_city', operator: 'eq', value: 'gent' }],
               searchAfter: []
             })
           })
@@ -277,8 +277,36 @@ const orgSchema = {
             return res.json();
           })
           .then(function(data) {
-            if (!data) return;
-            var records = data.customObjectRecords || data.records || [];
+            var records = (data && (data.customObjectRecords || data.records)) || [];
+            if (records.length === 0) {
+              // Fallback to fetch all and filter in memory
+              return fetch(GHL_API_BASE + '/objects/custom_objects.festival_tickets/records/search', {
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Bearer ' + GHL_API_KEY,
+                  'Version': '2021-07-28',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  locationId: GHL_LOCATION_ID,
+                  page: 1,
+                  pageLimit: 250,
+                  searchAfter: []
+                })
+              })
+              .then(function(fbRes) { return fbRes.ok ? fbRes.json() : null; })
+              .then(function(fbData) {
+                var allRecs = (fbData && (fbData.customObjectRecords || fbData.records)) || [];
+                return allRecs.filter(function(r) {
+                  var p = r.properties || r;
+                  var c = String(p.festival_city || '').toLowerCase().trim();
+                  return c === 'gent' || c.indexOf('gent') !== -1;
+                });
+              });
+            }
+            return records;
+          })
+          .then(function(records) {
             if (!Array.isArray(records) || records.length === 0) return;
 
             window.__LIVE_GHL_TICKETS__ = records;
@@ -457,16 +485,16 @@ const orgSchema = {
                     '<div class="ticket-stub-end">' +
                       '<span class="stub-label">' + (category === 'botteling' ? 'PRIJS PER FLES' : 'PRIJS P.P.') + '</span>' +
                       '<div class="ticket-price-block">' +
-                        '<span class="currency">&euro;</span>' +
+                        '<span class="price-currency">&euro;</span>' +
                         '<span class="price-val">' + priceParts[0] + '</span>' +
                         '<span class="price-cents">,' + priceParts[1] + '</span>' +
                       '</div>' +
                       (isSoldOut ? 
                         '<div class="sold-out-box"><span class="sold-out-text">UITVERKOCHT</span></div>' :
                         '<div class="qty-selector">' +
-                          '<button type="button" class="qty-btn minus" data-action="minus" aria-label="Aantal verlagen" disabled>&minus;</button>' +
-                          '<span class="qty-val">0</span>' +
-                          '<button type="button" class="qty-btn plus" data-action="plus" aria-label="Aantal verhogen">+</button>' +
+                          '<button type="button" class="qty-btn minus-btn" data-action="minus" aria-label="Aantal verlagen" disabled>&minus;</button>' +
+                          '<span class="qty-val" id="qty-' + r.id + '">0</span>' +
+                          '<button type="button" class="qty-btn plus-btn" data-action="plus" aria-label="Aantal verhogen">&plus;</button>' +
                         '</div>'
                       ) +
                     '</div>';
@@ -608,7 +636,7 @@ const orgSchema = {
               locationId: GHL_LOCATION_ID,
               page: 1,
               pageLimit: 250,
-              query: 'Gent',
+              filters: [{ field: 'properties.festival_city', operator: 'eq', value: 'gent' }],
               searchAfter: []
             })
           })
@@ -617,8 +645,35 @@ const orgSchema = {
             return res.json();
           })
           .then(function(data) {
-            if (!data) return;
-            var records = data.customObjectRecords || data.records || [];
+            var records = (data && (data.customObjectRecords || data.records)) || [];
+            if (records.length === 0) {
+              return fetch(GHL_API_BASE + '/objects/custom_objects.festival_standhouders/records/search', {
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Bearer ' + GHL_API_KEY,
+                  'Version': '2021-07-28',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  locationId: GHL_LOCATION_ID,
+                  page: 1,
+                  pageLimit: 250,
+                  searchAfter: []
+                })
+              })
+              .then(function(fbRes) { return fbRes.ok ? fbRes.json() : null; })
+              .then(function(fbData) {
+                var allRecs = (fbData && (fbData.customObjectRecords || fbData.records)) || [];
+                return allRecs.filter(function(r) {
+                  var p = r.properties || r;
+                  var c = String(p.festival_city || '').toLowerCase().trim();
+                  return c === 'gent' || c.indexOf('gent') !== -1;
+                });
+              });
+            }
+            return records;
+          })
+          .then(function(records) {
             if (!Array.isArray(records) || records.length === 0) return;
 
             window.__LIVE_GHL_STANDS__ = records;
