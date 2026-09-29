@@ -479,89 +479,62 @@ import Layout from '../layouts/Layout.astro';
 
   let resolvedTime = (time && time !== 'Regulier') ? time.replace(/–/g, '-') : '';
   let resolvedDate = (params.get('date') && params.get('date') !== 'Festivaldag') ? params.get('date')! : '';
+
+  if (!resolvedDate) {
+    if (titleLower.includes('vrijdag')) {
+      resolvedDate = 'Vrijdag 2 oktober 2026';
+    } else if (titleLower.includes('zondag')) {
+      resolvedDate = 'Zondag 4 oktober 2026';
+    } else if (titleLower.includes('zaterdag')) {
+      resolvedDate = 'Zaterdag 3 oktober 2026';
+    } else if (category === 'botteling' || titleLower.includes('botteling')) {
+      resolvedDate = 'Festivaleditie (2-4 okt)';
+    } else {
+      resolvedDate = 'Zaterdag 3 oktober 2026';
+    }
+  }
+
+  if (!resolvedTime) {
+    if (category === 'botteling' || titleLower.includes('botteling')) {
+      resolvedTime = 'AFHALEN BIJ INFODESK (STAND O)';
+    } else if (titleLower.includes('vip')) {
+      resolvedTime = '13:00 - 17:00 UUR';
+    } else if (titleLower.includes('avond')) {
+      resolvedTime = '19:00 - 23:00 UUR';
+    } else {
+      resolvedTime = '13:00 - 17:00 UUR';
+    }
+  }
+
+  // Dynamic day detection from the actual resolvedDate string
   let resolvedDay = '02';
   let resolvedMonth = 'OKT';
+  const dLower = resolvedDate.toLowerCase();
+  if (dLower.includes('vrijdag') || dLower.includes(' 2 ') || dLower.startsWith('2 ') || dLower.includes('2 okt')) {
+    resolvedDay = '02';
+  } else if (dLower.includes('zondag') || dLower.includes(' 4 ') || dLower.startsWith('4 ') || dLower.includes('4 okt')) {
+    resolvedDay = '04';
+  } else if (dLower.includes('zaterdag') || dLower.includes(' 3 ') || dLower.startsWith('3 ') || dLower.includes('3 okt')) {
+    resolvedDay = '03';
+  } else {
+    const match = resolvedDate.match(/\b([0-3]?\d)\b/);
+    if (match) resolvedDay = match[1].padStart(2, '0');
+  }
+
+  if (dLower.includes('nov')) resolvedMonth = 'NOV';
+  else if (dLower.includes('jan')) resolvedMonth = 'JAN';
+  else resolvedMonth = 'OKT';
 
   const isBotteling = category === 'botteling' || titleLower.includes('botteling') || titleLower.includes('fles');
   const isMasterclass = category === 'masterclass' || titleLower.includes('masterclass');
   const isBoottocht = category === 'tram' || category === 'bootjes' || titleLower.includes('boot');
   const isWarehouse = category === 'warehouse' || category === 'dada' || titleLower.includes('dada');
 
-  if (isMasterclass) {
-    if (titleLower.includes('cvh')) {
-      resolvedDate = 'Zaterdag 3 oktober 2026';
-      resolvedTime = '12:15 - 13:00 UUR';
-      resolvedDay = '03';
-    } else if (titleLower.includes('fettercairn')) {
-      resolvedDate = 'Zaterdag 3 oktober 2026';
-      resolvedTime = '15:00 - 15:45 UUR';
-      resolvedDay = '03';
-    } else if (titleLower.includes('bowmore')) {
-      resolvedDate = 'Zaterdag 3 oktober 2026';
-      resolvedTime = '19:30 - 20:15 UUR';
-      resolvedDay = '03';
-    } else if (titleLower.includes('fuji')) {
-      resolvedDate = 'Zaterdag 3 oktober 2026';
-      resolvedTime = '21:00 - 21:45 UUR';
-      resolvedDay = '03';
-    } else if (titleLower.includes('jura')) {
-      resolvedDate = 'Zondag 4 oktober 2026';
-      resolvedTime = '12:15 - 13:00 UUR';
-      resolvedDay = '04';
-    } else if (titleLower.includes('laphroaig')) {
-      resolvedDate = 'Zondag 4 oktober 2026';
-      resolvedTime = '13:30 - 14:15 UUR';
-      resolvedDay = '04';
-    } else if (titleLower.includes('suntory')) {
-      resolvedDate = 'Zondag 4 oktober 2026';
-      resolvedTime = '15:00 - 15:45 UUR';
-      resolvedDay = '04';
-    } else if (titleLower.includes('dada')) {
-      if (titleLower.includes('vrijdag')) {
-        resolvedDate = 'Vrijdag 2 oktober 2026';
-        resolvedTime = '20:00 - 20:45 UUR';
-        resolvedDay = '02';
-      } else {
-        resolvedDate = 'Zaterdag 3 oktober 2026';
-        resolvedTime = '13:45 - 14:30 UUR';
-        resolvedDay = '03';
-      }
-    } else if (titleLower.includes('zondag')) {
-      resolvedDate = resolvedDate || 'Zondag 4 oktober 2026';
-      resolvedTime = resolvedTime || '13:30 - 14:15 UUR';
-      resolvedDay = '04';
-    } else {
-      resolvedDate = resolvedDate || 'Zaterdag 3 oktober 2026';
-      resolvedTime = resolvedTime || '14:00 - 14:45 UUR';
-      resolvedDay = '03';
-    }
-  } else if (isBoottocht) {
-    resolvedDate = resolvedDate || 'Zaterdag 3 oktober 2026';
-    resolvedTime = resolvedTime || '12:00 - 13:00 UUR';
+  if (isBoottocht || isBotteling) {
     resolvedDay = '02-04';
-  } else if (isBotteling) {
-    resolvedDate = resolvedDate || 'Festivaleditie (2-4 okt)';
-    resolvedTime = resolvedTime || (delivery === 'shipping' ? 'VERZENDING PER POST' : 'AFHALEN BIJ INFODESK (STAND O)');
-    resolvedDay = '02-04';
-  } else {
-    // Entree
-    if (titleLower.includes('vrijdag')) {
-      resolvedDate = 'Vrijdag 2 oktober 2026';
-      resolvedTime = resolvedTime || (titleLower.includes('vip') ? '13:00 - 17:00 UUR' : '19:00 - 23:00 UUR');
-      resolvedDay = '02';
-    } else if (titleLower.includes('zondag')) {
-      resolvedDate = 'Zondag 4 oktober 2026';
-      resolvedTime = resolvedTime || '13:00 - 17:00 UUR';
-      resolvedDay = '04';
-    } else {
-      resolvedDate = 'Zaterdag 3 oktober 2026';
-      resolvedTime = resolvedTime || (titleLower.includes('avond') ? '19:00 - 23:00 UUR' : '13:00 - 17:00 UUR');
-      resolvedDay = '03';
-    }
   }
 
-  if (!resolvedTime) resolvedTime = '13:00 - 17:00 UUR';
-  if (!resolvedTime.toUpperCase().includes('UUR') && !resolvedTime.toUpperCase().includes('POST') && !resolvedTime.toUpperCase().includes('INFODESK')) {
+  if (!resolvedTime.toUpperCase().includes('UUR') && !resolvedTime.toUpperCase().includes('POST') && !resolvedTime.toUpperCase().includes('INFODESK') && !resolvedTime.toUpperCase().includes('DAG')) {
     resolvedTime += ' UUR';
   }
 

@@ -2619,94 +2619,80 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
     // Intelligent Gent session schedule & metadata resolver
     function resolveGentSessionMeta(title: string, category: string, rawDate?: string, rawTime?: string) {
       const titleLower = (title || '').toLowerCase();
-      let date = (rawDate && rawDate !== 'Festivaldag') ? rawDate : '';
-      let time = (rawTime && rawTime !== 'Regulier') ? rawTime.replace(/–/g, '-') : '';
+      let date = (rawDate && rawDate.trim() && rawDate !== 'Festivaldag') ? rawDate.trim() : '';
+      let time = (rawTime && rawTime.trim() && rawTime !== 'Regulier') ? rawTime.trim().replace(/–/g, '-') : '';
+
+      // Fallback defaults ONLY if date or time are completely absent
+      if (!date) {
+        if (titleLower.includes('vrijdag')) {
+          date = 'Vrijdag 2 oktober 2026';
+        } else if (titleLower.includes('zondag')) {
+          date = 'Zondag 4 oktober 2026';
+        } else if (titleLower.includes('zaterdag')) {
+          date = 'Zaterdag 3 oktober 2026';
+        } else if (category === 'botteling' || titleLower.includes('botteling')) {
+          date = 'Festivaleditie (2-4 okt)';
+        } else {
+          date = 'Zaterdag 3 oktober 2026';
+        }
+      }
+
+      if (!time) {
+        if (category === 'botteling' || titleLower.includes('botteling')) {
+          time = 'AFHALEN BIJ INFODESK (STAND O)';
+        } else if (titleLower.includes('vip')) {
+          time = '13:00 - 17:00 UUR';
+        } else if (titleLower.includes('avond')) {
+          time = '19:00 - 23:00 UUR';
+        } else {
+          time = '13:00 - 17:00 UUR';
+        }
+      }
+
+      // Dynamic day detection from the actual date string (e.g. from GHL)
       let day = '02';
       let month = 'OKT';
+      const dLower = date.toLowerCase();
+      if (dLower.includes('vrijdag') || dLower.includes(' 2 ') || dLower.startsWith('2 ') || dLower.includes('2 okt')) {
+        day = '02';
+      } else if (dLower.includes('zondag') || dLower.includes(' 4 ') || dLower.startsWith('4 ') || dLower.includes('4 okt')) {
+        day = '04';
+      } else if (dLower.includes('zaterdag') || dLower.includes(' 3 ') || dLower.startsWith('3 ') || dLower.includes('3 okt')) {
+        day = '03';
+      } else {
+        const match = date.match(/\b([0-3]?\d)\b/);
+        if (match) day = match[1].padStart(2, '0');
+      }
+
+      if (dLower.includes('nov')) month = 'NOV';
+      else if (dLower.includes('jan')) month = 'JAN';
+      else month = 'OKT';
+
+      // Category, watermark and location determination
       let watermark = 'WF';
       let location = 'De Oude Vismijn, Gent';
 
       if (category === 'masterclass' || titleLower.includes('masterclass')) {
         watermark = 'MC';
         location = 'De Oude Vismijn (MC-Ruimte)';
-        if (titleLower.includes('cvh')) {
-          date = 'Zaterdag 3 oktober 2026';
-          time = '12:15 - 13:00 UUR';
-          day = '03';
-        } else if (titleLower.includes('fettercairn')) {
-          date = 'Zaterdag 3 oktober 2026';
-          time = '15:00 - 15:45 UUR';
-          day = '03';
-        } else if (titleLower.includes('bowmore')) {
-          date = 'Zaterdag 3 oktober 2026';
-          time = '19:30 - 20:15 UUR';
-          day = '03';
-        } else if (titleLower.includes('fuji')) {
-          date = 'Zaterdag 3 oktober 2026';
-          time = '21:00 - 21:45 UUR';
-          day = '03';
-        } else if (titleLower.includes('jura')) {
-          date = 'Zondag 4 oktober 2026';
-          time = '12:15 - 13:00 UUR';
-          day = '04';
-        } else if (titleLower.includes('laphroaig')) {
-          date = 'Zondag 4 oktober 2026';
-          time = '13:30 - 14:15 UUR';
-          day = '04';
-        } else if (titleLower.includes('suntory')) {
-          date = 'Zondag 4 oktober 2026';
-          time = '15:00 - 15:45 UUR';
-          day = '04';
-        } else if (titleLower.includes('dada')) {
-          if (titleLower.includes('vrijdag')) {
-            date = 'Vrijdag 2 oktober 2026';
-            time = '20:00 - 20:45 UUR';
-            day = '02';
-          } else {
-            date = 'Zaterdag 3 oktober 2026';
-            time = '13:45 - 14:30 UUR';
-            day = '03';
-          }
-        } else if (titleLower.includes('zondag')) {
-          date = date || 'Zondag 4 oktober 2026';
-          time = time || '13:30 - 14:15 UUR';
-          day = '04';
-        } else {
-          date = date || 'Zaterdag 3 oktober 2026';
-          time = time || '14:00 - 14:45 UUR';
-          day = '03';
-        }
       } else if (category === 'bootjes' || category === 'tram' || titleLower.includes('boot')) {
         watermark = 'GWF';
         location = 'Steiger De Oude Vismijn';
-        date = date || 'Zaterdag 3 oktober 2026';
-        time = time || '12:00 - 13:00 UUR';
         day = '02-04';
       } else if (category === 'botteling' || titleLower.includes('botteling') || titleLower.includes('fles')) {
         watermark = 'FB';
-        location = (time.toLowerCase().includes('verzending')) ? 'Verzending per Post (BE & NL)' : 'De Oude Vismijn (Infodesk Stand O)';
-        date = date || 'Festivaleditie (2-4 okt)';
-        time = time || 'AFHALEN BIJ INFODESK (STAND O)';
+        location = time.toLowerCase().includes('verzending') ? 'Verzending per Post (BE & NL)' : 'De Oude Vismijn (Infodesk Stand O)';
         day = '02-04';
-      } else {
-        // Entree
-        watermark = (orderData && orderData.isMember) ? 'WS' : 'WF';
-        if (titleLower.includes('vrijdag')) {
-          date = 'Vrijdag 2 oktober 2026';
-          time = time || (titleLower.includes('vip') ? '13:00 - 17:00 UUR' : '19:00 - 23:00 UUR');
-          day = '02';
-        } else if (titleLower.includes('zondag')) {
-          date = 'Zondag 4 oktober 2026';
-          time = time || '13:00 - 17:00 UUR';
-          day = '04';
-        } else {
-          date = 'Zaterdag 3 oktober 2026';
-          time = time || ((titleLower.includes('avond') || (rawTime && rawTime.includes('19:00'))) ? '19:00 - 23:00 UUR' : '13:00 - 17:00 UUR');
-          day = '03';
-        }
+      } else if (category === 'warehouse' || category === 'dada' || titleLower.includes('dada')) {
+        watermark = 'GWF';
+        location = 'Dada Chapel Distilleerderij (Gent)';
+      } else if (titleLower.includes('vip')) {
+        watermark = 'VIP';
+      } else if (orderData && orderData.isMember) {
+        watermark = 'WS';
       }
 
-      if (!time.toUpperCase().includes('UUR') && !time.toUpperCase().includes('POST') && !time.toUpperCase().includes('INFODESK')) {
+      if (!time.toUpperCase().includes('UUR') && !time.toUpperCase().includes('POST') && !time.toUpperCase().includes('INFODESK') && !time.toUpperCase().includes('DAG')) {
         time += ' UUR';
       }
 
