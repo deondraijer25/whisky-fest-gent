@@ -6342,161 +6342,77 @@ const marqueeBrands = BRAND.featuredBrands || [
     activeMcId = mcId;
 
     const item = (denHaagTicketsData || []).find((t: any) => t.id === mcId);
-    const ticketStubEl = document.querySelector(`.ticket-stub[data-ticket-id="${mcId}"]`);
-    const domCategory = (item && item.category) || (ticketStubEl && ticketStubEl.getAttribute('data-category')) || '';
-    const domTitle = (item && item.title) || (ticketStubEl && ticketStubEl.getAttribute('data-title')) || 'Festival Onderdeel';
-    let numericPrice = item ? item.price : ((ticketStubEl && parseFloat(ticketStubEl.getAttribute('data-price') || '0')) || 0);
+    const liveRec = ((window as any).__LIVE_GHL_TICKETS__ || []).find((r: any) => r.id === mcId);
+    const lp = liveRec ? (liveRec.properties || liveRec) : null;
 
+    const ticketStubEl = document.querySelector(`.ticket-stub[data-ticket-id="${mcId}"]`);
+    const domCategory = (lp && lp.category) || (item && item.category) || (ticketStubEl && ticketStubEl.getAttribute('data-category')) || '';
+    const domTitle = (lp && lp.title) || (item && item.title) || (ticketStubEl && ticketStubEl.getAttribute('data-title')) || 'Festival Onderdeel';
+    
+    let numericPrice = item ? item.price : ((ticketStubEl && parseFloat(ticketStubEl.getAttribute('data-price') || '0')) || 0);
+    if (lp && lp.price !== undefined && lp.price !== null) {
+      numericPrice = typeof lp.price === 'number' ? lp.price : (parseFloat(lp.price) || parseFloat(lp.ticket_price) || numericPrice);
+    }
+
+    let title = domTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+
+    const dateStr = (lp && lp.date_label) || (item && item.date) || (ticketStubEl && ticketStubEl.getAttribute('data-date')) || '';
+    const timeStr = (lp && lp.time_label) || (item && item.time) || (ticketStubEl && ticketStubEl.getAttribute('data-time')) || '';
+    let subtitle = (dateStr && timeStr) ? `${dateStr} • ${timeStr}` : (dateStr || timeStr || 'Exclusieve festivalbeleving');
+
+    let location = (lp && lp.location) || (item && item.location) || 'De Oude Vismijn Gent';
+    let duration = (lp && (lp.duration || lp.session_duration)) || (item && (item.duration || item.sessionDuration)) || '';
+
+    // Category Tag & Contextual Headings
     let tag = 'FESTIVAL ONDERDEEL';
-    let title = domTitle;
-    let subtitle = item ? `${item.date} • ${item.time}` : 'Exclusieve festivalbeleving';
-    let location = (item && item.location) || 'De Oude Vismijn Gent';
-    let duration = '45 minuten';
-    let description = (item && (item.description || item.extra)) || '';
-    let ambName = item?.ambassadorName || '';
-    let ambTitle = item?.ambassadorTitle || (ambName ? 'Expert & Begeleider' : '');
-    let ambBio = item?.ambassadorBio || '';
     let descHeading = 'Over dit Festivalonderdeel';
     let lineupHeading = 'Inbegrepen bij dit ticket:';
-    let lineup: string[] = (item?.tastingLineup && Array.isArray(item.tastingLineup)) ? item.tastingLineup : [];
 
-    if (mcId.includes('vip') || (item && item.title && item.title.toLowerCase().includes('vip'))) {
+    const isVip = domCategory === 'vip' || mcId.includes('vip') || title.toLowerCase().includes('vip');
+    if (isVip) {
       tag = 'VIP FESTIVAL SESSIE';
-      title = item?.title || 'VIP Sessie - Vrijdagmiddag';
-      subtitle = `${item?.date || 'Vrijdag 1 Okt 2027'} • ${item?.time || '13:00 – 17:00 uur'}`;
-      location = 'De Oude Vismijn Gent';
-      duration = '4 uur exclusieve festivaltoegang';
       descHeading = 'Over het VIP Arrangement';
-      description = 'De ultieme festivalbeleving voor de echte whiskyliefhebber. Geniet van 4 uur lang ongestoord proeven, vroege toegang vóór de reguliere opening, toegang tot exclusieve VIP masterclasses en verwennerij met luxe hapjes.';
-      ambName = 'Festival Organisatie & VIP Concierge';
-      ambTitle = 'VIP Host & Begeleiding';
-      ambBio = 'Persoonlijke ontvangst en exclusieve service tijdens de officiële opening van het festivalweekend in Gent.';
       lineupHeading = 'Wat is inbegrepen bij uw VIP ticket:';
-      lineup = [
-        '12 gratis festival proefdrams (t.w.v. € 12,00)',
-        'Officieel Glencairn festival proefglas',
-        'Toegang tot alle exclusieve VIP Masterclasses in de kerk',
-        'Luxe hapjes-vouchers (worsten- & bitterballenplateau)',
-        'Officieel festivalboekje met beursplattegrond en alle standhouders'
-      ];
-    } else if (domCategory === 'entree' || mcId.startsWith('session-')) {
+    } else if (domCategory === 'entree' || mcId.startsWith('session-') || mcId.startsWith('gent-entree-')) {
       tag = 'REGULIERE FESTIVAL SESSIE';
-      title = item?.title || 'Reguliere Festival Entree';
-      subtitle = `${item?.date || 'Festivaldag 2027'} • ${item?.time || '4 uur toegang'}`;
-      location = 'De Oude Vismijn Gent';
-      duration = '4 uur festivaltoegang';
       descHeading = 'Over deze Festivalsessie';
-      description = 'Beleef de magie van het meest toonaangevende whiskyfestival van België in de historische De Oude Vismijn van Gent. Ontdek meer dan 40 standhouders en honderden verschillende Schotse single malts, wereldwhisky’s en ambachtelijke distilleerderijen.';
-      ambName = 'Gents Whisky Festival Team';
-      ambTitle = 'Festival Host';
-      ambBio = 'Het officiële festivalteam staat klaar om u te verwelkomen in de historische ambiance van de De Oude Vismijn.';
       lineupHeading = 'Wat is inbegrepen bij uw entree:';
-      lineup = [
-        'Officieel Glencairn festival proefglas',
-        'Talloze gratis te proeven drams op de beursvloer',
-        'Compleet festivalboekje met alle standhouders en plattegrond',
-        '4 uur onbeperkt toegang tot alle beurseilanden en stands'
-      ];
     } else if (domCategory === 'warehouse' || domCategory === 'dada') {
       tag = 'DADA CHAPEL RONDLEIDING';
-      subtitle = `${item?.date || ''} • Dada Chapel Distilleerderij`;
-      location = 'Dada Chapel Distilleerderij (Gent)';
-      duration = '45 minuten';
       descHeading = 'Over deze Dada Chapel Rondleiding';
-      description = `Exclusieve rondleiding door de Dada Chapel Distilleerderij te Gent inclusief proeverij van hun bijzondere distillaten. ${item?.title || ''}`;
-      ambName = 'Dada Chapel Distilleerder & Gids';
-      ambTitle = 'Master Distiller';
-      ambBio = 'Rondleiding en toelichting door de ambachtelijke distilleerders van Dada Chapel in het historische hart van Gent.';
       lineupHeading = 'Inbegrepen bij de rondleiding:';
-      lineup = [
-        'Rondleiding door de distilleerderij',
-        'Uitleg over het unieke distillatieproces',
-        'Exclusieve proeverij van Dada Chapel creaties'
-      ];
     } else if (domCategory === 'boot' || domCategory === 'tram') {
       tag = 'GENTSE WHISKY BOOTJES';
-      subtitle = `${item?.date || ''} • Vertrek: ${item?.time || ''}`;
-      location = 'Aanlegsteiger direct aan De Oude Vismijn';
-      duration = '50 minuten varende proeverij';
       descHeading = 'Over de Gentse Whisky Bootjes';
-      description = `Geniet van een sfeervolle varende whiskyproeverij door de historische Gentse binnenwateren, vertrekkend vanaf De Oude Vismijn onder begeleiding van deskundige uitleg en topdrams.`;
-      ambName = 'Whisky Bootjes Schipper & Gids';
-      ambTitle = 'Gastheer & Whisky Sommelier';
-      ambBio = 'Varen over de Gentse wateren met vakkundige proefnotities en prachtige stadsverhalen.';
       lineupHeading = 'Inbegrepen tijdens de vaartocht:';
-      lineup = [
-        '50 minuten rondvaart door historisch Gent',
-        'Geselecteerde premium whisky proefdrams',
-        'Begeleiding door ervaren whiskygids'
-      ];
     } else if (domCategory === 'botteling') {
       tag = 'FESTIVAL BOTTELING';
-      subtitle = 'Gelimiteerde Cask Strength Single Cask';
-      location = 'Uitsluitend af te halen tijdens het festival bij De Oude Vismijn';
-      duration = 'Festival Cask Exclusive';
       descHeading = 'Over deze Festival Botteling';
-      description = `Officiële exclusieve botteling voor het Gents Whisky Festival 2027. ${item?.title || ''}`;
-      ambName = 'Festival Bottling Panel';
-      ambTitle = 'Cask Selection Committee';
-      ambBio = 'Persoonlijk geselecteerd uit de beste vaten op vatsterkte.';
       lineupHeading = 'Details van de botteling:';
-      lineup = [
-        '70cl Volledige Fles (Cask Strength)',
-        'Officieel genummerd herkomstcertificaat'
-      ];
     } else if (domCategory === 'masterclass') {
       tag = 'SPECIAL MASTERCLASS';
-      subtitle = `${item?.date || ''} • ${item?.time || ''}`;
-      location = item?.location || 'De Oude Vismijn (Spaarkamer)';
-      duration = '45 minuten';
       descHeading = 'Over deze Masterclass';
-      description = item?.description || item?.extra || '';
-      ambName = (item?.title && item.title.includes('Macallan')) ? 'Gerard Spaans' : (item?.ambassadorName || '');
-      ambTitle = (item?.title && item.title.includes('Macallan')) ? 'Senior Brand Ambassador & Master of Malt' : (item?.ambassadorTitle || (ambName ? 'Masterclass Host' : ''));
-      ambBio = (item?.title && item.title.includes('Macallan')) ? 'Internationaal expert met diepgaande kennis over distillatietechnieken, vatselecties en de unieke smaakprofielen van deze distilleerderij.' : (item?.ambassadorBio || '');
       lineupHeading = 'Officiële Proeflijst (Inbegrepen Drams):';
-      lineup = (item?.tastingLineup && Array.isArray(item.tastingLineup) && item.tastingLineup.length > 0) ? item.tastingLineup : [];
     }
 
-    // Dynamic overrides from GHL or dataset if provided
-    if (item?.description && item.description.trim() !== '') {
-      description = item.description;
-    }
-    if (item?.price !== undefined && item.price !== null && item.price > 0) {
-      numericPrice = typeof item.price === 'number' ? item.price : (parseFloat(item.price) || numericPrice);
-    }
-    if (item?.ambassadorName && item.ambassadorName.trim() !== '') ambName = item.ambassadorName;
-    if (item?.ambassadorTitle && item.ambassadorTitle.trim() !== '') ambTitle = item.ambassadorTitle;
-    if (item?.ambassadorBio && item.ambassadorBio.trim() !== '') ambBio = item.ambassadorBio;
-    if (item?.tastingLineup && Array.isArray(item.tastingLineup) && item.tastingLineup.length > 0) {
+    // STRICT: Only use actual data from ticket properties or GHL — NEVER invent dummy data!
+    let description = (lp && (lp.ticket_description || lp.description)) || (item && (item.description || item.extra)) || '';
+    description = description.trim();
+
+    let ambName = (lp && lp.ambassador_name) || (item && item.ambassadorName) || '';
+    ambName = ambName.trim();
+    let ambTitle = (lp && lp.ambassador_title) || (item && item.ambassadorTitle) || (ambName ? 'Expert & Host' : '');
+    ambTitle = ambTitle.trim();
+    let ambBio = (lp && lp.ambassador_bio) || (item && item.ambassadorBio) || '';
+    ambBio = ambBio.trim();
+
+    let lineup: string[] = [];
+    if (lp && lp.tasting_lineup) {
+      lineup = Array.isArray(lp.tasting_lineup)
+        ? lp.tasting_lineup
+        : String(lp.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean);
+    } else if (item && item.tastingLineup && Array.isArray(item.tastingLineup)) {
       lineup = item.tastingLineup;
-    }
-
-    // Real-time live GHL overrides from Leadfabriek CRM
-    const liveRec = ((window as any).__LIVE_GHL_TICKETS__ || []).find((r: any) => r.id === mcId);
-    if (liveRec) {
-      const lp = liveRec.properties || liveRec;
-      if (lp.title) {
-        title = lp.title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
-      }
-      if (lp.price !== undefined && lp.price !== null) {
-        numericPrice = typeof lp.price === 'number' ? lp.price : (parseFloat(lp.price) || parseFloat(lp.ticket_price) || numericPrice);
-      }
-      if (lp.ticket_description !== undefined || lp.description !== undefined) {
-        description = (lp.ticket_description || lp.description || '').trim();
-      }
-      if (lp.ambassador_name !== undefined) {
-        ambName = (lp.ambassador_name || '').trim();
-        ambTitle = (lp.ambassador_title || (ambName ? 'Masterclass Host' : '')).trim();
-        ambBio = (lp.ambassador_bio || '').trim();
-      }
-      if (lp.tasting_lineup !== undefined) {
-        lineup = lp.tasting_lineup ? (Array.isArray(lp.tasting_lineup) ? lp.tasting_lineup : String(lp.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean)) : [];
-      }
-      if (lp.date_label || lp.time_label) {
-        subtitle = `${lp.date_label || ''} • ${lp.time_label || ''}`;
-      }
-      if (lp.location) location = lp.location;
     }
 
     // Populate modal fields
@@ -6517,9 +6433,22 @@ const marqueeBrands = BRAND.featuredBrands || [
     if (titleEl) titleEl.textContent = title;
     if (subtitleEl) subtitleEl.textContent = subtitle;
     if (locationEl) locationEl.textContent = location;
-    if (durationEl) durationEl.textContent = duration;
 
-    // Toggle description box
+    // Toggle Location & Duration Cards
+    const locCard = locationEl ? (locationEl.closest('div') as HTMLElement) : null;
+    const durCard = durationEl ? (durationEl.closest('div') as HTMLElement) : null;
+    if (durCard) {
+      if (duration && duration.trim() !== '') {
+        durCard.style.display = 'flex';
+        if (durationEl) durationEl.textContent = duration;
+        if (locCard) locCard.style.gridColumn = 'auto';
+      } else {
+        durCard.style.display = 'none';
+        if (locCard) locCard.style.gridColumn = '1 / -1';
+      }
+    }
+
+    // Toggle description box (only show if actual description exists!)
     const descBox = document.getElementById('mc-modal-desc-box');
     if (descBox) {
       if (description && description.trim() !== '') {
@@ -6531,7 +6460,7 @@ const marqueeBrands = BRAND.featuredBrands || [
       }
     }
 
-    // Toggle ambassador box
+    // Toggle ambassador box (only show if ambassador name exists!)
     const ambBox = document.getElementById('mc-modal-ambassador-box');
     if (ambBox) {
       if (ambName && ambName.trim() !== '') {
@@ -6550,7 +6479,7 @@ const marqueeBrands = BRAND.featuredBrands || [
       }
     }
 
-    // Toggle lineup box
+    // Toggle lineup box (only show if lineup items exist!)
     const lineupBox = document.getElementById('mc-modal-lineup-box');
     if (lineupBox) {
       if (lineup && lineup.length > 0) {
