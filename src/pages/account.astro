@@ -332,7 +332,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                     <td><strong id="receipt-res-no">#GWF-2027-84387</strong></td>
                     <td>26 Mei 2027</td>
                     <td><strong id="receipt-total" style="color: #1E3A8A;">€ 79,50</strong></td>
-                    <td><span class="status-badge paid">Betaald</span></td>
+                    <td><span class="status-badge paid" id="receipt-status-badge">Betaald</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -345,7 +345,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                       <span class="rc-label">Reservering</span>
                       <strong class="rc-res-val font-mono" id="receipt-res-no-mob">#GWF-2027-84387</strong>
                     </div>
-                    <span class="status-badge paid">Betaald</span>
+                    <span class="status-badge paid" id="receipt-status-badge-mob">Betaald</span>
                   </div>
                   <div class="rc-mobile-row rc-mobile-body">
                     <div class="rc-mobile-col">
@@ -1756,6 +1756,12 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
     border: 1px solid rgba(30, 58, 138, 0.25);
   }
 
+  .status-badge.cancelled {
+    background-color: rgba(220, 38, 38, 0.1);
+    color: #DC2626;
+    border: 1px solid rgba(220, 38, 38, 0.35);
+  }
+
   /* --- Receipt Mobile Card View Styles --- */
   .receipt-mobile-card-view {
     display: none;
@@ -2746,20 +2752,72 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
       if (profileInputPhone) profileInputPhone.value = orderData.phone || "+31 6 12345678";
       if (profileInputWhisky) profileInputWhisky.value = orderData.whiskyStyle || "Single Malt Scotch";
 
-      // Render Dynamic Tickets in Tab 1 (Each ticket contains an individual Download Button)
+      // Render Dynamic Tickets in Tab 1 (Active, Swapped & Cancelled synchronization)
       const ticketsContainer = document.getElementById("tickets-container");
-      if (ticketsContainer && (orderData.items || orderData.tickets || orderData.activeTickets)) {
+      if (ticketsContainer && (orderData.items || orderData.tickets || orderData.activeTickets || orderData.cancelledTickets || orderData.swappedTickets)) {
         ticketsContainer.innerHTML = "";
 
-        // Prefer authoritative active tickets from Whiskytix (omits cancelled & swapped tickets!)
-        const authoritativeTickets = (orderData.activeTickets && Array.isArray(orderData.activeTickets) && orderData.activeTickets.length > 0)
-          ? orderData.activeTickets
-          : ((orderData.tickets && Array.isArray(orderData.tickets) && orderData.tickets.length > 0)
-              ? orderData.tickets.filter((t: any) => t.status !== 'cancelled' && t.status !== 'swapped')
+        const isOrderCancelled = orderData.status === 'cancelled' || 
+          (orderData.tickets && Array.isArray(orderData.tickets) && orderData.tickets.length > 0 && orderData.tickets.every((t: any) => t.status === 'cancelled'));
+
+        // Update receipt status badges
+        const receiptBadge = document.getElementById('receipt-status-badge');
+        const receiptBadgeMob = document.getElementById('receipt-status-badge-mob');
+        if (receiptBadge) {
+          if (isOrderCancelled) {
+            receiptBadge.textContent = 'Geannuleerd';
+            receiptBadge.className = 'status-badge cancelled';
+          } else {
+            receiptBadge.textContent = 'Betaald';
+            receiptBadge.className = 'status-badge paid';
+          }
+        }
+        if (receiptBadgeMob) {
+          if (isOrderCancelled) {
+            receiptBadgeMob.textContent = 'Geannuleerd';
+            receiptBadgeMob.className = 'status-badge cancelled';
+          } else {
+            receiptBadgeMob.textContent = 'Betaald';
+            receiptBadgeMob.className = 'status-badge paid';
+          }
+        }
+
+        // Prominent cancellation banner if the order is cancelled
+        if (isOrderCancelled) {
+          ticketsContainer.innerHTML += `
+            <div style="background:#FEE2E2;border:2px solid #EF4444;border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:1rem;box-shadow:3px 3px 0px rgba(185,28,28,0.3);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.5" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              <div>
+                <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.05rem;font-weight:800;color:#991B1B;margin:0 0 4px;">Bestelling Geannuleerd</h3>
+                <p style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;color:#7F1D1D;margin:0;line-height:1.45;">
+                  Bestelling <strong>${resNum}</strong> is geannuleerd en alle bijbehorende tickets zijn ongeldig gemaakt voor toegang tot het festival.
+                </p>
+              </div>
+            </div>
+          `;
+        }
+
+        const allTickets = (orderData.tickets && Array.isArray(orderData.tickets) && orderData.tickets.length > 0)
+          ? orderData.tickets
+          : null;
+
+        const activeTickets = allTickets
+          ? allTickets.filter((t: any) => (t.status === 'valid' || t.status === 'checked_in' || !t.status) && !isOrderCancelled)
+          : ((orderData.activeTickets && Array.isArray(orderData.activeTickets) && orderData.activeTickets.length > 0 && !isOrderCancelled)
+              ? orderData.activeTickets
               : null);
 
-        if (authoritativeTickets && authoritativeTickets.length > 0) {
-          authoritativeTickets.forEach((ticket: any, tIdx: number) => {
+        const swappedTickets = allTickets
+          ? allTickets.filter((t: any) => t.status === 'swapped')
+          : (orderData.swappedTickets && Array.isArray(orderData.swappedTickets) ? orderData.swappedTickets : []);
+
+        const cancelledTickets = allTickets
+          ? (isOrderCancelled ? allTickets : allTickets.filter((t: any) => t.status === 'cancelled'))
+          : (orderData.cancelledTickets && Array.isArray(orderData.cancelledTickets) ? orderData.cancelledTickets : []);
+
+        // 1. RENDER ACTIVE TICKETS
+        if (activeTickets && activeTickets.length > 0 && !isOrderCancelled) {
+          activeTickets.forEach((ticket: any, tIdx: number) => {
             const rawCode = (ticket.ticketCode || `${orderData.resNumber || 'GWF-2027-84387'}-${tIdx + 1}`).replace(/^#/, '');
             const cleanCode = rawCode.trim();
             const displayCode = `#${cleanCode}`;
@@ -2859,7 +2917,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                           ${isCheckedIn ? 'Ingecheckt aan de Deur' : (titleLower.includes('botteling') ? ((ticket.delivery === 'shipping' || displayTime.toLowerCase().includes('verzending')) ? 'Verzending Bevestigd' : 'Geldig Ophaalbewijs') : 'Geldig Toegangsbewijs')}
                         </span>
-                        ${authoritativeTickets.length > 1 ? `<span class="ticket-qty-tag">Ticket ${tIdx + 1} van ${authoritativeTickets.length}</span>` : ''}
+                        ${activeTickets.length > 1 ? `<span class="ticket-qty-tag">Ticket ${tIdx + 1} van ${activeTickets.length}</span>` : ''}
                       </div>
                     </div>
 
@@ -2910,39 +2968,185 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
             `;
             ticketsContainer.innerHTML += ticketHTML;
           });
-        } else if (orderData.items) {
-          // Fallback to orderData.items if authoritative tickets not yet loaded
+        }
+
+        // 2. RENDER SWAPPED TICKETS (if any)
+        if (swappedTickets && swappedTickets.length > 0) {
+          let swappedSectionHtml = `
+            <div style="margin-top:2.5rem;margin-bottom:1rem;padding-top:1.5rem;border-top:2px dashed #E5E7EB;">
+              <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.95rem;font-weight:800;color:#92400E;text-transform:uppercase;letter-spacing:0.05em;display:flex;align-items:center;gap:8px;margin:0 0 1rem;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                Omgeruilde Tickets (Niet meer geldig)
+              </h3>
+            </div>
+          `;
+          swappedTickets.forEach((ticket: any) => {
+            const rawCode = (ticket.ticketCode || '').replace(/^#/, '');
+            const cleanCode = rawCode.trim();
+            const displayCode = `#${cleanCode}`;
+            const attendeeName = ticket.attendeeName || userName;
+            const ticketTitle = ticket.sessionTitle || ticket.title || 'Festival Entreeticket';
+            const cleanTitle = ticketTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+            const meta = resolveGentSessionMeta(cleanTitle, ticket.category || '', ticket.dateStr || ticket.date, ticket.timeStr || ticket.time || ticket.timeslot);
+            const replacementCode = ticket.swappedToTicketCode || 'nieuw ticket';
+
+            swappedSectionHtml += `
+              <div class="ticket-envelope" style="opacity:0.75;filter:grayscale(0.15);margin-bottom:1.25rem;">
+                <div class="ticket-stub-large" style="border:2px dashed #D97706;">
+                  <div class="ticket-right-stub" style="background:#FFFBEB;">
+                    <span class="scan-label" style="color:#B45309;">ONGELDIG</span>
+                    <div class="qr-code-holder" style="opacity:0.25;filter:blur(1px);position:relative;">
+                      <img 
+                        src="https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=gent&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}" 
+                        alt="Omgeruilde QR-Code ${displayCode}" 
+                        width="105" 
+                        height="105" 
+                        class="qr-code-img"
+                        style="display:block; width:105px; height:105px; object-fit:contain; image-rendering:pixelated;"
+                        loading="lazy"
+                      />
+                    </div>
+                    <span class="scan-instructions" style="color:#B45309;font-weight:800;">VERVALLEN</span>
+                    <span class="scan-res-hash">${displayCode}</span>
+                  </div>
+                  <div class="ticket-left-stub" style="background:#FFFDF9;">
+                    <div class="ticket-watermark" style="opacity:0.04;">OMGERUILD</div>
+                    <div class="ticket-header-row">
+                      <div class="ticket-title-block">
+                        <h2 class="ticket-session-title" style="text-decoration:line-through;color:#78716C;">${cleanTitle}</h2>
+                        <p class="ticket-schedule-text" style="color:#A8A29E;">${meta.date} • ${meta.time}</p>
+                      </div>
+                      <div class="ticket-badges-block">
+                        <span class="ticket-status-tag" style="background:#FEF3C7;color:#92400E;border-color:#FCD34D;">
+                          Vervallen (Omgeruild)
+                        </span>
+                      </div>
+                    </div>
+                    <div style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:6px;padding:0.65rem 0.85rem;margin:0.75rem 0;font-size:0.82rem;color:#92400E;line-height:1.4;">
+                      Dit ticket is omgeruild voor <strong>${replacementCode}</strong>. De barcode is per direct gedeactiveerd aan de deur.
+                    </div>
+                    <div class="ticket-meta-trio">
+                      <div class="meta-col">
+                        <span class="meta-col-label">Kaarthouder</span>
+                        <strong class="meta-col-val">${attendeeName}</strong>
+                      </div>
+                      <div class="meta-col">
+                        <span class="meta-col-label">Oude Code</span>
+                        <strong class="meta-col-val font-mono" style="text-decoration:line-through;">${displayCode}</strong>
+                      </div>
+                      <div class="meta-col">
+                        <span class="meta-col-label">Nieuw Ticket</span>
+                        <strong class="meta-col-val font-mono" style="color:#006448;">${replacementCode}</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          ticketsContainer.innerHTML += swappedSectionHtml;
+        }
+
+        // 3. RENDER CANCELLED TICKETS (if any)
+        if (cancelledTickets && cancelledTickets.length > 0) {
+          let cancelledSectionHtml = `
+            <div style="margin-top:2.5rem;margin-bottom:1rem;padding-top:1.5rem;border-top:2px dashed #E5E7EB;">
+              <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:0.95rem;font-weight:800;color:#991B1B;text-transform:uppercase;letter-spacing:0.05em;display:flex;align-items:center;gap:8px;margin:0 0 1rem;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                Geannuleerde Tickets (Niet geldig)
+              </h3>
+            </div>
+          `;
+          cancelledTickets.forEach((ticket: any) => {
+            const rawCode = (ticket.ticketCode || '').replace(/^#/, '');
+            const cleanCode = rawCode.trim();
+            const displayCode = `#${cleanCode}`;
+            const attendeeName = ticket.attendeeName || userName;
+            const ticketTitle = ticket.sessionTitle || ticket.title || 'Festival Entreeticket';
+            const cleanTitle = ticketTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
+            const meta = resolveGentSessionMeta(cleanTitle, ticket.category || '', ticket.dateStr || ticket.date, ticket.timeStr || ticket.time || ticket.timeslot);
+
+            cancelledSectionHtml += `
+              <div class="ticket-envelope" style="opacity:0.7;filter:grayscale(0.3);margin-bottom:1.25rem;">
+                <div class="ticket-stub-large" style="border:2px dashed #DC2626;">
+                  <div class="ticket-right-stub" style="background:#FEF2F2;">
+                    <span class="scan-label" style="color:#DC2626;">ONGELDIG</span>
+                    <div class="qr-code-holder" style="opacity:0.25;filter:blur(1px);">
+                      <img 
+                        src="https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/qr.svg?city=gent&name=${encodeURIComponent(attendeeName)}&title=${encodeURIComponent(cleanTitle)}" 
+                        alt="Geannuleerde QR-Code ${displayCode}" 
+                        width="105" 
+                        height="105" 
+                        class="qr-code-img"
+                        style="display:block; width:105px; height:105px; object-fit:contain; image-rendering:pixelated;"
+                        loading="lazy"
+                      />
+                    </div>
+                    <span class="scan-instructions" style="color:#DC2626;font-weight:800;">GEANNULEERD</span>
+                    <span class="scan-res-hash">${displayCode}</span>
+                  </div>
+                  <div class="ticket-left-stub" style="background:#FFFDF9;">
+                    <div class="ticket-watermark" style="opacity:0.04;">GEANNULEERD</div>
+                    <div class="ticket-header-row">
+                      <div class="ticket-title-block">
+                        <h2 class="ticket-session-title" style="text-decoration:line-through;color:#78716C;">${cleanTitle}</h2>
+                        <p class="ticket-schedule-text" style="color:#A8A29E;">${meta.date} • ${meta.time}</p>
+                      </div>
+                      <div class="ticket-badges-block">
+                        <span class="ticket-status-tag" style="background:#FEE2E2;color:#991B1B;border-color:#EF4444;">
+                          Geannuleerd
+                        </span>
+                      </div>
+                    </div>
+                    <div style="background:#FEE2E2;border:1px solid #EF4444;border-radius:6px;padding:0.65rem 0.85rem;margin:0.75rem 0;font-size:0.82rem;color:#991B1B;line-height:1.4;">
+                      Dit ticket is geannuleerd en geeft geen toegang tot het festivalterrein.
+                    </div>
+                    <div class="ticket-meta-trio">
+                      <div class="meta-col">
+                        <span class="meta-col-label">Kaarthouder</span>
+                        <strong class="meta-col-val">${attendeeName}</strong>
+                      </div>
+                      <div class="meta-col">
+                        <span class="meta-col-label">Ticket Code</span>
+                        <strong class="meta-col-val font-mono" style="text-decoration:line-through;">${displayCode}</strong>
+                      </div>
+                      <div class="meta-col">
+                        <span class="meta-col-label">Status</span>
+                        <strong class="meta-col-val" style="color:#DC2626;">Niet Geldig</strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          ticketsContainer.innerHTML += cancelledSectionHtml;
+        }
+
+        // 4. FALLBACK ONLY IF NO TICKETS EXIST IN STORE AND ORDER IS NOT CANCELLED
+        if (!allTickets && (!activeTickets || activeTickets.length === 0) && !isOrderCancelled && orderData.items) {
           let globalTicketIndex = 1;
           orderData.items.forEach((item: any) => {
             const titleLower = item.title.toLowerCase();
             const cleanTitle = item.title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
             const meta = resolveGentSessionMeta(cleanTitle, item.category || '', item.date || item.dateStr, item.time || item.timeStr || item.timeslot);
             
-            const displayDay = meta.day;
-            const displayMonth = meta.month;
             const displayTime = meta.time;
             const watermark = meta.watermark;
             const formattedDate = meta.date;
             const formattedSchedule = `${formattedDate} • ${displayTime}`;
 
-            // Expand multiple quantities into individual separate ticket cards
             const qty = item.qty || 1;
             for (let t = 0; t < qty; t++) {
               const rawCode = (orderData.resNumber || "GWF-2027-84387").replace('#', '');
               const cleanCode = `${rawCode}-${globalTicketIndex}`;
               const displayCode = `#${cleanCode}`;
-              
-              // Clean title: remove redundant time suffix if present so title stays concise and uniform
-              const cleanTitle = item.title.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
-              // Schedule and Date are cleanly resolved via resolveGentSessionMeta above
-
-              // Clean public HTTPS URL that WhatsApp always recognizes as a blue clickable link
               const baseUrl = window.location.origin;
               
               const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&category=${encodeURIComponent(item.category || '')}&delivery=${encodeURIComponent(item.delivery || '')}`;
 
               const shareText = encodeURIComponent(
-                `*${'Whisky Festival Gent 2027'}*\n` +
+                `*Whisky Festival Gent 2027*\n` +
                 `E-ticket: ${cleanTitle}\n\n` +
                 `Kaarthouder: ${userName}\n` +
                 `Tijdslot: ${displayTime}\n` +
@@ -2968,7 +3172,6 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
               const ticketHTML = `
                 <div class="ticket-envelope">
                   <div class="ticket-stub-large">
-                    <!-- Scanner Stub -->
                     <div class="ticket-right-stub">
                       <span class="scan-label">CONTROLE STUB</span>
                       <div class="qr-code-holder">
@@ -2986,11 +3189,9 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                       <span class="scan-res-hash">${displayCode}</span>
                     </div>
 
-                    <!-- Clean Main Body -->
                     <div class="ticket-left-stub">
                       <div class="ticket-watermark">${watermark}</div>
                       
-                      <!-- 1. Header Row -->
                       <div class="ticket-header-row">
                         <div class="ticket-title-block">
                           <h2 class="ticket-session-title">${cleanTitle}</h2>
@@ -3005,7 +3206,6 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                         </div>
                       </div>
 
-                      <!-- 2. Middle Row: 3-Column Meta Grid -->
                       <div class="ticket-meta-trio">
                         <div class="meta-col">
                           <span class="meta-col-label">Kaarthouder</span>
@@ -3021,7 +3221,6 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                         </div>
                       </div>
 
-                      <!-- 3. Bottom Row: Action Buttons -->
                       <div class="ticket-actions-row">
                         <button type="button" class="btn-ticket-download-gold" onclick="window.open('https://whiskytix-r1qq.vercel.app/api/tickets/${encodeURIComponent(cleanCode)}/pdf?city=gent&name=${encodeURIComponent(userName)}&title=${encodeURIComponent(cleanTitle)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}', '_blank')">
                           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -3058,6 +3257,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
         }
       }
     }
+
 
     // Auth State Controller & Dynamic Render
     const authArea = document.getElementById('portal-authenticated-area');
@@ -3190,6 +3390,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                   email: vOrder.customerEmail || orderData.email,
                   phone: vOrder.customerPhone || orderData.phone,
                   resNumber: vOrder.orderNumber || orderData.resNumber,
+                  status: vOrder.status || orderData.status,
                   items: items.length > 0 ? items : orderData.items,
                   tickets: vOrder.tickets || orderData.tickets || [],
                   activeTickets: vOrder.activeTickets || orderData.activeTickets || [],
@@ -3317,6 +3518,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
               email: email,
               phone: verifiedOrder.customerPhone || verifiedOrder.phone || '+32 470 123456',
               whiskyStyle: verifiedOrder.whiskyStyle || 'Single Malt Scotch',
+              status: verifiedOrder.status || 'paid',
               items: items.length > 0 ? items : [
                 {
                   id: 'gent-entree-vrijdagavond',
