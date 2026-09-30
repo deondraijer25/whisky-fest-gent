@@ -2755,19 +2755,22 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
       let date = (rawDate && rawDate.trim() && rawDate !== 'Festivaldag') ? rawDate.trim() : '';
       let time = (rawTime && rawTime.trim() && rawTime !== 'Regulier') ? rawTime.trim().replace(/–/g, '-') : '';
 
-      // Live GHL synchronization: GHL custom object is the authoritative single source of truth!
-      const liveGhlTickets = (window as any).__LIVE_GHL_TICKETS__;
-      if (Array.isArray(liveGhlTickets) && liveGhlTickets.length > 0) {
-        const cleanTKey = titleLower.replace(/[^a-z0-9]/g, '');
-        const ghlMatch = liveGhlTickets.find((r: any) => {
-          const p = r.properties || r;
-          const pTitle = (p.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-          return pTitle && cleanTKey && (pTitle.includes(cleanTKey) || cleanTKey.includes(pTitle));
-        });
-        if (ghlMatch) {
-          const p = ghlMatch.properties || ghlMatch;
-          if (p.date_label) date = p.date_label.trim();
-          if (p.time_label) time = p.time_label.trim().replace(/–/g, '-');
+      // Only use GHL fallback if date or time are not already present on the ticket!
+      // NEVER overwrite the ticket's own explicit date/time (e.g. Saturday vs Friday tour)
+      if (!date || !time) {
+        const liveGhlTickets = (window as any).__LIVE_GHL_TICKETS__;
+        if (Array.isArray(liveGhlTickets) && liveGhlTickets.length > 0) {
+          const cleanTKey = titleLower.replace(/[^a-z0-9]/g, '');
+          const ghlMatch = liveGhlTickets.find((r: any) => {
+            const p = r.properties || r;
+            const pTitle = (p.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            return pTitle && cleanTKey && (pTitle.includes(cleanTKey) || cleanTKey.includes(pTitle));
+          });
+          if (ghlMatch) {
+            const p = ghlMatch.properties || ghlMatch;
+            if (!date && p.date_label) date = p.date_label.trim();
+            if (!time && p.time_label) time = p.time_label.trim().replace(/–/g, '-');
+          }
         }
       }
 
@@ -2802,11 +2805,11 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
       let day = '02';
       let month = 'OKT';
       const dLower = date.toLowerCase();
-      if (dLower.includes('vrijdag') || dLower.includes(' 2 ') || dLower.startsWith('2 ') || dLower.includes('2 okt')) {
+      if (dLower.includes('vrijdag') || dLower.includes(' 1 ') || dLower.startsWith('1 ') || dLower.includes('1 okt')) {
+        day = '01';
+      } else if (dLower.includes('zaterdag') || dLower.includes(' 2 ') || dLower.startsWith('2 ') || dLower.includes('2 okt')) {
         day = '02';
-      } else if (dLower.includes('zondag') || dLower.includes(' 4 ') || dLower.startsWith('4 ') || dLower.includes('4 okt')) {
-        day = '04';
-      } else if (dLower.includes('zaterdag') || dLower.includes(' 3 ') || dLower.startsWith('3 ') || dLower.includes('3 okt')) {
+      } else if (dLower.includes('zondag') || dLower.includes(' 3 ') || dLower.startsWith('3 ') || dLower.includes('3 okt')) {
         day = '03';
       } else {
         const match = date.match(/\b([0-3]?\d)\b/);

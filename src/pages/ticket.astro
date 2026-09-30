@@ -526,11 +526,11 @@ import Layout from '../layouts/Layout.astro';
   let resolvedDay = '02';
   let resolvedMonth = 'OKT';
   const dLower = resolvedDate.toLowerCase();
-  if (dLower.includes('vrijdag') || dLower.includes(' 2 ') || dLower.startsWith('2 ') || dLower.includes('2 okt')) {
+  if (dLower.includes('vrijdag') || dLower.includes(' 1 ') || dLower.startsWith('1 ') || dLower.includes('1 okt')) {
+    resolvedDay = '01';
+  } else if (dLower.includes('zaterdag') || dLower.includes(' 2 ') || dLower.startsWith('2 ') || dLower.includes('2 okt')) {
     resolvedDay = '02';
-  } else if (dLower.includes('zondag') || dLower.includes(' 4 ') || dLower.startsWith('4 ') || dLower.includes('4 okt')) {
-    resolvedDay = '04';
-  } else if (dLower.includes('zaterdag') || dLower.includes(' 3 ') || dLower.startsWith('3 ') || dLower.includes('3 okt')) {
+  } else if (dLower.includes('zondag') || dLower.includes(' 3 ') || dLower.startsWith('3 ') || dLower.includes('3 okt')) {
     resolvedDay = '03';
   } else {
     const match = resolvedDate.match(/\b([0-3]?\d)\b/);
