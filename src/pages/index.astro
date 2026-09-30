@@ -6649,6 +6649,12 @@ const marqueeBrands = BRAND.featuredBrands || [
         const itemsToRender = (orderData && orderData.items) || [];
       if (itemsToRender.length > 0) {
         itemsToRender.forEach((item: any) => {
+          let itemTitle = item.title || "Festivalticket";
+          if (/^[a-f0-9]{24}$/i.test(itemTitle)) {
+            if (itemTitle === "6abb978f1eb866bf2b8779e0" || item.category === "warehouse") {
+              itemTitle = "Rondleiding Dada Chapel Distilleerderij";
+            }
+          }
           let spec = "";
           const qty = item.quantity || item.qty || 1;
           const price = item.unitPriceCents ? (item.unitPriceCents / 100) : (item.price || 0);
@@ -6674,7 +6680,7 @@ const marqueeBrands = BRAND.featuredBrands || [
           row.setAttribute("style", "display: flex !important; justify-content: space-between !important; align-items: center !important; gap: 0.75rem !important; padding: 0.55rem 0.75rem !important; background: #FFFFFF !important; border: 1px solid rgba(140, 110, 70, 0.2) !important; border-radius: 6px !important; margin-bottom: 0.4rem !important;");
           row.innerHTML = `
             <div style="display: flex !important; flex-direction: column !important; gap: 0.15rem !important; flex: 1 !important; min-width: 0 !important; text-align: left !important;">
-              <span style="font-weight: 700 !important; color: #171614 !important; font-size: 0.84rem !important; line-height: 1.25 !important; display: block !important;">${qty} &times; ${item.title}</span>
+              <span style="font-weight: 700 !important; color: #171614 !important; font-size: 0.84rem !important; line-height: 1.25 !important; display: block !important;">${qty} &times; ${itemTitle}</span>
               ${spec ? `<span style="font-size: 0.74rem !important; color: #665C54 !important; line-height: 1.2 !important; display: block !important;">${spec}</span>` : ''}
             </div>
             <span style="font-weight: 800 !important; color: #1E3A8A !important; font-size: 0.92rem !important; font-family: var(--font-sans, sans-serif) !important; white-space: nowrap !important; text-align: right !important; margin-left: auto !important;">&euro;${(price * qty).toFixed(2).replace('.', ',')}</span>

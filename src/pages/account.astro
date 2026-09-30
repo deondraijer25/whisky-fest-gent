@@ -130,8 +130,6 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
           </div>
         </div>
 
-        </div>
-
         <!-- Sidebar Actions & Venue Info -->
         <div class="portal-sidebar-grid">
           <!-- Printable Action Card -->
@@ -2905,7 +2903,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
               orderNumber: cleanOrderNum,
               attendeeName: t.attendeeName || orderData.name || 'Bezoeker',
               cityName: citySlug,
-              sessionTitle: t.sessionTitle || t.title || 'Festival Entreeticket',
+              sessionTitle: (/^[a-f0-9]{24}$/i.test(t.sessionTitle || t.title || '') ? 'Rondleiding Dada Chapel Distilleerderij' : (t.sessionTitle || t.title || 'Festival Entreeticket')),
               dateStr: t.dateStr || t.date || '',
               timeStr: t.timeStr || t.time || t.timeslot || '',
               itemNumber: `${idx + 1}/${ticketsList.length}`,
@@ -2988,7 +2986,15 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
             const cleanCode = rawCode.trim();
             const displayCode = `#${cleanCode}`;
             const attendeeName = ticket.attendeeName || userName;
-            const ticketTitle = ticket.sessionTitle || ticket.title || 'Festival Entreeticket';
+            let ticketTitle = ticket.sessionTitle || ticket.title || 'Festival Entreeticket';
+            if (/^[a-f0-9]{24}$/i.test(ticketTitle)) {
+              if (ticketTitle === '6abb978f1eb866bf2b8779e0') {
+                ticketTitle = 'Rondleiding Dada Chapel Distilleerderij';
+              } else if (Array.isArray((window as any).__LIVE_GHL_TICKETS__)) {
+                const ghlMatch = (window as any).__LIVE_GHL_TICKETS__.find((r: any) => r.id === ticketTitle);
+                if (ghlMatch?.properties?.ticket_title) ticketTitle = ghlMatch.properties.ticket_title;
+              }
+            }
             const cleanTitle = ticketTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
             const meta = resolveGentSessionMeta(cleanTitle, ticket.category || '', ticket.dateStr || ticket.date, ticket.timeStr || ticket.time || ticket.timeslot);
             const displayTime = meta.time;
