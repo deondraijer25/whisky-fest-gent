@@ -65,8 +65,8 @@ import Layout from '../layouts/Layout.astro';
             
             <div class="ticket-stub-header">
               <div class="ticket-stub-date-badge">
-                <span class="badge-month" id="tv-month">NOV</span>
-                <span class="badge-day" id="tv-day">13</span>
+                <span class="badge-month" id="tv-month">OKT</span>
+                <span class="badge-day" id="tv-day">01</span>
               </div>
               <div class="ticket-stub-org">
                 <span class="org-established">Est. 2004</span>
@@ -547,7 +547,7 @@ import Layout from '../layouts/Layout.astro';
   const isWarehouse = category === 'warehouse' || category === 'dada' || titleLower.includes('dada');
 
   if (isBoottocht || isBotteling) {
-    resolvedDay = '02-04';
+    resolvedDay = '01-03';
   }
 
   if (!resolvedTime.toUpperCase().includes('UUR') && !resolvedTime.toUpperCase().includes('POST') && !resolvedTime.toUpperCase().includes('INFODESK') && !resolvedTime.toUpperCase().includes('DAG')) {

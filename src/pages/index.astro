@@ -1401,7 +1401,7 @@ const marqueeBrands = BRAND.featuredBrands || [
                   <span class="card-num">13</span>
                 </div>
                 <h3 class="card-title">Toren-tasting</h3>
-                <p class="card-desc">Introductie van de Toren-tasting: Tasting in de Gentse Toren. Eerst een rondleiding, dram op de top en dan afdalen voor een bijzondere tasting.</p>
+                <p class="card-desc">Introductie van de Toren-tasting: Introductie van de historische tasting in De Oude Vismijn.</p>
                 <div class="card-img-frame">
                   <img src="/Afbeeldingen/whisky-festival-2025-0121.jpg" alt="Toren-tasting" loading="lazy" />
                 </div>
@@ -5250,19 +5250,24 @@ const marqueeBrands = BRAND.featuredBrands || [
           orderList.push(`${itemDisplayTitle} (${item.qty}x)`);
           let itemDate = item.date || "";
           let itemTime = item.time || item.timeslot || "";
-          const matchedTicket = (denHaagTicketsData || []).find((t: any) => t.id === id || (t.title && item.title && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === item.title.toLowerCase().replace(/[^a-z0-9]/g, '')));
+          const matchedTicket = (gentTicketsData || []).find((t: any) => 
+            t.id === id || 
+            (t.title && item.title && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === item.title.toLowerCase().replace(/[^a-z0-9]/g, '') &&
+             (!item.date || t.date === item.date) && (!item.time || t.time === item.time))
+          );
           if (matchedTicket) {
-            if (matchedTicket.date) itemDate = matchedTicket.date;
-            if (matchedTicket.time) {
+            if (!itemDate && matchedTicket.date) itemDate = matchedTicket.date;
+            if (!itemTime && matchedTicket.time) {
               itemTime = matchedTicket.time;
               if (item.category === 'masterclass' || item.category === 'entree') {
                 item.timeslot = matchedTicket.time;
               }
             }
-            if (matchedTicket.price) item.price = matchedTicket.price;
-            if (matchedTicket.title) item.title = matchedTicket.title;
+            if (matchedTicket.price && !item.price) item.price = matchedTicket.price;
+            if (matchedTicket.title && !/^[a-f0-9]{24}$/i.test(matchedTicket.title) && (!item.title || /^[a-f0-9]{24}$/i.test(item.title))) {
+              item.title = matchedTicket.title;
+            }
           }
-
           itemsOrdered.push({
             id: id,
             title: item.title,
@@ -5865,7 +5870,7 @@ const marqueeBrands = BRAND.featuredBrands || [
     "subtitle": "Exclusieve Sherry Cask Single Malts",
     "price": "€ 77,50",
     "duration": "60 minuten",
-    "location": "De Oude Vismijn Gent (Gentse Toren)",
+    "location": "De Oude Vismijn Gent",
     "ambassador": {
       "name": "Gerard Spaans",
       "title": "Master of Malt & Senior Brand Ambassador",
@@ -5878,7 +5883,7 @@ const marqueeBrands = BRAND.featuredBrands || [
       "The Macallan Rare Cask Release 2025/2026",
       "Secret Distillery Cask Sample (Exclusive)"
     ],
-    "description": "Een ongeëvenaarde proeverij van 's werelds meest begeerde distilleerderij. Inclusief beklimming van de Gentse Toren."
+    "description": "Een ongeëvenaarde proeverij van 's werelds meest begeerde distilleerderij. Exclusieve proeverij in De Oude Vismijn."
   },
   {
     "id": "session-mc-highland-park",
@@ -5923,8 +5928,8 @@ const marqueeBrands = BRAND.featuredBrands || [
   }
 ]
 ;
-  let denHaagTicketsData: any[] = JSON.parse(document.getElementById("tickets-data-json")?.textContent || "[]");
-  let allAddonsList: any[] = denHaagTicketsData.filter(t => t.category !== 'entree');
+  let gentTicketsData: any[] = JSON.parse(document.getElementById("tickets-data-json")?.textContent || "[]");
+  let allAddonsList: any[] = gentTicketsData.filter(t => t.category !== 'entree');
 
   function updateLiveTicketsData(records: any[]) {
     if (!Array.isArray(records) || records.length === 0) return;
@@ -5936,9 +5941,9 @@ const marqueeBrands = BRAND.featuredBrands || [
       const day = (p.day || '').toLowerCase().trim();
       const daypart = (p.daypart || '').toLowerCase().trim();
 
-      let target = denHaagTicketsData.find((t: any) => t.id === r.id);
+      let target = gentTicketsData.find((t: any) => t.id === r.id);
       if (!target) {
-        target = denHaagTicketsData.find((t: any) => 
+        target = gentTicketsData.find((t: any) => 
           t.title && cleanTitle && (
             t.title.toLowerCase().replace(/[^a-z0-9]/g, '').includes(cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
             cleanTitle.toLowerCase().replace(/[^a-z0-9]/g, '').includes(t.title.toLowerCase().replace(/[^a-z0-9]/g, ''))
@@ -5983,10 +5988,10 @@ const marqueeBrands = BRAND.featuredBrands || [
           tastingLineup: p.tasting_lineup ? (Array.isArray(p.tasting_lineup) ? p.tasting_lineup : String(p.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean)) : undefined,
           isSoldOut: isSoldOut
         };
-        denHaagTicketsData.push(newTicketObj);
+        gentTicketsData.push(newTicketObj);
       }
     });
-    allAddonsList = denHaagTicketsData.filter(t => t.category !== 'entree');
+    allAddonsList = gentTicketsData.filter(t => t.category !== 'entree');
     if (typeof renderAddonUpsellList === 'function') {
       renderAddonUpsellList();
     }
@@ -5996,9 +6001,13 @@ const marqueeBrands = BRAND.featuredBrands || [
     Object.keys(cart).forEach(id => {
       const item = cart[id];
       if (!item) return;
-      const match = denHaagTicketsData.find(t => t.id === id || (t.title && item.title && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === item.title.toLowerCase().replace(/[^a-z0-9]/g, '')));
+      const match = gentTicketsData.find((t: any) => 
+        t.id === id || 
+        (t.title && item.title && t.title.toLowerCase().replace(/[^a-z0-9]/g, '') === item.title.toLowerCase().replace(/[^a-z0-9]/g, '') &&
+         (!item.date || t.date === item.date) && (!item.time || t.time === item.time))
+      );
       if (match) {
-        if (match.title && item.title !== match.title) {
+        if (match.title && item.title !== match.title && !/^[a-f0-9]{24}$/i.test(match.title)) {
           item.title = match.title;
           cartModified = true;
         }
@@ -6006,26 +6015,25 @@ const marqueeBrands = BRAND.featuredBrands || [
           item.price = match.price;
           cartModified = true;
         }
-        if (match.date && item.date !== match.date) {
+        if (!item.date && match.date) {
           item.date = match.date;
           cartModified = true;
         }
-        if (match.time) {
+        if (!item.time && match.time) {
           let cleanTime = match.time;
           if (!cleanTime.toLowerCase().includes('uur')) cleanTime += ' uur';
-          if (item.time !== cleanTime) {
-            item.time = cleanTime;
+          item.time = cleanTime;
+          cartModified = true;
+        }
+        if (item.category === 'masterclass' || item.category === 'entree') {
+          if (!item.timeslot && match.time) {
+            item.timeslot = match.time;
             cartModified = true;
-          }
-          if (item.category === 'masterclass' || item.category === 'entree') {
-            if (item.timeslot !== cleanTime) {
-              item.timeslot = cleanTime;
-              cartModified = true;
-            }
           }
         }
       }
     });
+
     if (cartModified) {
       updateShop(true);
     }
@@ -6081,7 +6089,7 @@ const marqueeBrands = BRAND.featuredBrands || [
     const cartDays = new Set();
     Object.keys(cart).forEach(id => {
       if (cart[id] && cart[id].qty > 0) {
-        const matchingTicket = denHaagTicketsData.find(t => t.id === id);
+        const matchingTicket = gentTicketsData.find(t => t.id === id);
         if (matchingTicket && matchingTicket.day && matchingTicket.day !== 'all') {
           cartDays.add(matchingTicket.day);
         }
@@ -6355,7 +6363,7 @@ const marqueeBrands = BRAND.featuredBrands || [
   function openMasterclassModal(mcId: string) {
     activeMcId = mcId;
 
-    const item = (denHaagTicketsData || []).find((t: any) => t.id === mcId);
+    const item = (gentTicketsData || []).find((t: any) => t.id === mcId);
     const liveRec = ((window as any).__LIVE_GHL_TICKETS__ || []).find((r: any) => r.id === mcId);
     const lp = liveRec ? (liveRec.properties || liveRec) : null;
 

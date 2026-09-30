@@ -2991,11 +2991,14 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
             const attendeeName = ticket.attendeeName || userName;
             let ticketTitle = ticket.sessionTitle || ticket.title || 'Festival Entreeticket';
             if (/^[a-f0-9]{24}$/i.test(ticketTitle)) {
-              if (ticketTitle === '6abb978f1eb866bf2b8779e0') {
+              if (ticketTitle === '6abb978f1eb866bf2b8779e0' || ticketTitle === '6abb978edaed730a5a0433d1') {
                 ticketTitle = 'Rondleiding Dada Chapel Distilleerderij';
+              } else if (ticketTitle === '6abb978ea456c2a4ec18a856' || ticketTitle === '6abb978e1eb866bf2b8779dd') {
+                ticketTitle = 'Rondvaart Gent - Whisky Bootje';
               } else if (Array.isArray((window as any).__LIVE_GHL_TICKETS__)) {
                 const ghlMatch = (window as any).__LIVE_GHL_TICKETS__.find((r: any) => r.id === ticketTitle);
-                if (ghlMatch?.properties?.ticket_title) ticketTitle = ghlMatch.properties.ticket_title;
+                const ghlTitle = ghlMatch?.properties?.title || ghlMatch?.properties?.ticket_title || ghlMatch?.title;
+                if (ghlTitle) ticketTitle = ghlTitle;
               }
             }
             const cleanTitle = ticketTitle.replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim();
@@ -3622,6 +3625,21 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
               }
             } catch (err) {
               console.warn('Whiskytix lookup niet bereikbaar, controleer lokale opslag:', err);
+            }
+          }
+
+          // 1b. If no order found yet and email provided, check Whiskytix orders-by-email API
+          if (!verifiedOrder && email) {
+            try {
+              const res = await fetch(`https://whiskytix-r1qq.vercel.app/api/checkout/orders-by-email?email=${encodeURIComponent(email)}&festivalId=gent`);
+              if (res.ok) {
+                const data = await res.json();
+                if (data && data.orders && data.orders.length > 0) {
+                  verifiedOrder = data.orders[0];
+                }
+              }
+            } catch (err) {
+              console.warn('Whiskytix email lookup error:', err);
             }
           }
 
