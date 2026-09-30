@@ -14,6 +14,7 @@ export interface BrandConfig {
   datesText: string;
   datesShort: string;
   domain: string;
+  whiskytixUrl?: string;
   localPort: number;
   
   colors: {
@@ -63,8 +64,8 @@ export const BRAND: BrandConfig = {
   foundingYear: 2004,
   edition: '26e Editie (2027)',
   datesText: '1, 2 en 3 Oktober 2027',
-  datesShort: '1-3 Okt 2027',
-  domain: 'https://whisky-fest-gent.vercel.app',
+  domain: 'https://whiskyfestival.be',
+  whiskytixUrl: import.meta.env.PUBLIC_WHISKYTIX_URL || 'https://whiskytix-r1qq.vercel.app',
   localPort: 4332,
   address: 'Rekelingestraat 5, 9000 Gent, België',
   email: 'info@whiskyfestival.be',
