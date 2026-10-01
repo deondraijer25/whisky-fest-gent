@@ -8,6 +8,7 @@ export default defineConfig({
   site: 'https://whiskyfestival.be',
   integrations: [sitemap()],
   server: {
-    port: 4332
+    port: 4332,
+    host: true
   }
 });
