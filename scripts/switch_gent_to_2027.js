@@ -46,6 +46,7 @@ const ghlUpdates = [
     properties: {
       date_label: 'Vrijdag 1 Okt 2027',
       time_label: '18:00 - 19:30 uur',
+      is_sold_out: 'false',
       ticket_description: 'Wandel mee vanaf De Oude Vismijn naar de nabijgelegen Dada Chapel distilleerderij voor een intieme rondleiding inclusief proeverij.'
     }
   },
@@ -54,6 +55,7 @@ const ghlUpdates = [
     properties: {
       date_label: 'Zaterdag 2 Okt 2027',
       time_label: '11:00 - 12:30 uur',
+      is_sold_out: 'false',
       ticket_description: 'Ochtendrondleiding bij Dada Chapel Distilleerderij inclusief mini-tasting voorafgaand aan de festivalbeurs.'
     }
   },
@@ -62,6 +64,7 @@ const ghlUpdates = [
     properties: {
       date_label: 'Zaterdag 2 Okt 2027',
       time_label: '12:00 - 13:00 uur',
+      is_sold_out: 'false',
       ticket_description: 'Geniet van een unieke boottocht over de historische Gentse binnenwateren onder het genot van 4 bijzondere drams.'
     }
   },
@@ -70,6 +73,7 @@ const ghlUpdates = [
     properties: {
       date_label: 'Zaterdag 2 Okt 2027',
       time_label: '18:30 - 19:30 uur',
+      is_sold_out: 'false',
       ticket_description: 'Sfeervolle avondrondvaart over de verlichte historische Gentse grachten met whiskyproeverij.'
     }
   },
@@ -79,6 +83,7 @@ const ghlUpdates = [
       title: 'Festival Botteling: Dada Chapel Gentse Special 2027',
       date_label: 'Afhalen Festival (1-3 okt 2027)',
       time_label: 'Hele dag',
+      is_sold_out: 'false',
       ticket_description: 'De officiële exclusieve festivalbotteling van het Gents Whisky Festival 2027. Een 7 jaar oude single cask gerijpt op nieuw Limousin eiken (Limousin Virgin Oak Cask 7 jaar). Gelimiteerde oplage van 50 genummerde flessen.'
     }
   }
@@ -148,6 +153,8 @@ async function runSwitch() {
     idxContent = idxContent.replace(/<span>Vrijdag 2 Okt 2026<\/span>/g, '<span>Vrijdag 1 Okt 2027</span>');
     idxContent = idxContent.replace(/<span>Zaterdag 3 Okt 2026<\/span>/g, '<span>Zaterdag 2 Okt 2027</span>');
     idxContent = idxContent.replace(/<span>Zondag 4 Okt 2026<\/span>/g, '<span>Zondag 3 Okt 2027</span>');
+    idxContent = idxContent.replace(/style="margin-top: 0\.5rem; display: none;"/g, 'style="margin-top: 0.5rem;"');
+    idxContent = idxContent.replace(/id="dd-filter-cat" style="display: none;"/g, 'id="dd-filter-cat"');
     fs.writeFileSync(indexFile, idxContent, 'utf8');
     console.log('✓ index.astro bijgewerkt naar 2027');
   }
@@ -163,8 +170,29 @@ async function runSwitch() {
     pContent = pContent.replace(/Whisky Festival 2026/g, 'Whisky Festival 2027');
     pContent = pContent.replace(/Tijdschema 2026/g, 'Tijdschema 2027');
     pContent = pContent.replace(/Bottelingen 2026/g, 'Bottelingen 2027');
+    pContent = pContent.replace(/data-target-tab="bottelingen"\s+style="display: none;"/g, 'data-target-tab="bottelingen"');
+    pContent = pContent.replace(/data-target-tab="belevingen"\s+style="display: none;"/g, 'data-target-tab="belevingen"');
+    pContent = pContent.replace(/id="pane-bottelingen" style="display: none;"/g, 'id="pane-bottelingen"');
+    pContent = pContent.replace(/id="pane-belevingen" style="display: none;"/g, 'id="pane-belevingen"');
     fs.writeFileSync(progFile, pContent, 'utf8');
     console.log('✓ programma.astro bijgewerkt naar 2027');
+  }
+
+  // 6. Update ghl.ts & Layout.astro to re-enable non-entree tickets
+  const ghlFile = path.resolve(__dirname, '../src/lib/ghl.ts');
+  if (fs.existsSync(ghlFile)) {
+    let ghlContent = fs.readFileSync(ghlFile, 'utf8');
+    ghlContent = ghlContent.replace(/\/\/ For Gent live 2026: only show entree tickets\s*if \(normalizedCity === 'gent' && category !== 'entree'\) return false;\s*/g, '');
+    fs.writeFileSync(ghlFile, ghlContent, 'utf8');
+    console.log('✓ ghl.ts bijgewerkt (specials weer actief)');
+  }
+
+  const layoutFile = path.resolve(__dirname, '../src/layouts/Layout.astro');
+  if (fs.existsSync(layoutFile)) {
+    let layoutContent = fs.readFileSync(layoutFile, 'utf8');
+    layoutContent = layoutContent.replace(/\/\/ For Gent live 2026: only show entree tickets\s*if \(category !== 'entree'\) return false;\s*/g, '');
+    fs.writeFileSync(layoutFile, layoutContent, 'utf8');
+    console.log('✓ Layout.astro bijgewerkt (specials weer actief)');
   }
 
   console.log('\n=== Switch naar 2027 voltooid! Voer nu `npm run build` uit. ===');

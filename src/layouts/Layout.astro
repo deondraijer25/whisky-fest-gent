@@ -312,7 +312,10 @@ const orgSchema = {
             records = records.filter(function(r) {
               var p = r.properties || r;
               var title = (p.title || '').toLowerCase();
+              var category = (p.category || '').toLowerCase().trim();
               if (title.indexOf('programma volgt') !== -1) return false;
+              // For Gent live 2026: only show entree tickets
+              if (category !== 'entree') return false;
               return true;
             });
             if (records.length === 0) return;

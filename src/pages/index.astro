@@ -200,7 +200,7 @@ const marqueeBrands = BRAND.featuredBrands || [
                 <button type="button" class="filter-tab-btn" data-filter-day="zondag">Zondag 4 Okt</button>
               </div>
             </div>
-            <div class="filter-row" style="margin-top: 0.5rem;">
+            <div class="filter-row" style="margin-top: 0.5rem; display: none;">
               <span class="filter-label">Type:</span>
               <div class="filter-buttons" id="cat-filter-buttons">
                 <button type="button" class="filter-tab-btn active" data-filter-cat="all">Alles</button>
@@ -254,7 +254,7 @@ const marqueeBrands = BRAND.featuredBrands || [
             </div>
 
             <!-- 2. Type Filter -->
-            <div class="custom-dropdown" id="dd-filter-cat">
+            <div class="custom-dropdown" id="dd-filter-cat" style="display: none;">
               <button type="button" class="custom-dd-btn" aria-haspopup="listbox" aria-expanded="false">
                 <span class="custom-dd-label-group">
                   <span class="custom-dd-prefix">2. Type:</span>

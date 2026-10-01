@@ -174,9 +174,12 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
       const p = r.properties || r;
       const title = (p.title || '').toLowerCase().trim();
       const slug = (p.festival_slug || '').toLowerCase().trim();
+      const category = (p.category || '').toLowerCase().trim();
       if (title.includes('programma volgt')) return false;
       if (title.includes('test') || title.includes('concept') || title.includes('draft') || title.includes('sophie')) return false;
       if (slug.includes('test') || slug.includes('concept') || slug.includes('draft')) return false;
+      // For Gent live 2026: only show entree tickets
+      if (normalizedCity === 'gent' && category !== 'entree') return false;
       return true;
     });
 

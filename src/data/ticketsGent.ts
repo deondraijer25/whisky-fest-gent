@@ -149,11 +149,14 @@ export const TICKETS_GENT: TicketItem[] = [
       "Compleet festivalboekje met alle standhouders en plattegrond",
       "4 uur onbeperkt toegang tot alle beurseilanden en stands"
     ]
-  },
+  }
+];
 
-  // =========================================================================
-  // 2. Specials Gent: Dada Chapel Botteling, Bootjes & Distilleerderij Bezoek
-  // =========================================================================
+// =========================================================================
+// 2. Specials Gent: Dada Chapel Botteling, Bootjes & Distilleerderij Bezoek
+// (Tijdelijk verborgen voor livegang 2026 - worden na zondag 4 okt weer actief)
+// =========================================================================
+export const SPECIALS_GENT_BACKUP: TicketItem[] = [
   {
     id: "gent-botteling-dada-chapel",
     row: 5,

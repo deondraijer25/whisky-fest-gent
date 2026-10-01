@@ -34,68 +34,21 @@ const SESSIONS: SessionData[] = [
     name: 'Vrijdagavond',
     dayLabel: 'Vrijdag 2 Okt',
     timeLabel: '19:00 - 23:00 uur',
-    items: [
-      {
-        id: 'gent-special-dada-tour-vrijdag',
-        time: '18:00 – 19:30',
-        location: 'Melden bij entree-deur De Oude Vismijn',
-        title: 'Rondleiding Dada Chapel Distilleerderij',
-        category: 'warehouse',
-        categoryLabel: 'Distilleerderij Bezoek',
-        host: 'Dada Chapel Meesterstoker',
-        description: 'Exclusief kijkje achter de schermen bij de Gentse distilleerderij inclusief proeverij van speciale vatmonsters.',
-        price: 15.00
-      }
-    ]
+    items: []
   },
   {
     id: 'zaterdag-middag',
     name: 'Zaterdagmiddag',
     dayLabel: 'Zaterdag 3 Okt',
     timeLabel: '13:00 - 17:00 uur',
-    items: [
-      {
-        id: 'gent-special-dada-tour-zaterdag',
-        time: '11:00 – 12:30',
-        location: 'Melden bij entree-deur De Oude Vismijn',
-        title: 'Rondleiding Dada Chapel Distilleerderij',
-        category: 'warehouse',
-        categoryLabel: 'Distilleerderij Bezoek',
-        host: 'Dada Chapel Meesterstoker',
-        description: 'Ochtendrondleiding bij Dada Chapel Distilleerderij inclusief mini-tasting voorafgaand aan de festivalbeurs.',
-        price: 15.00
-      },
-      {
-        id: 'gent-special-bootje-zaterdag-1200',
-        time: '12:00 – 13:00',
-        location: 'Aanlegsteiger De Oude Vismijn',
-        title: 'Rondvaart Gent - Whisky Bootje',
-        category: 'tram',
-        categoryLabel: 'Whisky Bootje',
-        host: 'Gentse Schipper & Sommelier',
-        description: 'Unieke boottocht over de historische Gentse binnenwateren met proeverij van 4 bijzondere drams.',
-        price: 19.50
-      }
-    ]
+    items: []
   },
   {
     id: 'zaterdag-avond',
     name: 'Zaterdagavond',
     dayLabel: 'Zaterdag 3 Okt',
     timeLabel: '19:00 - 23:00 uur',
-    items: [
-      {
-        id: 'gent-special-bootje-zaterdag-1830',
-        time: '18:30 – 19:30',
-        location: 'Aanlegsteiger De Oude Vismijn',
-        title: 'Rondvaart Gent - Whisky Bootje',
-        category: 'tram',
-        categoryLabel: 'Whisky Bootje',
-        host: 'Gentse Schipper & Sommelier',
-        description: 'Sfeervolle avondrondvaart over de verlichte historische Gentse grachten met whiskyproeverij.',
-        price: 19.50
-      }
-    ]
+    items: []
   },
   {
     id: 'zondag-middag',
@@ -233,6 +186,7 @@ function formatSpeaker(host: string) {
           type="button" 
           class="session-btn-card"
           data-target-tab="bottelingen"
+          style="display: none;"
         >
           <span class="btn-card-day">Exclusief</span>
           <span class="btn-card-name">Festival Bottelingen</span>
@@ -243,6 +197,7 @@ function formatSpeaker(host: string) {
           type="button" 
           class="session-btn-card btn-gidsen-special"
           data-target-tab="belevingen"
+          style="display: none;"
         >
           <span class="btn-card-day">Gentse Beleving</span>
           <span class="btn-card-name">Bootjes &amp; Tours</span>
@@ -267,14 +222,16 @@ function formatSpeaker(host: string) {
 
             <!-- Masterclasses & Tastings Rows -->
             <div class="pane-rows-list">
-              <!-- Column Titles Header -->
-              <div class="agenda-table-head">
-                <span class="th-cell th-time">Tijd</span>
-                <span class="th-cell th-title">Programma</span>
-                <span class="th-cell th-type-loc">Type &amp; Locatie</span>
-                <span class="th-cell th-speaker">Spreker / Gids</span>
-                <span class="th-cell th-action">Prijs &amp; Bestellen</span>
-              </div>
+              {s.items.length > 0 ? (
+                <>
+                  <!-- Column Titles Header -->
+                  <div class="agenda-table-head">
+                    <span class="th-cell th-time">Tijd</span>
+                    <span class="th-cell th-title">Programma</span>
+                    <span class="th-cell th-type-loc">Type &amp; Locatie</span>
+                    <span class="th-cell th-speaker">Spreker / Gids</span>
+                    <span class="th-cell th-action">Prijs &amp; Bestellen</span>
+                  </div>
 
               <!-- Rows in 5 Clean Columns -->
               {s.items.map((item) => {
@@ -356,16 +313,33 @@ function formatSpeaker(host: string) {
                         )}
                       </div>
                     </div>
-                  </article>
-                );
-              })}
+                    </article>
+                  );
+                })}
+              </>
+            ) : (
+              <div class="empty-session-message" style="padding: 3rem 1.5rem; text-align: center; color: #475569; font-family: var(--font-sans, sans-serif);">
+                <div style="max-width: 560px; margin: 0 auto;">
+                  <div style="display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: rgba(30, 58, 138, 0.08); color: #1E3A8A; margin-bottom: 1rem;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                  </div>
+                  <h3 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin-bottom: 0.5rem;">Officiële Festivalbeurs &amp; Proeverij</h3>
+                  <p style="font-size: 0.92rem; line-height: 1.6; color: #64748B; margin-bottom: 1.25rem;">
+                    Tijdens deze sessie heeft u 4 uur lang toegang tot de beursvloer van De Oude Vismijn. Ontdek tientallen standhouders, geniet van talloze gratis proefdrams met uw officiële Glencairn tastingglas en ontdek honderden unieke whisky's.
+                  </p>
+                  <a href="/#sessies" class="btn btn-gold" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.25rem; font-size: 0.88rem; text-decoration: none; border-radius: 6px;">
+                    Bestel Entreeticket voor {s.name} &rarr;
+                  </a>
+                </div>
+              </div>
+            )}
             </div>
 
             </section>
         ))}
 
         <!-- 6: Bottelingen Pane -->
-        <section class="session-agenda-pane" id="pane-bottelingen">
+        <section class="session-agenda-pane" id="pane-bottelingen" style="display: none;">
           <div class="pane-header-bar">
             <h2 class="pane-title">Exclusieve Festival Bottelingen 2026</h2>
             <span class="pane-badge-time">Afhalen bij Festivalslijterij (De Oude Vismijn)</span>
@@ -438,7 +412,7 @@ function formatSpeaker(host: string) {
         </section>
 
         <!-- 7: Gentse Belevingen Pane -->
-        <section class="session-agenda-pane" id="pane-belevingen">
+        <section class="session-agenda-pane" id="pane-belevingen" style="display: none;">
           <div class="pane-header-bar">
             <div class="phb-left">
               <h2 class="pane-title">Gentse Belevingen &amp; Specials</h2>
