@@ -498,15 +498,15 @@ import Layout from '../layouts/Layout.astro';
 
   if (!resolvedDate) {
     if (titleLower.includes('vrijdag')) {
-      resolvedDate = 'Vrijdag 1 oktober 2027';
+      resolvedDate = 'Vrijdag 2 oktober 2026';
     } else if (titleLower.includes('zondag')) {
-      resolvedDate = 'Zondag 3 oktober 2027';
+      resolvedDate = 'Zondag 4 oktober 2026';
     } else if (titleLower.includes('zaterdag')) {
-      resolvedDate = 'Zaterdag 2 oktober 2027';
+      resolvedDate = 'Zaterdag 3 oktober 2026';
     } else if (category === 'botteling' || titleLower.includes('botteling')) {
-      resolvedDate = 'Festivaleditie (1-3 okt)';
+      resolvedDate = 'Festivaleditie (2-4 okt 2026)';
     } else {
-      resolvedDate = 'Zaterdag 2 oktober 2027';
+      resolvedDate = 'Zaterdag 3 oktober 2026';
     }
   }
 
@@ -526,12 +526,12 @@ import Layout from '../layouts/Layout.astro';
   let resolvedDay = '02';
   let resolvedMonth = 'OKT';
   const dLower = resolvedDate.toLowerCase();
-  if (dLower.includes('vrijdag') || dLower.includes(' 1 ') || dLower.startsWith('1 ') || dLower.includes('1 okt')) {
-    resolvedDay = '01';
-  } else if (dLower.includes('zaterdag') || dLower.includes(' 2 ') || dLower.startsWith('2 ') || dLower.includes('2 okt')) {
+  if (dLower.includes('vrijdag') || dLower.includes(' 2 ') || dLower.startsWith('2 ') || dLower.includes('2 okt')) {
     resolvedDay = '02';
-  } else if (dLower.includes('zondag') || dLower.includes(' 3 ') || dLower.startsWith('3 ') || dLower.includes('3 okt')) {
+  } else if (dLower.includes('zaterdag') || dLower.includes(' 3 ') || dLower.startsWith('3 ') || dLower.includes('3 okt')) {
     resolvedDay = '03';
+  } else if (dLower.includes('zondag') || dLower.includes(' 4 ') || dLower.startsWith('4 ') || dLower.includes('4 okt')) {
+    resolvedDay = '04';
   } else {
     const match = resolvedDate.match(/\b([0-3]?\d)\b/);
     if (match) resolvedDay = match[1].padStart(2, '0');
@@ -547,7 +547,7 @@ import Layout from '../layouts/Layout.astro';
   const isWarehouse = category === 'warehouse' || category === 'dada' || titleLower.includes('dada');
 
   if (isBoottocht || isBotteling) {
-    resolvedDay = '01-03';
+    resolvedDay = '02-04';
   }
 
   if (!resolvedTime.toUpperCase().includes('UUR') && !resolvedTime.toUpperCase().includes('POST') && !resolvedTime.toUpperCase().includes('INFODESK') && !resolvedTime.toUpperCase().includes('DAG')) {

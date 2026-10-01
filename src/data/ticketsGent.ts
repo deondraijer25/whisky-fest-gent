@@ -1,5 +1,5 @@
 // src/data/ticketsGent.ts
-// Officiële dataset voor Gents Whisky Festival 2027 (De Oude Vismijn Gent)
+// Officiële dataset voor Gents Whisky Festival 2026 (De Oude Vismijn Gent)
 
 export interface TicketItem {
   id: string;
@@ -30,14 +30,14 @@ export interface TicketItem {
 
 export const TICKETS_GENT: TicketItem[] = [
   // =========================================================================
-  // 1. Entrees 2027 (De Oude Vismijn Gent)
+  // 1. Entrees 2026 (De Oude Vismijn Gent)
   // =========================================================================
   {
     id: "gent-entree-vrijdagavond",
     row: 1,
     title: "Entree Vrijdagavond",
     price: 42.5,
-    date: "Vrijdag 1 Okt 2027",
+    date: "Vrijdag 2 Okt 2026",
     time: "19:00 - 23:00 uur",
     day: "vrijdag",
     daypart: "avond",
@@ -50,7 +50,7 @@ export const TICKETS_GENT: TicketItem[] = [
     isSoldOut: false,
     isLowStock: false,
     extra: "€ 38,50 early bird tot 1 januari",
-    description: "Beleef de opening van het Gents Whisky Festival 2027 in de sfeervolle historische hallen van De Oude Vismijn.",
+    description: "Beleef de opening van het Gents Whisky Festival 2026 in de sfeervolle historische hallen van De Oude Vismijn.",
     ambassadorName: "Gents Festival Team",
     ambassadorTitle: "Festival Host",
     ambassadorBio: "Ons team staat klaar om u te verwelkomen in het hart van historisch Gent.",
@@ -66,7 +66,7 @@ export const TICKETS_GENT: TicketItem[] = [
     row: 2,
     title: "Entree Zaterdagmiddag",
     price: 42.5,
-    date: "Zaterdag 2 Okt 2027",
+    date: "Zaterdag 3 Okt 2026",
     time: "13:00 - 17:00 uur",
     day: "zaterdag",
     daypart: "middag",
@@ -95,7 +95,7 @@ export const TICKETS_GENT: TicketItem[] = [
     row: 3,
     title: "Entree Zaterdagavond",
     price: 42.5,
-    date: "Zaterdag 2 Okt 2027",
+    date: "Zaterdag 3 Okt 2026",
     time: "19:00 - 23:00 uur",
     day: "zaterdag",
     daypart: "avond",
@@ -124,7 +124,7 @@ export const TICKETS_GENT: TicketItem[] = [
     row: 4,
     title: "Entree Zondagmiddag",
     price: 42.5,
-    date: "Zondag 3 Okt 2027",
+    date: "Zondag 4 Okt 2026",
     time: "13:00 - 17:00 uur",
     day: "zondag",
     daypart: "middag",
@@ -157,7 +157,7 @@ export const TICKETS_GENT: TicketItem[] = [
   {
     id: "gent-botteling-dada-chapel",
     row: 5,
-    title: "Festival Botteling: Dada Chapel Gentse Special 2027",
+    title: "Festival Botteling: Dada Chapel Gentse Special 2026",
     price: 95,
     date: "Afhalen Festival",
     time: "Hele dag",
@@ -174,7 +174,7 @@ export const TICKETS_GENT: TicketItem[] = [
     status: "popular",
     statusText: "Populair",
     extra: "Limousin Virgin Oak Cask 7 jaar",
-    description: "De officiële exclusieve festivalbotteling van het Gents Whisky Festival 2027. Een 7 jaar oude single cask gerijpt op nieuw Limousin eiken (Limousin Virgin Oak Cask 7 jaar). Gelimiteerde oplage van 50 genummerde flessen.",
+    description: "De officiële exclusieve festivalbotteling van het Gents Whisky Festival 2026. Een 7 jaar oude single cask gerijpt op nieuw Limousin eiken (Limousin Virgin Oak Cask 7 jaar). Gelimiteerde oplage van 50 genummerde flessen.",
     ambassadorName: "Festival Selectie Panel",
     ambassadorTitle: "Cask Committee",
     ambassadorBio: "Exclusief geselecteerd voor de editie van De Oude Vismijn in Gent.",
@@ -185,7 +185,7 @@ export const TICKETS_GENT: TicketItem[] = [
     row: 6,
     title: "Rondvaart Gent - Whisky Bootje",
     price: 19.5,
-    date: "Zaterdag 2 Okt 2027",
+    date: "Zaterdag 3 Okt 2026",
     time: "12:00 - 13:00 uur",
     day: "zaterdag",
     daypart: "middag",
@@ -214,7 +214,7 @@ export const TICKETS_GENT: TicketItem[] = [
     row: 7,
     title: "Rondvaart Gent - Whisky Bootje",
     price: 19.5,
-    date: "Zaterdag 2 Okt 2027",
+    date: "Zaterdag 3 Okt 2026",
     time: "18:30 - 19:30 uur",
     day: "zaterdag",
     daypart: "avond",
@@ -243,7 +243,7 @@ export const TICKETS_GENT: TicketItem[] = [
     row: 8,
     title: "Rondleiding Dada Chapel Distilleerderij",
     price: 15,
-    date: "Vrijdag 1 Okt 2027",
+    date: "Vrijdag 2 Okt 2026",
     time: "18:00 - 19:30 uur",
     day: "vrijdag",
     daypart: "avond",
@@ -271,7 +271,7 @@ export const TICKETS_GENT: TicketItem[] = [
     row: 9,
     title: "Rondleiding Dada Chapel Distilleerderij",
     price: 15,
-    date: "Zaterdag 2 Okt 2027",
+    date: "Zaterdag 3 Okt 2026",
     time: "11:00 - 12:30 uur",
     day: "zaterdag",
     daypart: "ochtend",
