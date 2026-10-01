@@ -68,7 +68,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
               type="text" 
               id="login-res-no" 
               class="form-input" 
-              placeholder="bijv. #GWF-2027-84387" 
+              placeholder="bijv. #GWF-2026-84387" 
             />
             <span class="form-subtext">U vindt uw ordernummer in de bevestigingsmail.</span>
           </div>
@@ -3032,7 +3032,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
             const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(attendeeName)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&orderNumber=${encodeURIComponent(orderData.resNumber || '')}`;
 
             const shareText = encodeURIComponent(
-              `*Whisky Festival Gent 2027*\n` +
+              `*Whisky Festival Gent 2026*\n` +
               `E-ticket: ${cleanTitle}\n\n` +
               `Kaarthouder: ${attendeeName}\n` +
               `Datum: ${formattedDate}\n` +
@@ -3046,7 +3046,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
             const mailSubject = encodeURIComponent(`E-ticket voor Whisky Festival Gent: ${cleanTitle}`);
             const mailBody = encodeURIComponent(
               `Beste ${attendeeName},\n\n` +
-              `Hierbij ontvang je jouw toegangsbewijs voor Whisky Festival Gent 2027.\n\n` +
+              `Hierbij ontvang je jouw toegangsbewijs voor Whisky Festival Gent 2026.\n\n` +
               `Ticket: ${cleanTitle}\n` +
               `Datum: ${formattedDate}\n` +
               `Tijdslot: ${displayTime}\n` +
@@ -3321,7 +3321,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
               const ticketLink = `${baseUrl}/ticket?id=${cleanCode}&title=${encodeURIComponent(cleanTitle)}&name=${encodeURIComponent(userName)}&time=${encodeURIComponent(displayTime)}&date=${encodeURIComponent(formattedDate)}&category=${encodeURIComponent(item.category || '')}&delivery=${encodeURIComponent(item.delivery || '')}`;
 
               const shareText = encodeURIComponent(
-                `*Whisky Festival Gent 2027*\n` +
+                `*Whisky Festival Gent 2026*\n` +
                 `E-ticket: ${cleanTitle}\n\n` +
                 `Kaarthouder: ${userName}\n` +
                 `Tijdslot: ${displayTime}\n` +
@@ -3334,7 +3334,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
               const mailSubject = encodeURIComponent(`E-ticket voor Whisky Festival Gent: ${cleanTitle}`);
               const mailBody = encodeURIComponent(
                 `Beste ${userName},\n\n` +
-                `Hierbij ontvang je jouw toegangsbewijs voor Whisky Festival Gent 2027.\n\n` +
+                `Hierbij ontvang je jouw toegangsbewijs voor Whisky Festival Gent 2026.\n\n` +
                 `Ticket: ${cleanTitle}\n` +
                 `Tijdslot: ${displayTime}\n` +
                 `Ticket Code: ${displayCode}\n` +

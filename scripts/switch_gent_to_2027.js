@@ -134,6 +134,39 @@ async function runSwitch() {
     console.log('✓ ticketsGent.ts bijgewerkt naar 2027');
   }
 
+  // 4. Update index.astro in Gent
+  const indexFile = path.resolve(__dirname, '../src/pages/index.astro');
+  if (fs.existsSync(indexFile)) {
+    let idxContent = fs.readFileSync(indexFile, 'utf8');
+    idxContent = idxContent.replace(/2, 3 en 4 oktober 2026/g, '1, 2 en 3 oktober 2027');
+    idxContent = idxContent.replace(/2, 3 &amp; 4 Oktober 2026/g, '1, 2 &amp; 3 Oktober 2027');
+    idxContent = idxContent.replace(/25e editie in 2026/g, '26e editie in 2027');
+    idxContent = idxContent.replace(/2026 — 25e Editie/g, '2027 — 26e Editie');
+    idxContent = idxContent.replace(/>Vrijdag 2 Okt</g, '>Vrijdag 1 Okt<');
+    idxContent = idxContent.replace(/>Zaterdag 3 Okt</g, '>Zaterdag 2 Okt<');
+    idxContent = idxContent.replace(/>Zondag 4 Okt</g, '>Zondag 3 Okt<');
+    idxContent = idxContent.replace(/<span>Vrijdag 2 Okt 2026<\/span>/g, '<span>Vrijdag 1 Okt 2027</span>');
+    idxContent = idxContent.replace(/<span>Zaterdag 3 Okt 2026<\/span>/g, '<span>Zaterdag 2 Okt 2027</span>');
+    idxContent = idxContent.replace(/<span>Zondag 4 Okt 2026<\/span>/g, '<span>Zondag 3 Okt 2027</span>');
+    fs.writeFileSync(indexFile, idxContent, 'utf8');
+    console.log('✓ index.astro bijgewerkt naar 2027');
+  }
+
+  // 5. Update programma.astro in Gent
+  const progFile = path.resolve(__dirname, '../src/pages/programma.astro');
+  if (fs.existsSync(progFile)) {
+    let pContent = fs.readFileSync(progFile, 'utf8');
+    pContent = pContent.replace(/Vrijdag 2 Okt/g, 'Vrijdag 1 Okt');
+    pContent = pContent.replace(/Zaterdag 3 Okt/g, 'Zaterdag 2 Okt');
+    pContent = pContent.replace(/Zondag 4 Okt/g, 'Zondag 3 Okt');
+    pContent = pContent.replace(/Gentse Special 2026/g, 'Gentse Special 2027');
+    pContent = pContent.replace(/Whisky Festival 2026/g, 'Whisky Festival 2027');
+    pContent = pContent.replace(/Tijdschema 2026/g, 'Tijdschema 2027');
+    pContent = pContent.replace(/Bottelingen 2026/g, 'Bottelingen 2027');
+    fs.writeFileSync(progFile, pContent, 'utf8');
+    console.log('✓ programma.astro bijgewerkt naar 2027');
+  }
+
   console.log('\n=== Switch naar 2027 voltooid! Voer nu `npm run build` uit. ===');
 }
 

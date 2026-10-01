@@ -23,10 +23,10 @@ const {
 const eventSchema = {
   "@context": "https://schema.org",
   "@type": "Festival",
-  "name": "Gents Whisky Festival 2027",
+  "name": "Gents Whisky Festival 2026",
   "description": "Het bekendste en meest sfeervolle whisky festival van Vlaanderen. Proef honderden whisky's, volg exclusieve masterclasses en geniet van de unieke sfeer in De Oude Vismijn te Gent.",
-  "startDate": "2027-10-01T19:00:00+02:00",
-  "endDate": "2027-10-03T17:00:00+02:00",
+  "startDate": "2026-10-02T19:00:00+02:00",
+  "endDate": "2026-10-04T17:00:00+02:00",
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "location": {
@@ -379,15 +379,17 @@ const orgSchema = {
 
               var category = (p.category || '').toLowerCase().trim() || 'masterclass';
 
-              var cleanDate = dateLabel;
-              if (day === 'vrijdag' || (cleanDate.toLowerCase().includes('vrijdag') && (cleanDate.includes('1') || cleanDate.toLowerCase().includes('1 okt')))) {
-                cleanDate = 'VRIJDAG 1 OKT';
-              } else if (day === 'zaterdag' || (cleanDate.toLowerCase().includes('zaterdag') && (cleanDate.includes('2') || cleanDate.toLowerCase().includes('2 okt')))) {
-                cleanDate = 'ZATERDAG 2 OKT';
-              } else if (day === 'zondag' || (cleanDate.toLowerCase().includes('zondag') && (cleanDate.includes('3') || cleanDate.toLowerCase().includes('3 okt')))) {
-                cleanDate = 'ZONDAG 3 OKT';
-              } else {
-                cleanDate = cleanDate.replace(/\s*202[67]/g, '').toUpperCase();
+              var cleanDate = (dateLabel || '').replace(/\s*202[67]/g, '').trim().toUpperCase();
+              if (!cleanDate || cleanDate === 'DATUM VOLGT') {
+                if (day === 'vrijdag') cleanDate = 'VRIJDAG 2 OKT';
+                else if (day === 'zaterdag') cleanDate = 'ZATERDAG 3 OKT';
+                else if (day === 'zondag') cleanDate = 'ZONDAG 4 OKT';
+              } else if (cleanDate.includes('VRIJDAG') && !/\d/.test(cleanDate)) {
+                cleanDate = 'VRIJDAG 2 OKT';
+              } else if (cleanDate.includes('ZATERDAG') && !/\d/.test(cleanDate)) {
+                cleanDate = 'ZATERDAG 3 OKT';
+              } else if (cleanDate.includes('ZONDAG') && !/\d/.test(cleanDate)) {
+                cleanDate = 'ZONDAG 4 OKT';
               }
 
               var cleanTime = timeLabel;
