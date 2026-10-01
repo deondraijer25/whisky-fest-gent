@@ -195,6 +195,17 @@ async function runSwitch() {
     console.log('✓ Layout.astro bijgewerkt (specials weer actief)');
   }
 
+  // 7. Update Header.astro in Gent to restore dropdown options and labels
+  const headerFile = path.resolve(__dirname, '../src/components/Header.astro');
+  if (fs.existsSync(headerFile)) {
+    let hContent = fs.readFileSync(headerFile, 'utf8');
+    hContent = hContent.replace(/ style="display: none;" data-gent-2027-restore/g, '');
+    hContent = hContent.replace(/Festivalsessies &amp; proeverijen/g, 'Masterclasses, bootjes &amp; proeverijen');
+    hContent = hContent.replace(/Festivalsessies &amp; beursvloer/g, 'Masterclasses, Bootjes &amp; Rondleidingen');
+    fs.writeFileSync(headerFile, hContent, 'utf8');
+    console.log('✓ Header.astro bijgewerkt (alle dropdown opties & teksten hersteld naar 2027)');
+  }
+
   console.log('\n=== Switch naar 2027 voltooid! Voer nu `npm run build` uit. ===');
 }
 

@@ -35,19 +35,19 @@ const isAccount = pathname.startsWith("/account");
             <span class="nav-drop-title">Sessie Entreetickets</span>
             <span class="nav-drop-sub">VIP, vrijdag-, zaterdag- &amp; zondagsessies</span>
           </a>
-          <a href="/?cat=masterclass#sessies" class="nav-dropdown-item">
+          <a href="/?cat=masterclass#sessies" class="nav-dropdown-item" style="display: none;" data-gent-2027-restore>
             <span class="nav-drop-title">Masterclasses</span>
             <span class="nav-drop-sub">Exclusieve proeverijen in De Oude Vismijn</span>
           </a>
-          <a href="/?cat=bootjes#sessies" class="nav-dropdown-item">
+          <a href="/?cat=bootjes#sessies" class="nav-dropdown-item" style="display: none;" data-gent-2027-restore>
             <span class="nav-drop-title">Gentse Whisky Bootjes</span>
             <span class="nav-drop-sub">Varende proeverij over de Gentse grachten</span>
           </a>
-          <a href="/?cat=dada#sessies" class="nav-dropdown-item">
+          <a href="/?cat=dada#sessies" class="nav-dropdown-item" style="display: none;" data-gent-2027-restore>
             <span class="nav-drop-title">Dada Rondleiding</span>
             <span class="nav-drop-sub">Rondleiding Dada Chapel Distilleerderij</span>
           </a>
-          <a href="/?cat=botteling#sessies" class="nav-dropdown-item">
+          <a href="/?cat=botteling#sessies" class="nav-dropdown-item" style="display: none;" data-gent-2027-restore>
             <span class="nav-drop-title">Festival Bottelingen</span>
             <span class="nav-drop-sub">Gelimiteerde single cask flessen</span>
           </a>
@@ -66,9 +66,9 @@ const isAccount = pathname.startsWith("/account");
         <div class="header-nav-dropdown" id="header-programma-dropdown">
           <a href="/programma" class="nav-dropdown-item">
             <span class="nav-drop-title">Festival Programma</span>
-            <span class="nav-drop-sub">Masterclasses, bootjes &amp; proeverijen</span>
+            <span class="nav-drop-sub">Festivalsessies &amp; proeverijen</span>
           </a>
-          <a href="/programma#dada" class="nav-dropdown-item">
+          <a href="/programma#dada" class="nav-dropdown-item" style="display: none;" data-gent-2027-restore>
             <span class="nav-drop-title">Dada Rondleidingen</span>
             <span class="nav-drop-sub">Dada Chapel Distilleerderij tijdsloten</span>
           </a>
@@ -259,7 +259,7 @@ const isAccount = pathname.startsWith("/account");
           </span>
           <div class="mn-item-text">
             <strong class="mn-item-title">Programma</strong>
-            <span class="mn-item-desc">Masterclasses, Bootjes &amp; Rondleidingen</span>
+            <span class="mn-item-desc">Festivalsessies &amp; beursvloer</span>
           </div>
           <span class="mn-item-arrow">&rarr;</span>
         </a>
@@ -531,7 +531,8 @@ const isAccount = pathname.startsWith("/account");
     border-bottom: 1px dashed rgba(226, 217, 204, 0.6);
   }
 
-  .nav-dropdown-item:last-child {
+  .nav-dropdown-item:last-child,
+  .nav-dropdown-item:has(+ [style*="display: none"]) {
     border-bottom: none;
   }
 
