@@ -731,8 +731,11 @@ const rawAddons = [{"id":"6abb978d69fb0a4bfd17f990","row":5,"title":"Dada Chapel
               var title = (p.title || '').toLowerCase();
               var category = (p.category || '').toLowerCase().trim();
               if (title.indexOf('programma volgt') !== -1) return false;
-              // For Gent live 2026: only show entree tickets
-              if (category !== 'entree') return false;
+              if (title.indexOf('test') !== -1 || title.indexOf('concept') !== -1 || title.indexOf('draft') !== -1) return false;
+              // Gent 2027: VIP sessie nog niet live zetten conform verzoek klant
+              if (r.id === '6abba1e80735a7a1a04936a9' || title.indexOf('vip') !== -1) return false;
+              // Gent 2027: masterclasses nog niet toevoegen (inhoud volgt later)
+              if (category === 'masterclass') return false;
               return true;
             });
             if (records.length === 0) return;

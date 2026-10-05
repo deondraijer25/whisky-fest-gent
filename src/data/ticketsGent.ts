@@ -119,40 +119,6 @@ export const TICKETS_GENT: TicketItem[] = [
       "4 uur onbeperkt toegang tot alle beurseilanden en stands"
     ]
   },
-  // VIP Sessie Vrijdagmiddag (in data aanwezig, voorlopig verborgen tot klant akkoord geeft)
-  {
-    id: "6abba1e80735a7a1a04936a9",
-    row: 4,
-    title: "VIP sessie vrijdag middag",
-    price: 72.5,
-    date: "Vrijdag 1 Okt 2027",
-    time: "13:00 - 17:00 uur",
-    day: "vrijdag",
-    daypart: "middag",
-    category: "entree",
-    categoryName: "VIP Entreeticket",
-    bookingType: "Vrij te boeken voor iedereen",
-    location: "De Oude Vismijn Gent",
-    capacity: 400,
-    sold: 0,
-    isSoldOut: true,
-    isLowStock: false,
-    status: "comingsoon",
-    statusText: "Binnenkort",
-    extra: "Incl. worst, kaas én 2 whisky-cocktails",
-    description: "Exclusieve VIP opening van het Gents Whisky Festival 2027. Inclusief een portie worst, portie kaas én 2 whisky-cocktails.",
-    ambassadorName: "Gents Festival Team",
-    ambassadorTitle: "Festival Host",
-    ambassadorBio: "Ons team staat klaar om u te verwelkomen in het hart van historisch Gent.",
-    tastingLineup: [
-      "Portie ambachtelijke worst & portie lokale kaas",
-      "2 verfijnde whisky-cocktails inbegrepen",
-      "Officieel Glencairn festival proefglas",
-      "Talloze gratis te proeven drams op de beursvloer",
-      "Compleet festivalboekje met alle standhouders en plattegrond",
-      "4 uur onbeperkt toegang tot alle beurseilanden en stands"
-    ]
-  },
 
   // =========================================================================
   // 2. Officiële Festival Botteling 2027 (De Oude Vismijn Gent)
