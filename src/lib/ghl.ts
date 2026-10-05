@@ -178,16 +178,27 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
       if (title.includes('programma volgt')) return false;
       if (title.includes('test') || title.includes('concept') || title.includes('draft') || title.includes('sophie')) return false;
       if (slug.includes('test') || slug.includes('concept') || slug.includes('draft')) return false;
-      // For Gent live 2026: only show entree tickets
-      if (normalizedCity === 'gent' && category !== 'entree') return false;
+      // Gent 2027: VIP sessie nog niet live zetten conform e-mail klant
+      if (normalizedCity === 'gent' && (r.id === '6abba1e80735a7a1a04936a9' || title.includes('vip'))) {
+        return false;
+      }
+      // Gent 2027: masterclasses nog niet toevoegen (inhoud volgt later)
+      if (normalizedCity === 'gent' && category === 'masterclass') {
+        return false;
+      }
       return true;
     });
 
     const parsedTickets: TicketItem[] = filteredRecords.map((r: any, idx: number) => {
       const p = r.properties || r;
+      const rawCategory = (p.category || '').toLowerCase().trim();
       const isComingSoon = p.status_badge === 'comingsoon';
-      const isSoldOut = parseGhlBoolean(p.is_sold_out);
-      const capacity = parseInt(p.capacity, 10) || 0;
+      let isSoldOut = parseGhlBoolean(p.is_sold_out);
+      // For Gent 2027: botteling, bootjes en distilleerderij bezoeken zijn actief
+      if (normalizedCity === 'gent' && (rawCategory === 'botteling' || rawCategory === 'tram' || rawCategory === 'warehouse')) {
+        isSoldOut = false;
+      }
+      const capacity = rawCategory === 'botteling' ? 75 : (parseInt(p.capacity, 10) || 0);
       const sold = parseInt(p.sold, 10) || 0;
       const effectiveSoldOut = isComingSoon || isSoldOut || (capacity > 0 && sold >= capacity);
 
@@ -200,6 +211,9 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
       } else if (effectiveSoldOut) {
         statusBadge = 'sold-out';
         statusText = 'Uitverkocht';
+      } else if (rawCategory === 'botteling') {
+        statusBadge = 'popular';
+        statusText = 'Populair';
       } else if (p.status_badge && p.status_badge !== 'none') {
         statusBadge = p.status_badge;
       }
@@ -222,7 +236,7 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
         isSoldOut: effectiveSoldOut,
         isLowStock: capacity > 0 && (capacity - sold <= 10) && !effectiveSoldOut,
         status: statusBadge,
-        statusText: effectiveSoldOut ? 'Uitverkocht' : undefined,
+        statusText: effectiveSoldOut ? 'Uitverkocht' : statusText,
         description: p.ticket_description || p.description || '',
         extra: p.ticket_description || p.description || '',
         ambassadorName: p.ambassador_name || undefined,
@@ -234,7 +248,17 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
       };
     });
 
-    const sortedTickets = sortTickets(parsedTickets);
+    // Merge items from TICKETS_GENT if not present in GHL
+    const ghlIds = new Set(parsedTickets.map(t => t.id));
+    const ghlTitles = new Set(parsedTickets.map(t => t.title.toLowerCase().trim()));
+    const additionalLocal = TICKETS_GENT.filter(t => 
+      !ghlIds.has(t.id) && !ghlTitles.has(t.title.toLowerCase().trim()) &&
+      !t.title.toLowerCase().includes('vip') &&
+      t.category !== 'masterclass'
+    );
+    const combinedTickets = [...parsedTickets, ...additionalLocal];
+
+    const sortedTickets = sortTickets(combinedTickets);
     ticketsCache[normalizedCity] = { data: sortedTickets, timestamp: now };
     return sortedTickets;
   } catch (err) {

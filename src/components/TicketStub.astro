@@ -50,18 +50,18 @@ const effectiveDay = day || (
   date.toLowerCase().includes('zondag') ? 'zondag' : 'all'
 );
 
-// Clean date display (e.g. "VRIJDAG 2 OKT" for 2026, "VRIJDAG 1 OKT" for 2027)
+// Clean date display (e.g. "VRIJDAG 1 OKT" for 2027)
 let cleanDate = (date || '').replace(/\s*202[67]/g, '').trim().toUpperCase();
 if (!cleanDate || cleanDate === 'DATUM VOLGT') {
-  if (effectiveDay === 'vrijdag') cleanDate = 'VRIJDAG 2 OKT';
-  else if (effectiveDay === 'zaterdag') cleanDate = 'ZATERDAG 3 OKT';
-  else if (effectiveDay === 'zondag') cleanDate = 'ZONDAG 4 OKT';
+  if (effectiveDay === 'vrijdag') cleanDate = 'VRIJDAG 1 OKT';
+  else if (effectiveDay === 'zaterdag') cleanDate = 'ZATERDAG 2 OKT';
+  else if (effectiveDay === 'zondag') cleanDate = 'ZONDAG 3 OKT';
 } else if (cleanDate.includes('VRIJDAG') && !/\d/.test(cleanDate)) {
-  cleanDate = 'VRIJDAG 2 OKT';
+  cleanDate = 'VRIJDAG 1 OKT';
 } else if (cleanDate.includes('ZATERDAG') && !/\d/.test(cleanDate)) {
-  cleanDate = 'ZATERDAG 3 OKT';
+  cleanDate = 'ZATERDAG 2 OKT';
 } else if (cleanDate.includes('ZONDAG') && !/\d/.test(cleanDate)) {
-  cleanDate = 'ZONDAG 4 OKT';
+  cleanDate = 'ZONDAG 3 OKT';
 }
 
 // Clean access / location display

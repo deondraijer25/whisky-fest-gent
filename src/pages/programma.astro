@@ -32,62 +32,78 @@ const SESSIONS: SessionData[] = [
   {
     id: 'vrijdag-avond',
     name: 'Vrijdagavond',
-    dayLabel: 'Vrijdag 2 Okt',
+    dayLabel: 'Vrijdag 1 Okt',
     timeLabel: '19:00 - 23:00 uur',
-    items: []
+    items: [
+      {
+        id: 'gent-special-dada-tour-vrijdag',
+        time: '18:00 – 19:30',
+        location: 'Melden bij entree-deur De Oude Vismijn',
+        title: 'Rondleiding Dada Chapel Distilleerderij',
+        category: 'warehouse',
+        categoryLabel: 'Distilleerderij Bezoek',
+        host: 'Dada Chapel Meesterstoker',
+        description: 'Exclusief kijkje achter de schermen bij de Gentse distilleerderij inclusief proeverij van speciale vatmonsters.',
+        price: 15.00
+      }
+    ]
   },
   {
     id: 'zaterdag-middag',
     name: 'Zaterdagmiddag',
-    dayLabel: 'Zaterdag 3 Okt',
+    dayLabel: 'Zaterdag 2 Okt',
     timeLabel: '13:00 - 17:00 uur',
-    items: []
+    items: [
+      {
+        id: 'gent-special-dada-tour-zaterdag',
+        time: '11:00 – 12:30',
+        location: 'Melden bij entree-deur De Oude Vismijn',
+        title: 'Rondleiding Dada Chapel Distilleerderij',
+        category: 'warehouse',
+        categoryLabel: 'Distilleerderij Bezoek',
+        host: 'Dada Chapel Meesterstoker',
+        description: 'Ochtendrondleiding bij Dada Chapel Distilleerderij inclusief mini-tasting voorafgaand aan de festivalbeurs.',
+        price: 15.00
+      },
+      {
+        id: 'gent-special-bootje-zaterdag-1200',
+        time: '12:00 – 13:00',
+        location: 'Aanlegsteiger De Oude Vismijn',
+        title: 'Rondvaart Gent - Whisky Bootje',
+        category: 'tram',
+        categoryLabel: 'Whisky Bootje',
+        host: 'Gentse Schipper & Sommelier',
+        description: 'Unieke boottocht over de historische Gentse binnenwateren met proeverij van 4 bijzondere drams.',
+        price: 19.50
+      }
+    ]
   },
   {
     id: 'zaterdag-avond',
     name: 'Zaterdagavond',
-    dayLabel: 'Zaterdag 3 Okt',
+    dayLabel: 'Zaterdag 2 Okt',
     timeLabel: '19:00 - 23:00 uur',
-    items: []
-  },
-  {
-    id: 'zondag-middag',
-    name: 'Zondagmiddag',
-    dayLabel: 'Zondag 4 Okt',
-    timeLabel: '13:00 - 17:00 uur',
-    items: []
+    items: [
+      {
+        id: 'gent-special-bootje-zaterdag-1830',
+        time: '18:30 – 19:30',
+        location: 'Aanlegsteiger De Oude Vismijn',
+        title: 'Rondvaart Gent - Whisky Bootje',
+        category: 'tram',
+        categoryLabel: 'Whisky Bootje',
+        host: 'Gentse Schipper & Sommelier',
+        description: 'Sfeervolle avondrondvaart over de verlichte historische Gentse grachten met whiskyproeverij.',
+        price: 19.50
+      }
+    ]
   }
 ];
 
 const GENT_SPECIALS_ROWS: (ProgramRow & { dayLabel?: string })[] = [
   {
-    id: 'gent-special-bootje-zaterdag-1200',
-    time: '12:00 – 13:00',
-    dayLabel: 'Zaterdag 3 Okt',
-    location: 'Aanlegsteiger De Oude Vismijn',
-    title: 'Rondvaart Gent - Whisky Bootje',
-    category: 'tram',
-    categoryLabel: 'Whisky Bootje',
-    host: 'Gentse Schipper & Sommelier',
-    description: 'Unieke boottocht over de historische Gentse binnenwateren met proeverij van 4 bijzondere drams.',
-    price: 19.50
-  },
-  {
-    id: 'gent-special-bootje-zaterdag-1830',
-    time: '18:30 – 19:30',
-    dayLabel: 'Zaterdag 3 Okt',
-    location: 'Aanlegsteiger De Oude Vismijn',
-    title: 'Rondvaart Gent - Whisky Bootje',
-    category: 'tram',
-    categoryLabel: 'Whisky Bootje',
-    host: 'Gentse Schipper & Sommelier',
-    description: 'Sfeervolle avondrondvaart over de verlichte historische Gentse grachten met whiskyproeverij.',
-    price: 19.50
-  },
-  {
     id: 'gent-special-dada-tour-vrijdag',
     time: '18:00 – 19:30',
-    dayLabel: 'Vrijdag 2 Okt',
+    dayLabel: 'Vrijdag 1 Okt',
     location: 'Melden bij entree-deur De Oude Vismijn',
     title: 'Rondleiding Dada Chapel Distilleerderij',
     category: 'warehouse',
@@ -99,7 +115,7 @@ const GENT_SPECIALS_ROWS: (ProgramRow & { dayLabel?: string })[] = [
   {
     id: 'gent-special-dada-tour-zaterdag',
     time: '11:00 – 12:30',
-    dayLabel: 'Zaterdag 3 Okt',
+    dayLabel: 'Zaterdag 2 Okt',
     location: 'Melden bij entree-deur De Oude Vismijn',
     title: 'Rondleiding Dada Chapel Distilleerderij',
     category: 'warehouse',
@@ -107,15 +123,39 @@ const GENT_SPECIALS_ROWS: (ProgramRow & { dayLabel?: string })[] = [
     host: 'Dada Chapel Meesterstoker',
     description: 'Ochtendrondleiding bij Dada Chapel Distilleerderij inclusief mini-tasting voorafgaand aan de festivalbeurs.',
     price: 15.00
+  },
+  {
+    id: 'gent-special-bootje-zaterdag-1200',
+    time: '12:00 – 13:00',
+    dayLabel: 'Zaterdag 2 Okt',
+    location: 'Aanlegsteiger De Oude Vismijn',
+    title: 'Rondvaart Gent - Whisky Bootje',
+    category: 'tram',
+    categoryLabel: 'Whisky Bootje',
+    host: 'Gentse Schipper & Sommelier',
+    description: 'Unieke boottocht over de historische Gentse binnenwateren met proeverij van 4 bijzondere drams.',
+    price: 19.50
+  },
+  {
+    id: 'gent-special-bootje-zaterdag-1830',
+    time: '18:30 – 19:30',
+    dayLabel: 'Zaterdag 2 Okt',
+    location: 'Aanlegsteiger De Oude Vismijn',
+    title: 'Rondvaart Gent - Whisky Bootje',
+    category: 'tram',
+    categoryLabel: 'Whisky Bootje',
+    host: 'Gentse Schipper & Sommelier',
+    description: 'Sfeervolle avondrondvaart over de verlichte historische Gentse grachten met whiskyproeverij.',
+    price: 19.50
   }
 ];
 
 const BOTTELLINGS = [
   {
     id: 'gent-botteling-dada-chapel',
-    title: 'Dada Chapel Gentse Special 2026',
+    title: 'Dada Chapel Gentse Special',
     spec: 'Limousin Virgin Oak Cask • 7 Jaar Oud • Cask Strength',
-    description: 'Officiële exclusieve festivalbotteling van het Gents Whisky Festival 2026. Gestookt door Dada Chapel in hartje Gent en 7 jaar gerijpt op maagdelijk Frans Limousin eikenhout. Gelimiteerde oplage van 50 genummerde flessen.',
+    description: 'Officiële exclusieve festivalbotteling van het Gents Whisky Festival. Gestookt door Dada Chapel in hartje Gent en 7 jaar gerijpt op maagdelijk Frans Limousin eikenhout. Gelimiteerde oplage van 75 flessen.',
     price: 95.00
   }
 ];
@@ -138,7 +178,7 @@ function formatSpeaker(host: string) {
 ---
 
 <Layout 
-  title="Programma & Tijdschema 2026 - Gents Whisky Festival" 
+  title="Programma & Tijdschema 2027 - Gents Whisky Festival" 
   description="Volledig tijdschema van alle masterclasses, boottochten en proeverijen tijdens het Gents Whisky Festival."
 >
   <Header />
@@ -186,7 +226,6 @@ function formatSpeaker(host: string) {
           type="button" 
           class="session-btn-card"
           data-target-tab="bottelingen"
-          style="display: none;"
         >
           <span class="btn-card-day">Exclusief</span>
           <span class="btn-card-name">Festival Bottelingen</span>
@@ -197,7 +236,6 @@ function formatSpeaker(host: string) {
           type="button" 
           class="session-btn-card btn-gidsen-special"
           data-target-tab="belevingen"
-          style="display: none;"
         >
           <span class="btn-card-day">Gentse Beleving</span>
           <span class="btn-card-name">Bootjes &amp; Tours</span>
@@ -208,7 +246,7 @@ function formatSpeaker(host: string) {
       <!-- PANES LIST -->
       <div class="agenda-panes-list">
         
-        <!-- 1-5: The 5 Day Sessions -->
+        <!-- The Day Sessions -->
         {SESSIONS.map((s, idx) => (
           <section 
             class={`session-agenda-pane ${idx === 0 ? 'active' : ''}`}
@@ -218,6 +256,21 @@ function formatSpeaker(host: string) {
             <div class="pane-header-bar">
               <h2 class="pane-title">{s.name}</h2>
               <span class="pane-badge-time">{s.dayLabel} &bull; {s.timeLabel}</span>
+            </div>
+
+            <!-- Masterclasses 2027 Teaser Announcement -->
+            <div class="mc-teaser-banner">
+              <div class="mc-teaser-icon-wrap" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                </svg>
+              </div>
+              <div class="mc-teaser-content">
+                <h3 class="mc-teaser-title">Officiële Masterclasses 2027 — Binnenkort Bekend</h3>
+                <p class="mc-teaser-desc">
+                  Voor deze editie worden circa 8 tot 12 exclusieve masterclasses samengesteld met toonaangevende internationale merkambassadeurs. De programmering en inschrijving worden binnenkort bekendgemaakt op deze pagina.
+                </p>
+              </div>
             </div>
 
             <!-- Masterclasses & Tastings Rows -->
@@ -338,10 +391,10 @@ function formatSpeaker(host: string) {
             </section>
         ))}
 
-        <!-- 6: Bottelingen Pane -->
-        <section class="session-agenda-pane" id="pane-bottelingen" style="display: none;">
+        <!-- Bottelingen Pane -->
+        <section class="session-agenda-pane" id="pane-bottelingen">
           <div class="pane-header-bar">
-            <h2 class="pane-title">Exclusieve Festival Bottelingen 2026</h2>
+            <h2 class="pane-title">Exclusieve Festival Bottelingen 2027</h2>
             <span class="pane-badge-time">Afhalen bij Festivalslijterij (De Oude Vismijn)</span>
           </div>
 
@@ -411,8 +464,8 @@ function formatSpeaker(host: string) {
           </div>
         </section>
 
-        <!-- 7: Gentse Belevingen Pane -->
-        <section class="session-agenda-pane" id="pane-belevingen" style="display: none;">
+        <!-- Gentse Belevingen Pane -->
+        <section class="session-agenda-pane" id="pane-belevingen">
           <div class="pane-header-bar">
             <div class="phb-left">
               <h2 class="pane-title">Gentse Belevingen &amp; Specials</h2>
@@ -657,7 +710,7 @@ function formatSpeaker(host: string) {
     z-index: 10;
     margin-top: -2.85rem;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 0.65rem;
     max-width: 1120px;
     margin-left: auto;
@@ -794,6 +847,62 @@ function formatSpeaker(host: string) {
     border-radius: 3px;
     border: 1px solid rgba(197, 139, 57, 0.3);
     white-space: nowrap;
+  }
+
+  /* Masterclass Teaser Announcement */
+  .mc-teaser-banner {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background: #FFFFFF;
+    border: 2px solid var(--text-charcoal, #171614);
+    box-shadow: 4px 4px 0px var(--text-charcoal, #171614);
+    border-radius: 4px;
+    padding: 1.15rem 1.35rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .mc-teaser-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(30, 58, 138, 0.08);
+    color: #1E3A8A;
+  }
+
+  .mc-teaser-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mc-teaser-title {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-charcoal, #171614);
+    margin: 0 0 0.25rem;
+    line-height: 1.25;
+  }
+
+  .mc-teaser-desc {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    color: var(--text-muted, #64748B);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .mc-teaser-banner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1rem;
+    }
   }
 
   /* 3. Spacious Balanced Row Layout */

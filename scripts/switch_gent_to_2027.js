@@ -1,96 +1,136 @@
 // scripts/switch_gent_to_2027.js
-// Voer dit script uit na zondagavond 4 oktober 2026 om alles met 1 commando over te zetten naar 2027.
+// Voer dit script uit om alles met 1 commando over te zetten naar Gent 2027 (1 & 2 Oktober 2027)
 
-const API_KEY = 'pit-150d6114-ac2c-4cf7-9d5c-ffc20499c790';
+const API_KEY = process.env.GHL_API_KEY || 'pit-150d6114-ac2c-4cf7-9d5c-ffc20499c790';
 const SCHEMA_KEY = 'custom_objects.festival_tickets';
 const LOCATION_ID = '1OZ9uxIBFoxwbheVC5iN';
 const BASE_URL = 'https://services.leadconnectorhq.com';
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const ghlUpdates = [
   {
     id: '6abb9786cde13de34a119388', // Entree Vrijdagavond
     properties: {
+      title: 'Entree Vrijdagavond',
       date_label: 'Vrijdag 1 Okt 2027',
       time_label: '19:00 - 23:00 uur',
-      ticket_description: 'Beleef de opening van het Gents Whisky Festival 2027 in de sfeervolle historische hallen van De Oude Vismijn. € 38,50 early bird tot 1 januari.'
+      price: 39.50,
+      capacity: 550,
+      is_sold_out: 'false',
+      ticket_description: 'Entreeticket vrijdagavond 19.00 tot 23.00 (na 1 jan naar 42,50). Early bird voorverkoop 2027.'
     }
   },
   {
     id: '6abb97868634ebafa93abbd1', // Entree Zaterdagmiddag
     properties: {
+      title: 'Entree Zaterdagmiddag',
       date_label: 'Zaterdag 2 Okt 2027',
       time_label: '13:00 - 17:00 uur',
-      ticket_description: 'De populaire zaterdagmiddagsessie in De Oude Vismijn Gent. € 38,50 early bird tot 1 januari.'
+      price: 39.50,
+      capacity: 550,
+      is_sold_out: 'false',
+      ticket_description: 'Entreeticket zaterdagmiddag 13.00 tot 17.00 (na 1 jan naar 42,50). Early bird voorverkoop 2027.'
     }
   },
   {
     id: '6abb9787fc8d6456cfdf96be', // Entree Zaterdagavond
     properties: {
+      title: 'Entree Zaterdagavond',
       date_label: 'Zaterdag 2 Okt 2027',
       time_label: '19:00 - 23:00 uur',
-      ticket_description: 'Sfeervolle zaterdagavondproeverij met internationale en Belgische distilleerders. € 38,50 early bird tot 1 januari.'
+      price: 39.50,
+      capacity: 550,
+      is_sold_out: 'false',
+      ticket_description: 'Entreeticket zaterdagavond 19.00 tot 23.00 (na 1 jan naar 42,50). Early bird voorverkoop 2027.'
     }
   },
   {
-    id: '6abba1e80735a7a1a04936a9', // Entree Zondagmiddag
+    id: '6abba1e80735a7a1a04936a9', // VIP Sessie Vrijdagmiddag (voorlopig verborgen gehouden conform e-mail klant)
     properties: {
-      date_label: 'Zondag 3 Okt 2027',
+      title: 'VIP sessie vrijdag middag',
+      date_label: 'Vrijdag 1 Okt 2027',
       time_label: '13:00 - 17:00 uur',
-      ticket_description: 'Gemoedelijke zondagmiddagsessie in De Oude Vismijn Gent. € 38,50 early bird tot 1 januari.'
+      price: 72.50,
+      capacity: 400,
+      is_sold_out: 'true',
+      status_badge: 'comingsoon',
+      ticket_description: 'VIP sessie vrijdag middag van 13.00 tot 17.00. Inclusief een portie worst, portie kaas én 2 whisky-cocktails.'
     }
   },
   {
     id: '6abb978edaed730a5a0433d1', // Dada Tour Vrijdag
     properties: {
+      title: 'Rondleiding door Dada Chapel Distilleerderij',
       date_label: 'Vrijdag 1 Okt 2027',
       time_label: '18:00 - 19:30 uur',
+      price: 15.00,
+      capacity: 20,
       is_sold_out: 'false',
-      ticket_description: 'Wandel mee vanaf De Oude Vismijn naar de nabijgelegen Dada Chapel distilleerderij voor een intieme rondleiding inclusief proeverij.'
+      location: 'Melden bij entree-deur',
+      ticket_description: 'Rondleiding door Dada Chapel Distilleerderij inclusief proeverij. Melden bij entree-deur.'
     }
   },
   {
     id: '6abb978f1eb866bf2b8779e0', // Dada Tour Zaterdag
     properties: {
+      title: 'Rondleiding door Dada Chapel Distilleerderij',
       date_label: 'Zaterdag 2 Okt 2027',
       time_label: '11:00 - 12:30 uur',
+      price: 15.00,
+      capacity: 20,
       is_sold_out: 'false',
+      location: 'Melden bij entree-deur',
       ticket_description: 'Ochtendrondleiding bij Dada Chapel Distilleerderij inclusief mini-tasting voorafgaand aan de festivalbeurs.'
     }
   },
   {
     id: '6abb978ea456c2a4ec18a856', // Bootje Zaterdag 12:00
     properties: {
+      title: 'Rondvaart Gent - Whisky Bootje',
       date_label: 'Zaterdag 2 Okt 2027',
       time_label: '12:00 - 13:00 uur',
+      price: 19.50,
+      capacity: 50,
       is_sold_out: 'false',
-      ticket_description: 'Geniet van een unieke boottocht over de historische Gentse binnenwateren onder het genot van 4 bijzondere drams.'
+      location: 'Melden bij entree-deur',
+      ticket_description: 'Rondvaart Gent - Whisky Bootje - afvaart 12.00 uur. Geniet van een unieke boottocht over de historische Gentse binnenwateren met 4 drams.'
     }
   },
   {
     id: '6abb978e1eb866bf2b8779dd', // Bootje Zaterdag 18:30
     properties: {
+      title: 'Rondvaart Gent - Whisky Bootje',
       date_label: 'Zaterdag 2 Okt 2027',
       time_label: '18:30 - 19:30 uur',
+      price: 19.50,
+      capacity: 50,
       is_sold_out: 'false',
-      ticket_description: 'Sfeervolle avondrondvaart over de verlichte historische Gentse grachten met whiskyproeverij.'
+      location: 'Melden bij entree-deur',
+      ticket_description: 'Rondvaart Gent - Whisky Bootje - afvaart 18.30 uur. Sfeervolle avondrondvaart over de verlichte historische Gentse grachten met whiskyproeverij.'
     }
   },
   {
     id: '6abb978d69fb0a4bfd17f990', // Botteling
     properties: {
-      title: 'Festival Botteling: Dada Chapel Gentse Special 2027',
-      date_label: 'Afhalen Festival (1-3 okt 2027)',
+      title: 'Dada Chapel Gentse Special',
+      date_label: 'Afhalen Festival (1-2 okt 2027)',
       time_label: 'Hele dag',
+      price: 95.00,
+      capacity: 75,
       is_sold_out: 'false',
-      ticket_description: 'De officiële exclusieve festivalbotteling van het Gents Whisky Festival 2027. Een 7 jaar oude single cask gerijpt op nieuw Limousin eiken (Limousin Virgin Oak Cask 7 jaar). Gelimiteerde oplage van 50 genummerde flessen.'
+      location: 'Festival Slijterij',
+      ticket_description: 'Dada Chapel Gentse Whisky Festival Special. Exclusieve single cask Limousin Virgin Oak 7 jaar.'
     }
   }
 ];
 
 async function runSwitch() {
-  console.log('=== Start switch naar Gent 2027 ===');
+  console.log('=== Start switch naar Gent 2027 (1 & 2 Okt 2027) ===');
 
   // 1. Update GHL
   for (const item of ghlUpdates) {
@@ -106,7 +146,7 @@ async function runSwitch() {
         body: JSON.stringify({ properties: item.properties })
       });
       if (res.ok) {
-        console.log(`✓ GHL record ${item.id} bijgewerkt naar 2027`);
+        console.log(`✓ GHL record ${item.id} (${item.properties.title}) bijgewerkt naar 2027`);
       } else {
         console.error(`Fout bij updaten ${item.id}:`, res.status, await res.text());
       }
@@ -120,93 +160,14 @@ async function runSwitch() {
   if (fs.existsSync(brandFile)) {
     let brandContent = fs.readFileSync(brandFile, 'utf8');
     brandContent = brandContent.replace(/25e Editie \(2026\)/g, '26e Editie (2027)');
-    brandContent = brandContent.replace(/2, 3 en 4 Oktober 2026/g, '1, 2 en 3 Oktober 2027');
+    brandContent = brandContent.replace(/2, 3 en 4 Oktober 2026/g, '1 en 2 Oktober 2027');
+    brandContent = brandContent.replace(/1, 2 en 3 Oktober 2027/g, '1 en 2 Oktober 2027');
+    brandContent = brandContent.replace(/announcementBar: .*,/g, "announcementBar: 'Officiële voorverkoop 2027 geopend! Boek nu met € 39,50 Early Bird voordeel.',");
     fs.writeFileSync(brandFile, brandContent, 'utf8');
-    console.log('✓ brand.config.ts bijgewerkt naar 2027');
+    console.log('✓ brand.config.ts bijgewerkt naar 2027 (1 & 2 Oktober 2027)');
   }
 
-  // 3. Update ticketsGent.ts in Gent
-  const ticketsFile = path.resolve(__dirname, '../src/data/ticketsGent.ts');
-  if (fs.existsSync(ticketsFile)) {
-    let tContent = fs.readFileSync(ticketsFile, 'utf8');
-    tContent = tContent.replace(/Vrijdag 2 Okt 2026/g, 'Vrijdag 1 Okt 2027');
-    tContent = tContent.replace(/Zaterdag 3 Okt 2026/g, 'Zaterdag 2 Okt 2027');
-    tContent = tContent.replace(/Zondag 4 Okt 2026/g, 'Zondag 3 Okt 2027');
-    tContent = tContent.replace(/Gentse Special 2026/g, 'Gentse Special 2027');
-    tContent = tContent.replace(/Whisky Festival 2026/g, 'Whisky Festival 2027');
-    tContent = tContent.replace(/1\. Entrees 2026/g, '1. Entrees 2027');
-    fs.writeFileSync(ticketsFile, tContent, 'utf8');
-    console.log('✓ ticketsGent.ts bijgewerkt naar 2027');
-  }
-
-  // 4. Update index.astro in Gent
-  const indexFile = path.resolve(__dirname, '../src/pages/index.astro');
-  if (fs.existsSync(indexFile)) {
-    let idxContent = fs.readFileSync(indexFile, 'utf8');
-    idxContent = idxContent.replace(/2, 3 en 4 oktober 2026/g, '1, 2 en 3 oktober 2027');
-    idxContent = idxContent.replace(/2, 3 &amp; 4 Oktober 2026/g, '1, 2 &amp; 3 Oktober 2027');
-    idxContent = idxContent.replace(/25e editie in 2026/g, '26e editie in 2027');
-    idxContent = idxContent.replace(/2026 — 25e Editie/g, '2027 — 26e Editie');
-    idxContent = idxContent.replace(/>Vrijdag 2 Okt</g, '>Vrijdag 1 Okt<');
-    idxContent = idxContent.replace(/>Zaterdag 3 Okt</g, '>Zaterdag 2 Okt<');
-    idxContent = idxContent.replace(/>Zondag 4 Okt</g, '>Zondag 3 Okt<');
-    idxContent = idxContent.replace(/<span>Vrijdag 2 Okt 2026<\/span>/g, '<span>Vrijdag 1 Okt 2027</span>');
-    idxContent = idxContent.replace(/<span>Zaterdag 3 Okt 2026<\/span>/g, '<span>Zaterdag 2 Okt 2027</span>');
-    idxContent = idxContent.replace(/<span>Zondag 4 Okt 2026<\/span>/g, '<span>Zondag 3 Okt 2027</span>');
-    idxContent = idxContent.replace(/style="margin-top: 0\.5rem; display: none;"/g, 'style="margin-top: 0.5rem;"');
-    idxContent = idxContent.replace(/id="dd-filter-cat" style="display: none;"/g, 'id="dd-filter-cat"');
-    fs.writeFileSync(indexFile, idxContent, 'utf8');
-    console.log('✓ index.astro bijgewerkt naar 2027');
-  }
-
-  // 5. Update programma.astro in Gent
-  const progFile = path.resolve(__dirname, '../src/pages/programma.astro');
-  if (fs.existsSync(progFile)) {
-    let pContent = fs.readFileSync(progFile, 'utf8');
-    pContent = pContent.replace(/Vrijdag 2 Okt/g, 'Vrijdag 1 Okt');
-    pContent = pContent.replace(/Zaterdag 3 Okt/g, 'Zaterdag 2 Okt');
-    pContent = pContent.replace(/Zondag 4 Okt/g, 'Zondag 3 Okt');
-    pContent = pContent.replace(/Gentse Special 2026/g, 'Gentse Special 2027');
-    pContent = pContent.replace(/Whisky Festival 2026/g, 'Whisky Festival 2027');
-    pContent = pContent.replace(/Tijdschema 2026/g, 'Tijdschema 2027');
-    pContent = pContent.replace(/Bottelingen 2026/g, 'Bottelingen 2027');
-    pContent = pContent.replace(/data-target-tab="bottelingen"\s+style="display: none;"/g, 'data-target-tab="bottelingen"');
-    pContent = pContent.replace(/data-target-tab="belevingen"\s+style="display: none;"/g, 'data-target-tab="belevingen"');
-    pContent = pContent.replace(/id="pane-bottelingen" style="display: none;"/g, 'id="pane-bottelingen"');
-    pContent = pContent.replace(/id="pane-belevingen" style="display: none;"/g, 'id="pane-belevingen"');
-    fs.writeFileSync(progFile, pContent, 'utf8');
-    console.log('✓ programma.astro bijgewerkt naar 2027');
-  }
-
-  // 6. Update ghl.ts & Layout.astro to re-enable non-entree tickets
-  const ghlFile = path.resolve(__dirname, '../src/lib/ghl.ts');
-  if (fs.existsSync(ghlFile)) {
-    let ghlContent = fs.readFileSync(ghlFile, 'utf8');
-    ghlContent = ghlContent.replace(/\/\/ For Gent live 2026: only show entree tickets\s*if \(normalizedCity === 'gent' && category !== 'entree'\) return false;\s*/g, '');
-    fs.writeFileSync(ghlFile, ghlContent, 'utf8');
-    console.log('✓ ghl.ts bijgewerkt (specials weer actief)');
-  }
-
-  const layoutFile = path.resolve(__dirname, '../src/layouts/Layout.astro');
-  if (fs.existsSync(layoutFile)) {
-    let layoutContent = fs.readFileSync(layoutFile, 'utf8');
-    layoutContent = layoutContent.replace(/\/\/ For Gent live 2026: only show entree tickets\s*if \(category !== 'entree'\) return false;\s*/g, '');
-    fs.writeFileSync(layoutFile, layoutContent, 'utf8');
-    console.log('✓ Layout.astro bijgewerkt (specials weer actief)');
-  }
-
-  // 7. Update Header.astro in Gent to restore dropdown options and labels
-  const headerFile = path.resolve(__dirname, '../src/components/Header.astro');
-  if (fs.existsSync(headerFile)) {
-    let hContent = fs.readFileSync(headerFile, 'utf8');
-    hContent = hContent.replace(/ style="display: none;" data-gent-2027-restore/g, '');
-    hContent = hContent.replace(/Festivalsessies &amp; proeverijen/g, 'Masterclasses, bootjes &amp; proeverijen');
-    hContent = hContent.replace(/Festivalsessies &amp; beursvloer/g, 'Masterclasses, Bootjes &amp; Rondleidingen');
-    fs.writeFileSync(headerFile, hContent, 'utf8');
-    console.log('✓ Header.astro bijgewerkt (alle dropdown opties & teksten hersteld naar 2027)');
-  }
-
-  console.log('\n=== Switch naar 2027 voltooid! Voer nu `npm run build` uit. ===');
+  console.log('\n=== Switch script gereed! ===');
 }
 
 runSwitch();

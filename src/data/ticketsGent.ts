@@ -1,5 +1,5 @@
 // src/data/ticketsGent.ts
-// Officiële dataset voor Gents Whisky Festival 2026 (De Oude Vismijn Gent)
+// Officiële dataset voor Gents Whisky Festival 2027 (De Oude Vismijn Gent • 1 & 2 Oktober 2027)
 
 export interface TicketItem {
   id: string;
@@ -30,14 +30,14 @@ export interface TicketItem {
 
 export const TICKETS_GENT: TicketItem[] = [
   // =========================================================================
-  // 1. Entrees 2026 (De Oude Vismijn Gent)
+  // 1. Entrees 2027 (De Oude Vismijn Gent • 1 & 2 Oktober 2027)
   // =========================================================================
   {
-    id: "gent-entree-vrijdagavond",
+    id: "6abb9786cde13de34a119388",
     row: 1,
     title: "Entree Vrijdagavond",
-    price: 42.5,
-    date: "Vrijdag 2 Okt 2026",
+    price: 39.5,
+    date: "Vrijdag 1 Okt 2027",
     time: "19:00 - 23:00 uur",
     day: "vrijdag",
     daypart: "avond",
@@ -45,12 +45,12 @@ export const TICKETS_GENT: TicketItem[] = [
     categoryName: "Entreeticket",
     bookingType: "Vrij te boeken voor iedereen",
     location: "De Oude Vismijn Gent",
-    capacity: 500,
+    capacity: 550,
     sold: 0,
     isSoldOut: false,
     isLowStock: false,
-    extra: "€ 38,50 early bird tot 1 januari",
-    description: "Beleef de opening van het Gents Whisky Festival 2026 in de sfeervolle historische hallen van De Oude Vismijn.",
+    extra: "€ 39,50 early bird tot 1 januari (daarna € 42,50)",
+    description: "Beleef de opening van het Gents Whisky Festival 2027 in de sfeervolle historische hallen van De Oude Vismijn. Entreeticket vrijdagavond 19.00 tot 23.00 (na 1 jan naar 42,50).",
     ambassadorName: "Gents Festival Team",
     ambassadorTitle: "Festival Host",
     ambassadorBio: "Ons team staat klaar om u te verwelkomen in het hart van historisch Gent.",
@@ -62,11 +62,11 @@ export const TICKETS_GENT: TicketItem[] = [
     ]
   },
   {
-    id: "gent-entree-zaterdagmiddag",
+    id: "6abb97868634ebafa93abbd1",
     row: 2,
     title: "Entree Zaterdagmiddag",
-    price: 42.5,
-    date: "Zaterdag 3 Okt 2026",
+    price: 39.5,
+    date: "Zaterdag 2 Okt 2027",
     time: "13:00 - 17:00 uur",
     day: "zaterdag",
     daypart: "middag",
@@ -74,12 +74,12 @@ export const TICKETS_GENT: TicketItem[] = [
     categoryName: "Entreeticket",
     bookingType: "Vrij te boeken voor iedereen",
     location: "De Oude Vismijn Gent",
-    capacity: 500,
+    capacity: 550,
     sold: 0,
     isSoldOut: false,
     isLowStock: false,
-    extra: "€ 38,50 early bird tot 1 januari",
-    description: "De populaire zaterdagmiddagsessie in De Oude Vismijn Gent.",
+    extra: "€ 39,50 early bird tot 1 januari (daarna € 42,50)",
+    description: "De populaire zaterdagmiddagsessie in De Oude Vismijn Gent. Entreeticket zaterdagmiddag 13.00 tot 17.00 (na 1 jan naar 42,50).",
     ambassadorName: "Gents Festival Team",
     ambassadorTitle: "Festival Host",
     ambassadorBio: "Ons team staat klaar om u te verwelkomen in het hart van historisch Gent.",
@@ -91,11 +91,11 @@ export const TICKETS_GENT: TicketItem[] = [
     ]
   },
   {
-    id: "gent-entree-zaterdagavond",
+    id: "6abb9787fc8d6456cfdf96be",
     row: 3,
     title: "Entree Zaterdagavond",
-    price: 42.5,
-    date: "Zaterdag 3 Okt 2026",
+    price: 39.5,
+    date: "Zaterdag 2 Okt 2027",
     time: "19:00 - 23:00 uur",
     day: "zaterdag",
     daypart: "avond",
@@ -103,12 +103,12 @@ export const TICKETS_GENT: TicketItem[] = [
     categoryName: "Entreeticket",
     bookingType: "Vrij te boeken voor iedereen",
     location: "De Oude Vismijn Gent",
-    capacity: 500,
+    capacity: 550,
     sold: 0,
     isSoldOut: false,
     isLowStock: false,
-    extra: "€ 38,50 early bird tot 1 januari",
-    description: "Sfeervolle zaterdagavondproeverij met internationale en Belgische distilleerders.",
+    extra: "€ 39,50 early bird tot 1 januari (daarna € 42,50)",
+    description: "Sfeervolle zaterdagavondproeverij met internationale en Belgische distilleerders. Entreeticket zaterdagavond 19.00 tot 23.00 (na 1 jan naar 42,50).",
     ambassadorName: "Gents Festival Team",
     ambassadorTitle: "Festival Host",
     ambassadorBio: "Ons team staat klaar om u te verwelkomen in het hart van historisch Gent.",
@@ -119,50 +119,50 @@ export const TICKETS_GENT: TicketItem[] = [
       "4 uur onbeperkt toegang tot alle beurseilanden en stands"
     ]
   },
+  // VIP Sessie Vrijdagmiddag (in data aanwezig, voorlopig verborgen tot klant akkoord geeft)
   {
-    id: "gent-entree-zondagmiddag",
+    id: "6abba1e80735a7a1a04936a9",
     row: 4,
-    title: "Entree Zondagmiddag",
-    price: 42.5,
-    date: "Zondag 4 Okt 2026",
+    title: "VIP sessie vrijdag middag",
+    price: 72.5,
+    date: "Vrijdag 1 Okt 2027",
     time: "13:00 - 17:00 uur",
-    day: "zondag",
+    day: "vrijdag",
     daypart: "middag",
     category: "entree",
-    categoryName: "Entreeticket",
+    categoryName: "VIP Entreeticket",
     bookingType: "Vrij te boeken voor iedereen",
     location: "De Oude Vismijn Gent",
-    capacity: 500,
+    capacity: 400,
     sold: 0,
-    isSoldOut: false,
+    isSoldOut: true,
     isLowStock: false,
-    status: undefined,
-    statusText: undefined,
-    extra: "€ 38,50 early bird tot 1 januari",
-    description: "Gemoedelijke zondagmiddagsessie. Wordt geactiveerd zodra de verkoop van de overige sessies gevorderd is.",
+    status: "comingsoon",
+    statusText: "Binnenkort",
+    extra: "Incl. worst, kaas én 2 whisky-cocktails",
+    description: "Exclusieve VIP opening van het Gents Whisky Festival 2027. Inclusief een portie worst, portie kaas én 2 whisky-cocktails.",
     ambassadorName: "Gents Festival Team",
     ambassadorTitle: "Festival Host",
     ambassadorBio: "Ons team staat klaar om u te verwelkomen in het hart van historisch Gent.",
     tastingLineup: [
+      "Portie ambachtelijke worst & portie lokale kaas",
+      "2 verfijnde whisky-cocktails inbegrepen",
       "Officieel Glencairn festival proefglas",
       "Talloze gratis te proeven drams op de beursvloer",
       "Compleet festivalboekje met alle standhouders en plattegrond",
       "4 uur onbeperkt toegang tot alle beurseilanden en stands"
     ]
-  }
-];
+  },
 
-// =========================================================================
-// 2. Specials Gent: Dada Chapel Botteling, Bootjes & Distilleerderij Bezoek
-// (Tijdelijk verborgen voor livegang 2026 - worden na zondag 4 okt weer actief)
-// =========================================================================
-export const SPECIALS_GENT_BACKUP: TicketItem[] = [
+  // =========================================================================
+  // 2. Officiële Festival Botteling 2027 (De Oude Vismijn Gent)
+  // =========================================================================
   {
-    id: "gent-botteling-dada-chapel",
+    id: "6abb978d69fb0a4bfd17f990",
     row: 5,
-    title: "Festival Botteling: Dada Chapel Gentse Special 2026",
+    title: "Dada Chapel Gentse Special",
     price: 95,
-    date: "Afhalen Festival",
+    date: "Afhalen Festival (1-2 okt 2027)",
     time: "Hele dag",
     day: "all",
     daypart: "all",
@@ -170,25 +170,29 @@ export const SPECIALS_GENT_BACKUP: TicketItem[] = [
     categoryName: "Festival Botteling",
     bookingType: "Vrij te boeken voor iedereen",
     location: "Festival Slijterij",
-    capacity: 50,
+    capacity: 75,
     sold: 0,
     isSoldOut: false,
     isLowStock: false,
     status: "popular",
     statusText: "Populair",
     extra: "Limousin Virgin Oak Cask 7 jaar",
-    description: "De officiële exclusieve festivalbotteling van het Gents Whisky Festival 2026. Een 7 jaar oude single cask gerijpt op nieuw Limousin eiken (Limousin Virgin Oak Cask 7 jaar). Gelimiteerde oplage van 50 genummerde flessen.",
+    description: "Officiële Dada Chapel Gentse Whisky Festival Special. Een 7 jaar oude single cask gerijpt op nieuw Limousin eiken (Limousin Virgin Oak Cask 7 jaar). Gelimiteerde oplage.",
     ambassadorName: "Festival Selectie Panel",
     ambassadorTitle: "Cask Committee",
-    ambassadorBio: "Exclusief geselecteerd voor de editie van De Oude Vismijn in Gent.",
+    ambassadorBio: "Exclusief gestookt en geselecteerd voor het Gents Whisky Festival.",
     tastingLineup: ["70cl Fles Cask Strength", "Genummerd Herkomstcertificaat"]
   },
+
+  // =========================================================================
+  // 3. Specials Gent: Bootjes & Distilleerderij Bezoek (Direct Bestelbaar)
+  // =========================================================================
   {
-    id: "gent-special-bootje-zaterdag-1200",
+    id: "6abb978ea456c2a4ec18a856",
     row: 6,
     title: "Rondvaart Gent - Whisky Bootje",
     price: 19.5,
-    date: "Zaterdag 3 Okt 2026",
+    date: "Zaterdag 2 Okt 2027",
     time: "12:00 - 13:00 uur",
     day: "zaterdag",
     daypart: "middag",
@@ -200,7 +204,7 @@ export const SPECIALS_GENT_BACKUP: TicketItem[] = [
     sold: 0,
     isSoldOut: false,
     isLowStock: false,
-    extra: "Rondvaart over de Gentse grachten met proeverij",
+    extra: "Rondvaart Gent - Whisky Bootje - afvaart 12.00 uur",
     description: "Geniet van een unieke boottocht over de historische Gentse binnenwateren onder het genot van 4 bijzondere drams. Melden bij entree-deur De Oude Vismijn.",
     ambassadorName: "Gentse Bootkapitein & Gids",
     ambassadorTitle: "Schipper & Sommelier",
@@ -213,11 +217,11 @@ export const SPECIALS_GENT_BACKUP: TicketItem[] = [
     ]
   },
   {
-    id: "gent-special-bootje-zaterdag-1830",
+    id: "6abb978e1eb866bf2b8779dd",
     row: 7,
     title: "Rondvaart Gent - Whisky Bootje",
     price: 19.5,
-    date: "Zaterdag 3 Okt 2026",
+    date: "Zaterdag 2 Okt 2027",
     time: "18:30 - 19:30 uur",
     day: "zaterdag",
     daypart: "avond",
@@ -229,7 +233,7 @@ export const SPECIALS_GENT_BACKUP: TicketItem[] = [
     sold: 0,
     isSoldOut: false,
     isLowStock: false,
-    extra: "Avondrondvaart over de Gentse grachten met proeverij",
+    extra: "Rondvaart Gent - Whisky Bootje - afvaart 18.30 uur",
     description: "Sfeervolle avondrondvaart over de verlichte historische Gentse grachten met whiskyproeverij. Melden bij entree-deur De Oude Vismijn.",
     ambassadorName: "Gentse Bootkapitein & Gids",
     ambassadorTitle: "Schipper & Sommelier",
@@ -242,11 +246,11 @@ export const SPECIALS_GENT_BACKUP: TicketItem[] = [
     ]
   },
   {
-    id: "gent-special-dada-tour-vrijdag",
+    id: "6abb978edaed730a5a0433d1",
     row: 8,
-    title: "Rondleiding Dada Chapel Distilleerderij",
+    title: "Rondleiding door Dada Chapel Distilleerderij",
     price: 15,
-    date: "Vrijdag 2 Okt 2026",
+    date: "Vrijdag 1 Okt 2027",
     time: "18:00 - 19:30 uur",
     day: "vrijdag",
     daypart: "avond",
@@ -254,11 +258,11 @@ export const SPECIALS_GENT_BACKUP: TicketItem[] = [
     categoryName: "Distilleerderij Bezoek",
     bookingType: "Vrij te boeken voor iedereen",
     location: "Melden bij entree-deur",
-    capacity: 15,
+    capacity: 20,
     sold: 0,
     isSoldOut: false,
     isLowStock: false,
-    extra: "Exclusief kijkje achter de schermen bij Dada Chapel",
+    extra: "Rondleiding door Dada Chapel Distilleerderij",
     description: "Wandel mee vanaf De Oude Vismijn naar de nabijgelegen Dada Chapel distilleerderij voor een intieme rondleiding inclusief proeverij. Melden bij entree-deur De Oude Vismijn.",
     ambassadorName: "Dada Chapel Distiller",
     ambassadorTitle: "Distillery Host",
@@ -270,11 +274,11 @@ export const SPECIALS_GENT_BACKUP: TicketItem[] = [
     ]
   },
   {
-    id: "gent-special-dada-tour-zaterdag",
+    id: "6abb978f1eb866bf2b8779e0",
     row: 9,
-    title: "Rondleiding Dada Chapel Distilleerderij",
+    title: "Rondleiding door Dada Chapel Distilleerderij",
     price: 15,
-    date: "Zaterdag 3 Okt 2026",
+    date: "Zaterdag 2 Okt 2027",
     time: "11:00 - 12:30 uur",
     day: "zaterdag",
     daypart: "ochtend",
@@ -282,11 +286,11 @@ export const SPECIALS_GENT_BACKUP: TicketItem[] = [
     categoryName: "Distilleerderij Bezoek",
     bookingType: "Vrij te boeken voor iedereen",
     location: "Melden bij entree-deur",
-    capacity: 15,
+    capacity: 20,
     sold: 0,
     isSoldOut: false,
     isLowStock: false,
-    extra: "Exclusief kijkje achter de schermen bij Dada Chapel",
+    extra: "Ochtendrondleiding bij Dada Chapel Distilleerderij",
     description: "Ochtendrondleiding bij Dada Chapel Distilleerderij inclusief mini-tasting voorafgaand aan de festivalbeurs. Melden bij entree-deur De Oude Vismijn.",
     ambassadorName: "Dada Chapel Distiller",
     ambassadorTitle: "Distillery Host",
@@ -298,4 +302,3 @@ export const SPECIALS_GENT_BACKUP: TicketItem[] = [
     ]
   }
 ];
-
