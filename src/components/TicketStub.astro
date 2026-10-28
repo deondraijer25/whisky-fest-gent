@@ -186,9 +186,35 @@ const titleSizeClass =
     </div>
 
     {soldOut ? (
-      <div class="sold-out-box">
-        <span class="sold-out-text">UITVERKOCHT</span>
-      </div>
+      <>
+        <div class="sold-out-box">
+          <span class="sold-out-text">UITVERKOCHT</span>
+        </div>
+        {category === 'entree' && (
+          <div class="iws-stub-unlock-wrapper">
+            <button type="button" class="iws-stub-unlock-btn js-open-iws-unlock" data-ticket-id={id}>
+              IWS-lid? Gebruik lidnummer &rarr;
+            </button>
+            <div class="iws-stub-inline-form" style="display: none;">
+              <div class="iws-stub-inline-row">
+                <input
+                  type="text"
+                  class="iws-stub-input"
+                  placeholder="Lidnr (bijv. 271)"
+                  autocomplete="off"
+                />
+                <button type="button" class="iws-stub-apply-btn">OK</button>
+              </div>
+              <p class="iws-stub-feedback" style="display: none;"></p>
+            </div>
+            <div class="qty-selector iws-member-qty-selector" style="display: none;">
+              <button type="button" class="qty-btn minus-btn" aria-label="Aantal verlagen" data-action="minus">&minus;</button>
+              <span class="qty-val" id={"qty-" + id}>0</span>
+              <button type="button" class="qty-btn plus-btn" aria-label="Aantal verhogen" data-action="plus">&plus;</button>
+            </div>
+          </div>
+        )}
+      </>
     ) : (
       <!-- Quantity Controls (Clean Soft Cream Stepper) -->
       <div class="qty-selector">
@@ -835,6 +861,85 @@ const titleSizeClass =
       text-align: center !important;
       line-height: 1 !important;
     }
+  }
+
+  /* IWS Member Unlock on Sold-Out Entree Tickets */
+  .iws-stub-unlock-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    margin-top: 0.35rem !important;
+    width: 100% !important;
+  }
+
+  .iws-stub-unlock-btn {
+    background: transparent !important;
+    border: 1px dashed rgba(30, 58, 138, 0.35) !important;
+    border-radius: 5px !important;
+    padding: 0.25rem 0.45rem !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.62rem !important;
+    font-weight: 700 !important;
+    color: #1E3A8A !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+    transition: all 0.15s ease !important;
+  }
+
+  .iws-stub-unlock-btn:hover {
+    background: rgba(30, 58, 138, 0.08) !important;
+    border-color: #1E3A8A !important;
+  }
+
+  .iws-stub-inline-form {
+    width: 100% !important;
+    margin-top: 0.15rem !important;
+  }
+
+  .iws-stub-inline-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    width: 100% !important;
+  }
+
+  .iws-stub-input {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0.3rem 0.4rem !important;
+    font-family: var(--font-mono) !important;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    color: #0F172A !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #1E3A8A !important;
+    border-radius: 5px !important;
+    text-transform: uppercase !important;
+    outline: none !important;
+  }
+
+  .iws-stub-apply-btn {
+    background: #1E3A8A !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 5px !important;
+    padding: 0.32rem 0.5rem !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.65rem !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+  }
+
+  .iws-stub-feedback {
+    margin: 0.25rem 0 0 0 !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.63rem !important;
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+    text-align: center !important;
   }
 </style>
 

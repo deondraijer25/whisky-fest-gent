@@ -824,7 +824,26 @@ const marqueeBrands = BRAND.featuredBrands || [
                   <p class="empty-cart-msg">Selecteer hiernaast uw ticket(s) om de bestelling te starten.</p>
                 </div>
 
-
+                <!-- IWS Lidnummer / Kortingscode Veld (Winkelwagen) -->
+                <div class="receipt-iws-section" id="receipt-iws-section">
+                  <button type="button" class="receipt-iws-toggle" id="iws-unlock-toggle-btn">
+                    <span class="receipt-iws-toggle-text">IWS-lid? Voer uw lidnummer in</span>
+                    <span class="receipt-iws-toggle-arrow">&rarr;</span>
+                  </button>
+                  <div class="receipt-iws-form" id="iws-unlock-form" style="display: none;">
+                    <div class="receipt-iws-input-row">
+                      <input
+                        type="text"
+                        id="iws-unlock-input"
+                        class="receipt-iws-input"
+                        placeholder="Lidnr. (bijv. 271 of WS-271)"
+                        autocomplete="off"
+                      />
+                      <button type="button" id="iws-unlock-apply-btn" class="receipt-iws-btn">Activeren</button>
+                    </div>
+                    <p id="iws-unlock-feedback" class="receipt-iws-feedback" style="display: none;"></p>
+                  </div>
+                </div>
 
                 <div class="receipt-perforation"></div>
 
@@ -832,6 +851,10 @@ const marqueeBrands = BRAND.featuredBrands || [
                   <div class="calc-row">
                     <span class="calc-label">Subtotaal:</span>
                     <span class="calc-val" id="receipt-subtotal">&euro;0,00</span>
+                  </div>
+                  <div class="calc-row" id="receipt-iws-discount-row" style="display: none; color: #16a34a; font-weight: 700;">
+                    <span class="calc-label" id="receipt-iws-discount-label">IWS Ledenkorting (1x Gratis Ticket):</span>
+                    <span class="calc-val" id="receipt-iws-discount-val">-&euro;39,50</span>
                   </div>
                   <div class="calc-row">
                     <span class="calc-label">Administratiekosten:</span>
@@ -4224,6 +4247,90 @@ const marqueeBrands = BRAND.featuredBrands || [
     padding: 0.5rem 1rem !important;
     font-size: 0.85rem !important;
   }
+
+  /* IWS Lidnummer / Kortingscode Veld in Winkelwagen */
+  .receipt-iws-section {
+    margin: 0.35rem 0 0.9rem 0;
+  }
+
+  .receipt-iws-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(30, 58, 138, 0.05);
+    border: 1px dashed rgba(30, 58, 138, 0.3);
+    border-radius: 8px;
+    padding: 0.55rem 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #1E3A8A;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .receipt-iws-toggle:hover {
+    background: rgba(30, 58, 138, 0.1);
+    border-color: #1E3A8A;
+  }
+
+  .receipt-iws-form {
+    margin-top: 0.5rem;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(30, 58, 138, 0.25);
+    border-radius: 8px;
+    padding: 0.65rem;
+  }
+
+  .receipt-iws-input-row {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .receipt-iws-input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.45rem 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #171614;
+    background: #FFFFFF;
+    border: 1px solid rgba(23, 22, 20, 0.25);
+    border-radius: 6px;
+    text-transform: uppercase;
+  }
+
+  .receipt-iws-input:focus {
+    outline: none;
+    border-color: #1E3A8A;
+  }
+
+  .receipt-iws-btn {
+    padding: 0.45rem 0.8rem;
+    background: #1E3A8A;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+
+  .receipt-iws-btn:hover {
+    opacity: 0.9;
+  }
+
+  .receipt-iws-feedback {
+    margin: 0.45rem 0 0 0;
+    font-family: var(--font-sans);
+    font-size: 0.73rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
 </style>
 <script id="tickets-data-json" type="application/json" set:html={JSON.stringify(tickets)}></script>
 <script>
@@ -4303,6 +4410,25 @@ const marqueeBrands = BRAND.featuredBrands || [
   const shippingEl = document.getElementById("receipt-shipping");
   const totalEl = document.getElementById("receipt-total");
   const checkoutBtn = document.getElementById("checkout-trigger-btn") as HTMLButtonElement;
+  const iwsDiscountRow = document.getElementById("receipt-iws-discount-row");
+  const iwsDiscountLabel = document.getElementById("receipt-iws-discount-label");
+  const iwsDiscountVal = document.getElementById("receipt-iws-discount-val");
+
+  let unlockedIwsCode = "";
+  let unlockedIwsDiscountAmount = 39.50;
+
+  function getIwsCartDiscount(subtotal: number): number {
+    if (!unlockedIwsCode) return 0;
+    let entreeSubtotal = 0;
+    Object.keys(cart).forEach(id => {
+      const item = cart[id];
+      if (item && item.qty > 0 && item.category === "entree") {
+        entreeSubtotal += item.price * item.qty;
+      }
+    });
+    const baseAmount = entreeSubtotal > 0 ? entreeSubtotal : subtotal;
+    return Math.min(baseAmount, unlockedIwsDiscountAmount);
+  }
 
   function updateShop(syncSave: boolean = true) {
     let subtotal = 0;
@@ -4322,7 +4448,8 @@ const marqueeBrands = BRAND.featuredBrands || [
 
     const activeShipping = shippingActive ? 12.50 : 0;
     const activeFee = getServiceFee(totalItems);
-    const finalTotal = subtotal + activeFee + activeShipping;
+    const activeIwsDiscount = getIwsCartDiscount(subtotal);
+    const finalTotal = Math.max(0, subtotal - activeIwsDiscount) + activeFee + activeShipping;
 
     if (cartItemsContainer) {
       if (totalItems === 0) {
@@ -4373,6 +4500,17 @@ const marqueeBrands = BRAND.featuredBrands || [
     }
     
     if (subtotalEl) subtotalEl.innerHTML = `&euro;${subtotal.toFixed(2)}`;
+    if (iwsDiscountRow && iwsDiscountVal) {
+      if (activeIwsDiscount > 0) {
+        iwsDiscountRow.style.display = "flex";
+        if (iwsDiscountLabel) {
+          iwsDiscountLabel.textContent = `IWS Ledenkorting (${unlockedIwsCode}):`;
+        }
+        iwsDiscountVal.innerHTML = `-&euro;${activeIwsDiscount.toFixed(2)}`;
+      } else {
+        iwsDiscountRow.style.display = "none";
+      }
+    }
     if (feeEl) feeEl.innerHTML = `&euro;${activeFee.toFixed(2)}`;
     if (shippingRow && shippingEl) {
       if (shippingActive) {
@@ -5022,6 +5160,11 @@ const marqueeBrands = BRAND.featuredBrands || [
       promoDiscount = Math.min(subtotal, Math.round(subtotal * (activePromoValue / 100) * 100) / 100);
     } else if (activePromoType === "fixed_amount" && activePromoValue > 0) {
       promoDiscount = Math.min(subtotal, activePromoValue);
+    } else if (unlockedIwsCode) {
+      activePromoCode = unlockedIwsCode;
+      activePromoType = "fixed_amount";
+      activePromoValue = unlockedIwsDiscountAmount;
+      promoDiscount = getIwsCartDiscount(subtotal);
     } else if (!activePromoCode) {
       promoDiscount = 0;
     }
@@ -5159,7 +5302,7 @@ const marqueeBrands = BRAND.featuredBrands || [
           });
           if (res.ok) {
             const data = await res.json();
-            if (data && data.valid && !(code.startsWith("WS-") && /^WS-\d+$/i.test(code))) {
+            if (data && data.valid) {
               activePromoCode = data.code || code;
               activePromoType = data.type === "percentage" ? "percentage" : "fixed_amount";
               activePromoValue = Number(data.value) || 0;
@@ -5176,17 +5319,7 @@ const marqueeBrands = BRAND.featuredBrands || [
         } catch {}
       }
 
-      if (code.startsWith("WS-") || code === "IWS") {
-        activePromoCode = code;
-        activePromoType = "fixed_amount";
-        activePromoValue = 55.00;
-        promoDiscount = 55.00;
-        promoMsg.style.display = "block";
-        promoMsg.style.color = "var(--success-green)";
-        promoMsg.textContent = "✓ Lidmaatschap gevalideerd: €55,00 korting toegepast.";
-        recalcModalTotal();
-        return;
-      } else if (code === "GIFT-50" || code === "CADEAU-50") {
+      if (code === "GIFT-50" || code === "CADEAU-50") {
         activePromoCode = code;
         activePromoType = "fixed_amount";
         activePromoValue = 50.00;
@@ -6030,14 +6163,205 @@ const marqueeBrands = BRAND.featuredBrands || [
   const upsellModalCancel = document.getElementById('addon-upsell-cancel');
   const upsellModalProceed = document.getElementById('addon-upsell-proceed-btn');
 
+  // IWS Lidnummer / Kortingscode Activatie in Winkelwagen & Uitverkochte Entree Tickets
+  const iwsToggleBtn = document.getElementById("iws-unlock-toggle-btn");
+  const iwsForm = document.getElementById("iws-unlock-form");
+  const iwsInput = document.getElementById("iws-unlock-input") as HTMLInputElement;
+  const iwsApplyBtn = document.getElementById("iws-unlock-apply-btn") as HTMLButtonElement;
+  const iwsFeedback = document.getElementById("iws-unlock-feedback");
+
+  function unlockEntreeTicketsForIwsMember(lidCode: string, discountAmount: number = 39.50) {
+    unlockedIwsCode = lidCode;
+    unlockedIwsDiscountAmount = discountAmount;
+
+    document.querySelectorAll('.ticket-stub[data-category="entree"]').forEach(stub => {
+      const soldOutBox = stub.querySelector('.sold-out-box') as HTMLElement;
+      const unlockBtn = stub.querySelector('.iws-stub-unlock-btn') as HTMLElement;
+      const inlineForm = stub.querySelector('.iws-stub-inline-form') as HTMLElement;
+      const memberQtySelector = stub.querySelector('.iws-member-qty-selector') as HTMLElement;
+
+      if (soldOutBox) soldOutBox.style.display = 'none';
+      if (unlockBtn) unlockBtn.style.display = 'none';
+      if (inlineForm) inlineForm.style.display = 'none';
+      if (memberQtySelector) memberQtySelector.style.display = 'flex';
+    });
+
+    updateShop();
+  }
+
+  async function validateAndActivateIwsCode(rawValue: string, autoSelectTicketId?: string, inlineFeedbackEl?: HTMLElement | null) {
+    const clean = rawValue.trim().toUpperCase();
+    const setFeedback = (msg: string, isSuccess: boolean) => {
+      if (iwsFeedback) {
+        iwsFeedback.style.display = "block";
+        iwsFeedback.style.color = isSuccess ? "#16a34a" : "#dc2626";
+        iwsFeedback.textContent = msg;
+      }
+      if (inlineFeedbackEl) {
+        inlineFeedbackEl.style.display = "block";
+        inlineFeedbackEl.style.color = isSuccess ? "#16a34a" : "#dc2626";
+        inlineFeedbackEl.textContent = msg;
+      }
+    };
+
+    if (!clean) {
+      setFeedback("Voer uw IWS lidnummer in (bijv. 271).", false);
+      return false;
+    }
+
+    const normalizedDigits = clean.replace(/^(?:IWS|WS)[-\s]*/i, "").replace(/^#/, "").trim();
+    const isNumericMember = /^\d{1,6}$/.test(normalizedDigits);
+    const formattedCode = isNumericMember ? `WS-${normalizedDigits}` : clean;
+
+    const isLocalHost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    const validateBases = isLocalHost
+      ? ["http://localhost:3000", "https://whiskytix-r1qq.vercel.app"]
+      : ["https://whiskytix-r1qq.vercel.app"];
+
+    let validatedFromServer = false;
+    let serverValid = false;
+    let serverMessage = "";
+    let serverDiscount = 39.50;
+    let serverCode = formattedCode;
+
+    for (const base of validateBases) {
+      try {
+        const res = await fetch(`${base}/api/coupons/validate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: clean, festivalId: "gent" })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          validatedFromServer = true;
+          serverValid = Boolean(data && data.valid);
+          serverMessage = data?.message || "";
+          if (data?.code) serverCode = data.code;
+          if (Number(data?.value) > 0) serverDiscount = Number(data.value);
+          break;
+        }
+      } catch {}
+    }
+
+    if (validatedFromServer && !serverValid) {
+      setFeedback(serverMessage || "✗ Lidnummer niet herkend of al ingezet.", false);
+      return false;
+    }
+
+    if (!validatedFromServer && !isNumericMember && clean !== "IWS") {
+      setFeedback("✗ Ongeldig IWS lidnummer. Voer bijv. 271 of WS-271 in.", false);
+      return false;
+    }
+
+    unlockEntreeTicketsForIwsMember(serverCode, serverDiscount);
+
+    if (autoSelectTicketId) {
+      const targetStub = document.querySelector(`.ticket-stub[data-id="${autoSelectTicketId}"]`);
+      if (targetStub) {
+        const currentQty = cart[autoSelectTicketId]?.qty || 0;
+        if (currentQty === 0) {
+          const plusBtn = targetStub.querySelector('.plus-btn') as HTMLButtonElement;
+          if (plusBtn) plusBtn.click();
+        }
+      }
+    }
+
+    if (iwsForm) iwsForm.style.display = "block";
+    if (iwsInput) iwsInput.value = serverCode;
+    setFeedback(
+      serverMessage || `✓ Lidnummer #${normalizedDigits || serverCode} herkend — €39,50 korting (1x gratis ticket) geactiveerd.`,
+      true
+    );
+    if (iwsToggleBtn) {
+      const textSpan = iwsToggleBtn.querySelector('.receipt-iws-toggle-text');
+      if (textSpan) textSpan.textContent = `✓ IWS Lidmaatschap actief (${serverCode})`;
+    }
+    return true;
+  }
+
+  if (iwsToggleBtn && iwsForm) {
+    iwsToggleBtn.addEventListener("click", () => {
+      const isHidden = iwsForm.style.display === "none";
+      iwsForm.style.display = isHidden ? "block" : "none";
+      if (isHidden && iwsInput) iwsInput.focus();
+    });
+  }
+
+  if (iwsApplyBtn && iwsInput) {
+    iwsApplyBtn.addEventListener("click", () => {
+      void validateAndActivateIwsCode(iwsInput.value);
+    });
+    iwsInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        void validateAndActivateIwsCode(iwsInput.value);
+      }
+    });
+  }
+
+  document.querySelectorAll('.js-open-iws-unlock').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const ticketId = (btn as HTMLElement).getAttribute('data-ticket-id') || undefined;
+      if (unlockedIwsCode && ticketId) {
+        unlockEntreeTicketsForIwsMember(unlockedIwsCode, unlockedIwsDiscountAmount);
+        const targetStub = document.querySelector(`.ticket-stub[data-id="${ticketId}"]`);
+        const plusBtn = targetStub?.querySelector('.plus-btn') as HTMLButtonElement;
+        if (plusBtn) plusBtn.click();
+        return;
+      }
+
+      const wrapper = (btn as HTMLElement).closest('.iws-stub-unlock-wrapper');
+      const inlineForm = wrapper?.querySelector('.iws-stub-inline-form') as HTMLElement;
+      const inlineInput = wrapper?.querySelector('.iws-stub-input') as HTMLInputElement;
+      if (inlineForm) {
+        (btn as HTMLElement).style.display = 'none';
+        inlineForm.style.display = 'block';
+        if (inlineInput) inlineInput.focus();
+      }
+    });
+  });
+
+  document.querySelectorAll('.iws-stub-unlock-wrapper').forEach(wrapper => {
+    const input = wrapper.querySelector('.iws-stub-input') as HTMLInputElement;
+    const applyBtn = wrapper.querySelector('.iws-stub-apply-btn') as HTMLButtonElement;
+    const feedbackEl = wrapper.querySelector('.iws-stub-feedback') as HTMLElement | null;
+    const triggerBtn = wrapper.querySelector('.js-open-iws-unlock') as HTMLElement;
+    const ticketId = triggerBtn?.getAttribute('data-ticket-id') || undefined;
+
+    if (applyBtn && input) {
+      applyBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        void validateAndActivateIwsCode(input.value, ticketId, feedbackEl);
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          e.stopPropagation();
+          void validateAndActivateIwsCode(input.value, ticketId, feedbackEl);
+        }
+      });
+    }
+  });
+
   window.openCheckoutModal = openCheckoutModal;
   function openCheckoutModal() {
     promoDiscount = 0;
-    activePromoCode = "";
-    activePromoType = "";
-    activePromoValue = 0;
-    if (promoInput) promoInput.value = "";
-    if (promoMsg) promoMsg.style.display = "none";
+    activePromoCode = unlockedIwsCode || "";
+    activePromoType = unlockedIwsCode ? "fixed_amount" : "";
+    activePromoValue = unlockedIwsCode ? unlockedIwsDiscountAmount : 0;
+    if (promoInput) promoInput.value = unlockedIwsCode || "";
+    if (promoMsg) {
+      if (unlockedIwsCode) {
+        promoMsg.style.display = "block";
+        promoMsg.style.color = "var(--success-green)";
+        promoMsg.textContent = `✓ IWS Lidmaatschap (${unlockedIwsCode}): €${unlockedIwsDiscountAmount.toFixed(2).replace('.', ',')} korting (1x gratis ticket) toegepast.`;
+      } else {
+        promoMsg.style.display = "none";
+      }
+    }
     
     recalcModalTotal();
     if (modalStep1) modalStep1.style.display = "block";
