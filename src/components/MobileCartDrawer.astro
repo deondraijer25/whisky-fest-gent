@@ -660,7 +660,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
       let currentQty = isObj ? cart[id].qty : cart[id];
 
       if (action === 'plus') {
-        currentQty = Math.min(10, currentQty + 1);
+        currentQty = currentQty + 1;
         if (isObj) cart[id].qty = currentQty;
         else cart[id] = currentQty;
       } else if (action === 'minus') {
@@ -701,8 +701,8 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         } else {
           const isObj = typeof cart[id] === 'object';
           const qty = isObj ? cart[id].qty : cart[id];
-          if (isObj) cart[id].qty = Math.min(10, qty + 1);
-          else cart[id] = Math.min(10, qty + 1);
+          if (isObj) cart[id].qty = qty + 1;
+          else cart[id] = qty + 1;
         }
 
         saveLocalCart(cart);
@@ -719,7 +719,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         let qty = isObj ? cart[id].qty : cart[id];
 
         if (action === 'plus') {
-          qty = Math.min(10, qty + 1);
+          qty = qty + 1;
           if (isObj) cart[id].qty = qty;
           else cart[id] = qty;
         } else if (action === 'minus') {

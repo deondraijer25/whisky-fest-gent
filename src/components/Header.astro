@@ -1565,7 +1565,7 @@ const isAccount = pathname.startsWith("/account");
         if (!currentItem) return;
 
         if (isPlus) {
-          currentItem.qty = Math.min(10, (currentItem.qty || 0) + 1);
+          currentItem.qty = (currentItem.qty || 0) + 1;
         } else {
           currentItem.qty = (currentItem.qty || 0) - 1;
         }
