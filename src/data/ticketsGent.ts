@@ -266,5 +266,33 @@ export const TICKETS_GENT: TicketItem[] = [
       "Roggemout distillaat",
       "Limited Edition Botteling"
     ]
+  },
+
+  // =========================================================================
+  // 4. Masterclasses 2027 (De Oude Vismijn Gent)
+  // =========================================================================
+  {
+    id: "6af48b7e4ae7b76551625e65",
+    row: 10,
+    title: "Special Food & Whisky Masterclass Bob Minnekeer",
+    price: 56,
+    date: "Vrijdag 1 Okt 2027",
+    time: "21:00 - 22:15 uur",
+    day: "vrijdag",
+    daypart: "avond",
+    category: "masterclass",
+    categoryName: "Masterclass",
+    bookingType: "enkel_met_entree",
+    location: "Masterclass ruimte",
+    capacity: 35,
+    sold: 0,
+    isSoldOut: false,
+    isLowStock: false,
+    status: "popular",
+    statusText: "Populair",
+    extra: "Food & Whisky Masterclass van Bob Minnekeer",
+    description: "Food & Whisky Masterclass van Bob Minnekeer. In 2026 stond deze niet op het programma, maar in 2027 weer terug. Bob Minnekeer zal enkele hapjes combineren met speciale whisky's.",
+    ambassadorName: "Bob Minnekeer",
+    ambassadorTitle: "Food & Whisky Specialist"
   }
 ];

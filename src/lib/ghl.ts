@@ -182,10 +182,6 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
       if (normalizedCity === 'gent' && (r.id === '6abba1e80735a7a1a04936a9' || title.includes('vip'))) {
         return false;
       }
-      // Gent 2027: masterclasses nog niet toevoegen (inhoud volgt later)
-      if (normalizedCity === 'gent' && category === 'masterclass') {
-        return false;
-      }
       return true;
     });
 
@@ -218,13 +214,23 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
         statusBadge = p.status_badge;
       }
 
+      const rawBio = p.ambassador_bio ? String(p.ambassador_bio).trim() : '';
+      const rawName = p.ambassador_name ? String(p.ambassador_name).trim() : '';
+      const effectiveAmbName = rawName || (rawBio && rawBio.length < 50 ? rawBio : undefined);
+      const effectiveAmbBio = (rawName || (rawBio && rawBio.length >= 50)) ? (rawBio || undefined) : undefined;
+
+      let normalizedTime = String(p.time_label || 'Tijd volgt').replace(/(\d{1,2})\.(\d{2})/g, '$1:$2').trim();
+      if (normalizedTime && normalizedTime !== 'Tijd volgt' && normalizedTime !== 'Hele dag' && !normalizedTime.toLowerCase().includes('uur')) {
+        normalizedTime += ' uur';
+      }
+
       return {
         id: r.id || `ghl-ticket-${idx}`,
         row: idx + 1,
         title: (p.title || 'Ticket').replace(/\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*[-–—]\s*(?:1[0-9]|2[0-3]):[0-5][0-9]\s*(?:uur)?/gi, '').trim(),
         price: typeof p.price === 'number' ? p.price : (parseFloat(p.price) || parseFloat(p.ticket_price) || 0),
         date: p.date_label || 'Datum volgt',
-        time: p.time_label || 'Tijd volgt',
+        time: normalizedTime,
         day: p.day || 'all',
         daypart: p.daypart || 'all',
         category: p.category || 'entree',
@@ -239,9 +245,9 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
         statusText: effectiveSoldOut ? 'Uitverkocht' : statusText,
         description: p.ticket_description || p.description || '',
         extra: p.ticket_description || p.description || '',
-        ambassadorName: p.ambassador_name || undefined,
+        ambassadorName: effectiveAmbName,
         ambassadorTitle: p.ambassador_title || undefined,
-        ambassadorBio: p.ambassador_bio || undefined,
+        ambassadorBio: effectiveAmbBio,
         tastingLineup: p.tasting_lineup
           ? (Array.isArray(p.tasting_lineup) ? p.tasting_lineup : String(p.tasting_lineup).split(/[\n,]+/).map((s: string) => s.trim()).filter(Boolean))
           : undefined
@@ -253,8 +259,7 @@ export async function getTickets(city: string = 'gent'): Promise<TicketItem[]> {
     const ghlTitles = new Set(parsedTickets.map(t => t.title.toLowerCase().trim()));
     const additionalLocal = TICKETS_GENT.filter(t => 
       !ghlIds.has(t.id) && !ghlTitles.has(t.title.toLowerCase().trim()) &&
-      !t.title.toLowerCase().includes('vip') &&
-      t.category !== 'masterclass'
+      !t.title.toLowerCase().includes('vip')
     );
     const combinedTickets = [...parsedTickets, ...additionalLocal];
 

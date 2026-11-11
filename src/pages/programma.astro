@@ -99,6 +99,26 @@ const SESSIONS: SessionData[] = [
   }
 ];
 
+for (const t of liveTickets) {
+  if (t.category === 'masterclass' || (t.category as string) === 'workshop') {
+    const targetSessionId = `${t.day}-${t.daypart}`;
+    const session = SESSIONS.find(s => s.id === targetSessionId) || SESSIONS.find(s => s.id.startsWith(t.day));
+    if (session && !session.items.some(it => it.id === t.id)) {
+      session.items.push({
+        id: t.id,
+        time: (t.time || '').replace(/\s*uur$/i, '').trim(),
+        location: t.location || 'Masterclass ruimte (De Oude Vismijn)',
+        title: t.title,
+        category: 'masterclass',
+        categoryLabel: 'Masterclass',
+        host: t.ambassadorName ? `${t.ambassadorName}${t.ambassadorTitle ? ` (${t.ambassadorTitle})` : ''}` : 'Masterclass Host',
+        description: t.description || '',
+        price: t.price
+      });
+    }
+  }
+}
+
 const GENT_SPECIALS_ROWS: (ProgramRow & { dayLabel?: string })[] = [
   {
     id: 'gent-special-dada-tour-vrijdag',
@@ -266,9 +286,9 @@ function formatSpeaker(host: string) {
                 </svg>
               </div>
               <div class="mc-teaser-content">
-                <h3 class="mc-teaser-title">Officiële Masterclasses 2027 — Binnenkort Bekend</h3>
+                <h3 class="mc-teaser-title">Masterclasses &amp; Proeverijen 2027 — Programma Wordt Aangevuld</h3>
                 <p class="mc-teaser-desc">
-                  Voor deze editie worden circa 8 tot 12 exclusieve masterclasses samengesteld met toonaangevende internationale merkambassadeurs. De programmering en inschrijving worden binnenkort bekendgemaakt op deze pagina.
+                  Voor deze editie worden circa 8 tot 12 exclusieve masterclasses samengesteld met toonaangevende internationale merkambassadeurs en specialisten. De eerste sessies zijn hieronder direct te boeken; de overige masterclasses worden de komende tijd toegevoegd.
                 </p>
               </div>
             </div>

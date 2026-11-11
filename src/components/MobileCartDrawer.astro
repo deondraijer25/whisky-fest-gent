@@ -101,8 +101,9 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
           <svg class="sheet-select-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
           <select class="sheet-filter-select" id="sheet-filter-cat" aria-label="Filter op categorie">
             <option value="all">Alle extra's</option>
+            <option value="masterclass">Masterclasses</option>
             <option value="warehouse">Dada Rondleiding</option>
-            <option value="boot">Whisky Bootjes</option>
+            <option value="tram">Whisky Bootjes</option>
             <option value="botteling">Festival Botteling</option>
           </select>
         </div>
@@ -450,7 +451,7 @@ const addonsList = allTickets.filter(t => t.category !== 'entree');
         const currentQty = typeof storedVal === 'number' ? storedVal : (storedVal?.qty || 0);
         const isAdded = currentQty > 0;
         const isSoldOut = item.isSoldOut;
-        const catLabel = item.category === 'warehouse' ? 'Dada Rondleiding' : item.category === 'boot' ? 'Whisky Bootjes' : item.category === 'botteling' ? 'Botteling' : 'Masterclass';
+        const catLabel = item.category === 'warehouse' ? 'Dada Rondleiding' : (item.category === 'boot' || item.category === 'tram') ? 'Whisky Bootjes' : item.category === 'botteling' ? 'Botteling' : 'Masterclass';
 
         const dateStr = item.date ? item.date.replace(/\s*202[67]/g, '') : '';
         const metaParts = [dateStr, item.time, item.location || 'De Oude Vismijn'].filter(Boolean);

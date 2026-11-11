@@ -52,10 +52,12 @@ const effectiveDay = day || (
 
 // Clean date display (e.g. "VRIJDAG 1 OKT" for 2027)
 let cleanDate = (date || '').replace(/\s*202[67]/g, '').trim().toUpperCase();
-if (!cleanDate || cleanDate === 'DATUM VOLGT') {
-  if (effectiveDay === 'vrijdag') cleanDate = 'VRIJDAG 1 OKT';
+if (!cleanDate || cleanDate === 'DATUM VOLGT' || /^0?1[-/.]10/.test(cleanDate)) {
+  if (effectiveDay === 'vrijdag' || /^0?1[-/.]10/.test(cleanDate)) cleanDate = 'VRIJDAG 1 OKT';
   else if (effectiveDay === 'zaterdag') cleanDate = 'ZATERDAG 2 OKT';
   else if (effectiveDay === 'zondag') cleanDate = 'ZONDAG 3 OKT';
+} else if (/^0?2[-/.]10/.test(cleanDate)) {
+  cleanDate = 'ZATERDAG 2 OKT';
 } else if (cleanDate.includes('VRIJDAG') && !/\d/.test(cleanDate)) {
   cleanDate = 'VRIJDAG 1 OKT';
 } else if (cleanDate.includes('ZATERDAG') && !/\d/.test(cleanDate)) {
@@ -135,10 +137,10 @@ const titleSizeClass =
     <!-- Top Bar: Festival Header (left) + Pill Badge if applicable (right) -->
     <div class="ticket-top-meta">
       <span class="ticket-fest-subtitle">{festivalSubtitle}</span>
-      {bookingType && bookingType.toLowerCase().includes('enkel i.c.m') && (
+      {bookingType && (bookingType.toLowerCase().includes('enkel i.c.m') || bookingType.toLowerCase().includes('enkel_met_entree')) && (
         <span class="status-badge status-mc-badge" style="background: rgba(30, 58, 138, 0.1); color: #1E3A8A; border: 1px solid rgba(30, 58, 138, 0.3); font-size: 0.62rem; font-weight: 800; text-transform: uppercase; padding: 0.15rem 0.45rem; border-radius: 4px;">Enkel i.c.m. entree</span>
       )}
-      {derivedStatusText && !soldOut && (!bookingType || !bookingType.toLowerCase().includes('enkel i.c.m')) && (
+      {derivedStatusText && !soldOut && (!bookingType || (!bookingType.toLowerCase().includes('enkel i.c.m') && !bookingType.toLowerCase().includes('enkel_met_entree'))) && (
         <span class={"status-badge " + (status || '')}>{derivedStatusText}</span>
       )}
     </div>

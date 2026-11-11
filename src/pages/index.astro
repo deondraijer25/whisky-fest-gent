@@ -204,6 +204,7 @@ const marqueeBrands = BRAND.featuredBrands || [
               <div class="filter-buttons" id="cat-filter-buttons">
                 <button type="button" class="filter-tab-btn active" data-filter-cat="all">Alles</button>
                 <button type="button" class="filter-tab-btn" data-filter-cat="entree">Sessie Entree</button>
+                <button type="button" class="filter-tab-btn" data-filter-cat="masterclass">Masterclasses</button>
                 <button type="button" class="filter-tab-btn" data-filter-cat="tram">Whisky Bootjes</button>
                 <button type="button" class="filter-tab-btn" data-filter-cat="warehouse">Dada Rondleiding</button>
                 <button type="button" class="filter-tab-btn" data-filter-cat="botteling">Botteling</button>
@@ -263,6 +264,10 @@ const marqueeBrands = BRAND.featuredBrands || [
                 </div>
                 <div class="custom-dd-item" data-value="entree" role="option">
                   <span>Sessie Entree</span>
+                  <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="custom-dd-item" data-value="masterclass" role="option">
+                  <span>Masterclasses</span>
                   <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E3A8A" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
                 <div class="custom-dd-item" data-value="tram" role="option">
@@ -6725,6 +6730,11 @@ const marqueeBrands = BRAND.featuredBrands || [
     ambTitle = ambTitle.trim();
     let ambBio = (lp && lp.ambassador_bio) || (item && item.ambassadorBio) || '';
     ambBio = ambBio.trim();
+    if (!ambName && ambBio && ambBio.length < 50) {
+      ambName = ambBio;
+      ambBio = '';
+      if (!ambTitle) ambTitle = 'Expert & Host';
+    }
 
     let lineup: string[] = [];
     if (lp && lp.tasting_lineup) {

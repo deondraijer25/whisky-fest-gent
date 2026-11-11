@@ -317,8 +317,6 @@ const orgSchema = {
               if (title.indexOf('test') !== -1 || title.indexOf('concept') !== -1 || title.indexOf('draft') !== -1) return false;
               // Gent 2027: VIP sessie nog niet live zetten conform verzoek klant
               if (r.id === '6abba1e80735a7a1a04936a9' || title.indexOf('vip') !== -1) return false;
-              // Gent 2027: masterclasses nog niet toevoegen (inhoud volgt later)
-              if (category === 'masterclass') return false;
               return true;
             });
             if (records.length === 0) return;
@@ -386,10 +384,12 @@ const orgSchema = {
               var category = (p.category || '').toLowerCase().trim() || 'masterclass';
 
               var cleanDate = (dateLabel || '').replace(/\s*202[67]/g, '').trim().toUpperCase();
-              if (!cleanDate || cleanDate === 'DATUM VOLGT') {
-                if (day === 'vrijdag') cleanDate = 'VRIJDAG 1 OKT';
+              if (!cleanDate || cleanDate === 'DATUM VOLGT' || /^0?1[-/.]10/.test(cleanDate)) {
+                if (day === 'vrijdag' || /^0?1[-/.]10/.test(cleanDate)) cleanDate = 'VRIJDAG 1 OKT';
                 else if (day === 'zaterdag') cleanDate = 'ZATERDAG 2 OKT';
                 else if (day === 'zondag') cleanDate = 'ZONDAG 3 OKT';
+              } else if (/^0?2[-/.]10/.test(cleanDate)) {
+                cleanDate = 'ZATERDAG 2 OKT';
               } else if (cleanDate.includes('VRIJDAG') && !/\d/.test(cleanDate)) {
                 cleanDate = 'VRIJDAG 1 OKT';
               } else if (cleanDate.includes('ZATERDAG') && !/\d/.test(cleanDate)) {
@@ -398,7 +398,7 @@ const orgSchema = {
                 cleanDate = 'ZONDAG 3 OKT';
               }
 
-              var cleanTime = timeLabel;
+              var cleanTime = (timeLabel || '').replace(/(\d{1,2})\.(\d{2})/g, '$1:$2');
               if (cleanTime && !cleanTime.toLowerCase().includes('uur')) {
                 cleanTime = cleanTime + ' uur';
               }
@@ -699,13 +699,13 @@ const orgSchema = {
                           (p.location || 'De Oude Vismijn') +
                         '</span>' +
                       '</div>' +
-                      '<div class="col-speaker"><div class="speaker-block"><strong class="speaker-name">' + (p.ambassador_name || '—') + '</strong>' +
+                      '<div class="col-speaker"><div class="speaker-block"><strong class="speaker-name">' + (p.ambassador_name || (p.ambassador_bio && String(p.ambassador_bio).length < 50 ? p.ambassador_bio : '') || '—') + '</strong>' +
                         (p.ambassador_title ? '<span class="speaker-role">' + p.ambassador_title + '</span>' : '') +
                       '</div></div>' +
                       '<div class="col-action">' +
                         '<strong class="item-price">&euro; ' + priceNum.toFixed(2).replace('.', ',') + '</strong>' +
                         '<div class="action-buttons-group">' +
-                          '<button type="button" class="btn-trigger-details" data-title="' + cleanTitle + '" data-loc="' + (p.location || '') + '" data-time="' + cleanTime + '" data-price="&euro; ' + priceNum.toFixed(2).replace('.', ',') + '" data-desc="' + (p.ticket_description || p.description || '') + '" data-host="' + (p.ambassador_name || '') + '">Details</button>' +
+                          '<button type="button" class="btn-trigger-details" data-title="' + cleanTitle + '" data-loc="' + (p.location || '') + '" data-time="' + cleanTime + '" data-price="&euro; ' + priceNum.toFixed(2).replace('.', ',') + '" data-desc="' + (p.ticket_description || p.description || '') + '" data-host="' + (p.ambassador_name || (p.ambassador_bio && String(p.ambassador_bio).length < 50 ? p.ambassador_bio : '') || '') + '">Details</button>' +
                           (isSoldOut ? 
                             '<button type="button" class="btn btn-gold btn-table-buy sold-out" disabled>Uitverkocht</button>' :
                             '<button type="button" class="btn btn-gold btn-table-buy" data-ticket-id="' + r.id + '" data-title="' + cleanTitle + '">+ Bestel</button>'
