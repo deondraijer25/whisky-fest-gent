@@ -623,7 +623,7 @@ function formatSpeaker(host: string) {
   <div id="spacious-toast" class="spacious-toast" style="display: none;"></div>
 </Layout>
 
-<style>
+<style is:global>
   /* ============================================================
      1. FULL-WIDTH EDGE-TO-EDGE HERO WITH BACKGROUND PHOTO & TORN EDGE
      ============================================================ */
@@ -1664,7 +1664,7 @@ function formatSpeaker(host: string) {
   }
 
   /* Mobile Responsive Polish for Programma & Timetable */
-  @media (max-width: 900px) {
+  @media (max-width: 990px) {
     .programma-full-hero {
       padding: 7.5rem 1.25rem 4rem !important;
       min-height: auto !important;
@@ -1736,7 +1736,7 @@ function formatSpeaker(host: string) {
       border-bottom: 1px dashed var(--border-color, #CBD5E1) !important;
       padding-bottom: 0.5rem !important;
     }
-    .item-time {
+    .item-time, .item-time-val {
       font-size: 1.05rem !important;
       font-weight: 800 !important;
       color: #1E3A8A !important;
