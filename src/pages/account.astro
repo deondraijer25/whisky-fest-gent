@@ -1467,7 +1467,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
   /* 2. Middle Row: 3-Column Meta Grid */
   .ticket-meta-trio {
     display: grid;
-    grid-template-columns: 1.2fr 1.2fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
     background: #FAF7F2;
     border: 1px solid var(--border-color, #E2D9CC);
@@ -2240,7 +2240,7 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
     /* 3-Koloms Meta Grid */
     .ticket-meta-trio {
       display: grid !important;
-      grid-template-columns: 1.2fr 1.2fr 1fr !important;
+      grid-template-columns: 1fr 1fr !important;
       gap: 6px !important;
       background: #FAF7F2 !important;
       border: 1px solid #E2D9CC !important;
@@ -3129,10 +3129,6 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                         <span class="meta-col-label">Locatie</span>
                         <strong class="meta-col-val">${locationName}</strong>
                       </div>
-                      <div class="meta-col">
-                        <span class="meta-col-label">Ticket Code</span>
-                        <strong class="meta-col-val font-mono">${displayCode}</strong>
-                      </div>
                     </div>
 
                     <!-- 3. Bottom Row: Action Buttons -->
@@ -3409,10 +3405,6 @@ import { EXHIBITORS_GENT } from '../data/standhoudersGent';
                         <div class="meta-col">
                           <span class="meta-col-label">Locatie</span>
                           <strong class="meta-col-val">${item.category === 'masterclass' ? 'De Oude Vismijn (MC-Ruimte)' : item.category === 'botteling' ? (item.delivery === 'shipping' ? 'Verzending per Post (BE & NL)' : 'De Oude Vismijn (Infodesk Stand O)') : 'De Oude Vismijn, Gent'}</strong>
-                        </div>
-                        <div class="meta-col">
-                          <span class="meta-col-label">Ticket Code</span>
-                          <strong class="meta-col-val font-mono">${displayCode}</strong>
                         </div>
                       </div>
 
