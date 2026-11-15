@@ -7049,6 +7049,7 @@ const marqueeBrands = BRAND.featuredBrands || [
     // PAYMENT IS 100% CONFIRMED & PAID!
     __orderReturnInProgress = false;
     __orderReturnCompleted = true;
+    setTimeout(() => { __orderReturnCompleted = false; }, 2500);
 
     // 1. Completely clear shopping cart in memory, DOM, localStorage & Header badge
     if (typeof cart !== 'undefined') {
